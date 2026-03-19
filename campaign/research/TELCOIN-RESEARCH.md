@@ -1,6 +1,6 @@
 # Telcoin Association & Network — Campaign Research
-## Last updated: March 16, 2026
-## Sources: telcoin.org, telcoin.network, forum.telcoin.org, CoinMarketCap, Business Wire, Governor of Nebraska, GitHub, web search, council call recap (week of Mar 10), telcoinwiki.com (full site crawl March 15, 2026)
+## Last updated: March 19, 2026
+## Sources: telcoin.org, telcoin.network, forum.telcoin.org, CoinMarketCap, Business Wire, Governor of Nebraska, GitHub, web search, council call recap (week of Mar 10), telcoinwiki.com (full site crawl March 15, 2026), TELx Council #19 transcript (March 18, 2026)
 
 > Roadmap data sourced directly from roadmap.telcoin.network (screenshots, March 10, 2026).
 > Developer Notes last updated: **February 19, 2026** per roadmap page.
@@ -269,15 +269,31 @@ Source: forum.telcoin.org/t/tanip-trading-fee-rebate-program/824 — submitted D
 - **eXYZ stablecoin pools**: USDC/eUSD pools live on Base (Uniswap) and Solana (Raydium)
 
 #### Merkl Integration Trial — APPROVED
-Source: TELx Council recap (week of Mar 10, 2026)
+Source: TELx Council recap (week of Mar 10, 2026); TELx Council #19 (March 18, 2026)
 
 - **Snapshot vote**: Passed unanimously 6/6, closed March 10, 2026 — first successful proposal from council member Tai
 - **Model selected**: Per-position gating ($6,000 integration cost vs. $3,000 per-wallet; granularity maintained to match current hook-based structure)
-- **Cost**: ~2.175 million TEL over 6 months (~363,000 TEL/month) from TX operational wallet (10M TEL held — untouched; does not reduce existing pool incentives)
+- **Cost**: ~2.175 million TEL over 6 months (~363,000 TEL/month) from TX operational wallet (10M TEL held — untouched; does not reduce existing pool incentives); payment schedule: 6 equal monthly installments
 - **Timeline**: ~4 weeks from snapshot → live ~April 2026; full analysis targeted mid-May
 - **Test setup**: Running in parallel on Base V4 pool (TEL/ETH) — Merkl vs. current hook system, no double rewards
 - **Why Merkl**: Dynamic/flexible incentive structures; target active tick liquidity; bounded price ranges; adjust per-pool without hook modifications + security audits; scales for future pool additions
 - **Strategic goal**: Shift from fixed equal allocation (6 pools) to formula-based distribution that can rapidly onboard new pools (especially eXYZ stablecoins and Telcoin Holdings corridors)
+- **Merkl contact**: Baptiste — meeting with TELx Council scheduled March 19, 2026 (1:30–2pm Eastern); Leo (technical lead) required to attend for contract-level discussion
+- **Scoping document**: Leo drawing up success criteria document prior to Merkl meeting — defines how to evaluate whether Merkl is a success
+- **Key technical requirement**: Merkl must track rewards at position level (not wallet address level) — to match current hook-based granularity
+- **NDA/services agreement**: Tim Mahota (General Counsel) confirmed formal NDA + services agreement required before sharing confidential information or initiating paid services; standard TAO NDA template available; Tim must receive copies of all signed agreements; TELx Council first external vendor engagement
+
+#### V4 Pool Aggregator Routing Issue
+Source: TELx Council #19 (March 18, 2026)
+
+- **Problem**: Major aggregators route very little volume to V4 pools with custom hooks — because hooks make swap rate prediction difficult/unpredictable
+- **Data finding**: Most aggregators route <10% of volume through V4 custom-hook pools; V3 pools dominate aggregator routing
+- **OX Protocol impact**: OX Protocol (one of two aggregators used by Telcoin Wallet) routes ~<10% of swaps through V4 pools — meaning ~90% of wallet-routed volume goes elsewhere
+- **Root cause**: Advanced aggregators (e.g. Kyberswap) can handle hook-based pools; most cannot predict rates and avoid them; hooks also add perceived smart contract risk for aggregators
+- **V4 is still new**: Aggregator trust for V4 expected to improve over time as track record builds
+- **Hook purpose clarification** (from council): The V4 hook's PRIMARY purpose is JIT (just-in-time liquidity) attack prevention via 24-hour position lock — NOT governance/voting rights. Voting was a secondary integration goal.
+- **Merkl's implication**: Merkl handles eligibility/subscription on their side — potentially eliminating the need for the NFT-based hook system; could enable migration back to V3 pools for better aggregator routing without losing reward targeting capability
+- **Action item**: Ty to reach out to Chase (smart contract engineer, Telcoin Holdings) to align on wallet + V4 pool integration going forward; to be discussed at March 23 Holdings meeting
 
 #### Pool Strategy Notes
 - Uniswap V4: Better for volatile pairs (TEL/ETH); recent data shows closer to 1:1 liquidity-to-reward ratio
@@ -285,12 +301,24 @@ Source: TELx Council recap (week of Mar 10, 2026)
 - Balancer V3 Reclaim Pools: Still under evaluation for stable pair infrastructure
 - **Base potentially leaving OP Stack**: Monitoring; Uniswap applications not expected to be impacted but backend changes may require retesting (council member Cody has Base/The Block contacts for intel)
 
+#### TELx Council / Holdings Strategic Meeting — March 23
+Source: TELx Council #19 (March 18, 2026)
+
+- **Date**: Monday, March 23, 2026, 2pm Eastern
+- **Attendees**: Paul (CEO), Parker (Executive Director), TELx Council members
+- **Purpose**: Post-bank-launch V5 roadmap; eXYZ stablecoin liquidity strategy; define TELx Council's mission and priorities for H2 2026
+- **Context**: Council sentiment — currently in a "holding position" pending clarity from Holdings on strategic direction; V5 launch and Telcoin Network mainnet expected to drive major clarity in coming months
+- **Action**: Council to bring outcomes of this meeting back to next full council session
+- **Next council meeting**: ~April 1, 2026 (two weeks from March 18)
+
 #### Operational
 - Reward script issues from prior weeks: fully resolved with redundancy in place
 - Period 29 distribution: completed quickly after epoch close
 - Website fee graph bug: fixed, deploys in next general update
 - New manual liquidity withdrawal guide (direct contract access if UI unavailable): in preparation
 - TX University: handover to Leo and Storm underway; final licensing + content polish before launch
+- **V4 staked amount showing N/A**: UI bug on telx.network — all three networks (Polygon, Base) showing N/A for staked amount in V4 pools; believed to be subgraph issue; Ty following up with Khalil; added to Trello
+- **Admin rewards dashboard** (Derek): Position-level breakdown tool in development — allows council members to answer LP questions ("why did I earn less?") by wallet address lookup; shows out-of-range %, position moves, liquidity share; PR pending, Leo to review; future integration target: unified web project
 
 ### eUSD Stablecoin
 - **Launch date**: December 26, 2025
@@ -452,7 +480,9 @@ Source: TAN Council recap (week of Mar 10, 2026)
 | Mar 10, 2026 | Merkl trial snapshot vote closes — unanimous 6/6 approval |
 | Mar 12, 2026 | Platform & Treasury Council #26 — BLS fully resolved; external audits being scheduled; TIP 11 + unified web arch TIP presented; team expansion announced; Miner Council elections live |
 | Mar 12, 2026 | TAN Council — **Trading Fee Rebate Program** (TANIP successor) passed snapshot vote (implementation target late March); 164-165M TEL carryforward confirmed; builder demos: .tel name service, lottery game, charity NFT |
-| Mar 18, 2026 | TELx Council meeting (3PM EST, note: DST may affect calendar display) |
+| Mar 18, 2026 | TELx Council #19 — Merkl scoping & Baptiste meeting prep; V4 aggregator routing issue identified; Holdings strategy meeting scheduled for March 23; NDA/services agreement process initiated for Merkl vendor relationship |
+| Mar 19, 2026 | TELx Council technical workshop with Baptiste (Merkl) — March 19, 2pm Eastern; Leo (technical lead) required |
+| Mar 23, 2026 | TELx Council / Holdings strategic meeting — 2pm Eastern; Paul (CEO) + Parker; eXYZ stablecoin roadmap + council mission definition |
 | ~April 2026 | Merkl trial goes live on Base V4 TEL/ETH pool |
 | ~Late March 2026 | TANIP-1 deployment (target, flexible) |
 | Mid-May 2026 | Merkl trial analysis + review |
