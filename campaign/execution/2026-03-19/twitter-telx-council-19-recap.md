@@ -19,7 +19,7 @@ Primary items addressed:
 
 Next council session: ~April 1, 2026.
 
-View the ongoing council record at forum.telcoin.org.
+Session recording: https://www.youtube.com/watch?v=QsDDDLFPr8c
 
 ---
 
@@ -44,8 +44,8 @@ View the ongoing council record at forum.telcoin.org.
 
 - No conversation prompt (Tier 1 governance)
 - No emojis
-- Forum link closes the post — lead with the factual record, link last
-- If a forum thread or YouTube recording timestamp becomes available, replace the generic forum link with the direct URL
+- YouTube recording link closes the post — lead with the factual record, link last
+- Recording: https://www.youtube.com/watch?v=QsDDDLFPr8c
 - The Merkl meeting and Holdings meeting are publishable as council business — aggregator routing analysis and vendor NDA process are internal governance and should not appear in public posts
 
 ---

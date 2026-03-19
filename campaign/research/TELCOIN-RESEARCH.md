@@ -1,6 +1,6 @@
 # Telcoin Association & Network — Campaign Research
 ## Last updated: March 19, 2026
-## Sources: telcoin.org, telcoin.network, forum.telcoin.org, CoinMarketCap, Business Wire, Governor of Nebraska, GitHub, web search, council call recap (week of Mar 10), telcoinwiki.com (full site crawl March 15, 2026), TELx Council #19 transcript (March 18, 2026)
+## Sources: telcoin.org, telcoin.network, forum.telcoin.org, CoinMarketCap, Business Wire, Governor of Nebraska, GitHub, web search, council call recap (week of Mar 10), telcoinwiki.com (full site crawl March 15, 2026), TELx Council #19 stream (March 18, 2026) https://www.youtube.com/watch?v=QsDDDLFPr8c
 
 > Roadmap data sourced directly from roadmap.telcoin.network (screenshots, March 10, 2026).
 > Developer Notes last updated: **February 19, 2026** per roadmap page.
