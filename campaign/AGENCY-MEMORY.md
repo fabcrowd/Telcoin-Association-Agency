@@ -12,12 +12,12 @@ This file is updated automatically after every agency session. It tracks what co
 - Wallet version = V5 (not V4)
 - Primary X/Twitter account = @telcoinTAO
 - Tone = professional, factual, crypto-native — no hype, no rockets, no moons
-- eUSD = "first bank-issued on-chain stablecoin" — this is the key distinction in every stablecoin post
-- Nebraska digital asset bank charter = historic milestone, always worth referencing in banking/regulatory content
-- **TDAB (Telcoin Digital Asset Bank)**: Fine in research/internal files. Do NOT reference in any public @telcoinTAO post without explicit user instruction
-- **"Digital dollars"**: Do NOT use this phrase in any public post without explicit user instruction
-- **eXYZ stablecoins**: Any post referencing eXYZ stablecoins (eUSD, eGBP, eJPY, eSGD, eZAR, eEUR, or the suite generally) requires user confirmation before publishing — draft and flag, do not queue
-- **"Digital dollars" framing**: Same as above — draft and flag for user confirmation before any post goes out
+- **Content scope**: @telcoinTAO posts cover Telcoin Network (L1 infrastructure), TELx, governance, and Telcoin Association initiatives. Banking/stablecoin/TDAB content is out of scope for this account.
+- **TDAB (Telcoin Digital Asset Bank)**: Do NOT draft or produce any TDAB-focused content. Fine to mention in research/internal files. No public posts on TDAB, ever, without explicit user instruction.
+- **eXYZ stablecoins** (eUSD, eGBP, eJPY, eSGD, eZAR, eEUR): Incidental mentions in infrastructure context are OK. Posts *about* eXYZ stablecoins require user confirmation before publishing.
+- **"Digital dollars"**: Do NOT use this phrase in any public post without explicit user instruction.
+- **eUSD** as a stablecoin product post: requires user confirmation. eUSD as a passing reference in a Telcoin Network/TELx post is acceptable.
+- **Stablecoin liquidity roadmap** (e.g. TELx Council agenda items referencing eXYZ liquidity): OK to mention as council/governance context — no confirmation needed.
 
 ---
 
@@ -78,7 +78,7 @@ These are monitored daily. Output files saved to `campaign/research/intel-*.md`.
 Ideas generated but not yet executed. Pull from here when planning daily output.
 
 - [ ] Thread: "Why telecoms are the right validators for a financial blockchain" — MNO infrastructure story
-- [ ] Thread: "What eUSD actually means" — explain bank-issued vs. company-issued stablecoin distinction for retail audience
+- [x] ~~Thread: "What eUSD actually means"~~ — out of scope; TDAB/stablecoin product not @telcoinTAO territory
 - [ ] Thread: "Building on Telcoin Network now" — developer onboarding, EVM-compatible, start on Base
 - [ ] Video concept: "The problem with sending money abroad" — remittance pain point, then Telcoin solution
 - [ ] Infographic: Remittance fee comparison — Telcoin 2% vs Western Union 3–8% vs bank wire $25–$45
@@ -151,7 +151,7 @@ Ideas generated but not yet executed. Pull from here when planning daily output.
 - [ ] What's the priority ranking: X/Twitter > YouTube > TikTok > Instagram? Or different?
 - [ ] Are there any paid promotion budgets (for boosted posts, sponsored content)?
 - [ ] DC Blockchain Summit: does Jeff Quigley have updates to share? Any CLARITY Act announcements to respond to?
-- [ ] LP2 Post 4 (eUSD/TDAB) — publish this week or after today's eUSD threads land?
+- [ ] LP2 Post 4 — original eUSD/TDAB topic is out of scope. Repurpose slot as Telcoin Wallet / remittance story instead?
 - [ ] GSMA whitepaper URL — confirm for first-reply placement on GSMA thread
 
 ---
