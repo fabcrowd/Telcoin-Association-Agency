@@ -14,8 +14,10 @@ This file is updated automatically after every agency session. It tracks what co
 - Tone = professional, factual, crypto-native — no hype, no rockets, no moons
 - eUSD = "first bank-issued on-chain stablecoin" — this is the key distinction in every stablecoin post
 - Nebraska digital asset bank charter = historic milestone, always worth referencing in banking/regulatory content
-- **DO NOT mention Telcoin Digital Asset Bank (TDAB) in public content** — off-limits until explicit user instruction to publish
-- **DO NOT use the phrase "digital dollars" in any public content** — off-limits until explicit user instruction
+- **TDAB (Telcoin Digital Asset Bank)**: Fine in research/internal files. Do NOT reference in any public @telcoinTAO post without explicit user instruction
+- **"Digital dollars"**: Do NOT use this phrase in any public post without explicit user instruction
+- **eXYZ stablecoins**: Any post referencing eXYZ stablecoins (eUSD, eGBP, eJPY, eSGD, eZAR, eEUR, or the suite generally) requires user confirmation before publishing — draft and flag, do not queue
+- **"Digital dollars" framing**: Same as above — draft and flag for user confirmation before any post goes out
 
 ---
 
