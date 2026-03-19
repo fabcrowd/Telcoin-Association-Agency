@@ -5,6 +5,38 @@ This file is updated automatically after every agency session. It tracks what co
 
 ---
 
+## Entity Scope — @telcoinTAO Content Boundaries
+
+**This is the most important standing rule.** Every post must pass the entity check before drafting.
+
+### @telcoinTAO speaks for: **Telcoin Association**
+- Telcoin Network (the L1 blockchain infrastructure)
+- TELx (the liquidity layer — governed by TELx Council)
+- TAN / Telcoin Wallet (the application layer — governed by TAN Council)
+- TEL token (governance and utility)
+- Telcoin Association governance (councils, TELIPs, proposals)
+- The GSMA MNO validator model
+
+### @telcoinTAO does NOT speak for: **Telcoin Holdings**
+- TDAB / Telcoin Digital Asset Bank — Holdings entity, not TA
+- eXYZ stablecoin products as primary subject matter
+- Commercial/banking partnerships that originate from Holdings
+- Revenue figures or commercial metrics from Holdings operations
+
+### Gray zone — requires user/commercial confirmation before posting:
+- The MNO pitch deck (`/assets/Telcoin Network Introduction – MNO - Mar 2026 (1).pdf`) — this is a Holdings commercial document. Numbers from it (Digital Cash currency count, country licenses, 3-billion-person target) have not been confirmed as TA-owned claims. **Do not use MNO deck figures in posts without explicit user confirmation that TA can speak to them.**
+- "Digital Cash" as a branded term — may be Holdings branding, not TA branding
+- eUSD as a passing reference in infrastructure context: acceptable. eUSD as primary post subject: requires confirmation.
+- Any claim about "Telcoin" that isn't clearly attributable to Telcoin Association specifically
+
+### Entity QA rule (apply to every post before marking ready-to-publish):
+Before finalizing any draft, ask: "Is every claim in this post attributable to Telcoin Association, not Telcoin Holdings?"
+If any claim is ambiguous, flag it rather than publish.
+
+**Open question (as of 2026-03-19)**: Ryan Neuner / commercial team should clarify the exact entity boundary for MNO deck figures and "Digital Cash" branding. Until clarification arrives, treat MNO deck stats as Holdings-territory and do not use in TA public posts.
+
+---
+
 ## Standing Decisions (never override without user instruction)
 
 - All mainnet timing language references roadmap.telcoin.network only — never invent dates
@@ -144,15 +176,27 @@ Ideas generated but not yet executed. Pull from here when planning daily output.
 
 *(Things the agency needs clarification on. Ask in next session if not resolved.)*
 
+- [ ] **CRITICAL — Entity boundary**: Need guidance from Ryan Neuner / commercial team: what can @telcoinTAO claim that originates from the MNO deck? Digital Cash currency counts, country license numbers, 3-billion-person targets — are these TA claims or Holdings claims?
+- [ ] **CRITICAL — "Digital Cash" branding**: Is "Digital Cash" a Telcoin Association term or Telcoin Holdings term?
 - [ ] Is there a preferred posting schedule / frequency for @telcoinTAO?
 - [ ] Are there any topics / events that are embargoed or not to be discussed publicly?
 - [ ] Who approves content before it posts? (user only, or council review needed?)
 - [ ] Do we have access to @telcoinTAO for direct publishing, or are we drafting for someone else to post?
 - [ ] What's the priority ranking: X/Twitter > YouTube > TikTok > Instagram? Or different?
 - [ ] Are there any paid promotion budgets (for boosted posts, sponsored content)?
-- [ ] DC Blockchain Summit: does Jeff Quigley have updates to share? Any CLARITY Act announcements to respond to?
-- [ ] LP2 Post 4 — original eUSD/TDAB topic is out of scope. Repurpose slot as Telcoin Wallet / remittance story instead?
 - [ ] GSMA whitepaper URL — confirm for first-reply placement on GSMA thread
+- [ ] LP2 Post 4 — next post is TAN / Telcoin Wallet (eUSD/TDAB retired). Confirm before drafting.
+- [ ] Jeff Quigley — next public appearance? Flag when known so rapid-response monitoring window opens.
+
+---
+
+## Jeff Quigley Monitoring Protocol
+
+When Quigley is at a conference or event, user should flag: "Jeff is at [event] — monitoring for signal"
+- Agent monitors X for @jeffquigley posts, event hashtags, and press coverage during the window
+- Any confirmed quote or policy development triggers a rapid-response draft within 2-4 hours
+- Nothing posts without user review
+- **Current status**: DC Blockchain Summit window closed (event ended Mar 18). No signal. Next event: TBD.
 
 ---
 

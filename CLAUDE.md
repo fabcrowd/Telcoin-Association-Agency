@@ -241,16 +241,19 @@ Use the Agent tool with these subagent types for specific tasks:
 
 **Active work**: Campaign materials in `campaign/execution/`
 
-**Learning path status (as of March 16, 2026):**
-- LP1 (Governance Fundamentals): Complete - Posts 1-6 published Feb 9 through ~Mar 8
-- LP2 (Platform Architecture): In progress - Posts 1-3 published Mar 9-11 (Platform Overview, Telcoin Network, TELx); Posts 4-6 remaining (eUSD/TDAB, Telcoin Wallet, Integration Story)
+**Learning path status (as of March 19, 2026):**
+- LP1 (Governance Fundamentals): Complete — Posts 1-6 published Feb 9 through ~Mar 8
+- LP2 (Platform Architecture): In progress — Posts 1-3 published Mar 9-11. Full 10-post plan in `campaign/execution/LP2-PLATFORM-ARCHITECTURE.md`. Next: Post 4 (TAN / Telcoin Wallet). eUSD/TDAB post removed — out of scope for @telcoinTAO.
 - LP3 (Differentiation): Not started
 - LP4 (Participation): Not started
+- **Live tracker**: `campaign/execution/LEARNING-PATH-TRACKER.md` — READ THIS before drafting any LP post
 
 **Upcoming triggers**:
-- TELx Council: March 18, 3PM EST
-- Trading Fee Rebate Program deployment: late March 2026
+- Trading Fee Rebate Program deployment: late March 2026 (post on confirmation)
 - Merkl trial going live: ~April 2026
+- P&T Council: March 26, 4PM EST
+- TELx Council: April 1, 3PM EST
+- TAN Council: April 2, 5PM EST
 
 **Content OS reference**: `strategy/CONTENT-OS.md`
 
