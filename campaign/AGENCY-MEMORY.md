@@ -14,6 +14,8 @@ This file is updated automatically after every agency session. It tracks what co
 - Tone = professional, factual, crypto-native — no hype, no rockets, no moons
 - eUSD = "first bank-issued on-chain stablecoin" — this is the key distinction in every stablecoin post
 - Nebraska digital asset bank charter = historic milestone, always worth referencing in banking/regulatory content
+- **DO NOT mention Telcoin Digital Asset Bank (TDAB) in public content** — off-limits until explicit user instruction to publish
+- **DO NOT use the phrase "digital dollars" in any public content** — off-limits until explicit user instruction
 
 ---
 
