@@ -9,31 +9,42 @@ This file is updated automatically after every agency session. It tracks what co
 
 **This is the most important standing rule.** Every post must pass the entity check before drafting.
 
+### Confirmed entity structure (researched 2026-03-19)
+Full brief: `campaign/research/ENTITY-STRUCTURE-BRIEF.md`
+
+**Telcoin Association** = Swiss Verein (protocol governance) — this is @telcoinTAO's voice
+**Telcoin Holdings Pte. Ltd.** = Singapore commercial company (incorporated Feb 2022) — owns the products
+**TAO (Telcoin Autonomous Ops, Ltd.)** = UK company, wholly owned by TA, is TA's operational arm
+
 ### @telcoinTAO speaks for: **Telcoin Association**
-- Telcoin Network (the L1 blockchain infrastructure)
-- TELx (the liquidity layer — governed by TELx Council)
-- TAN / Telcoin Wallet (the application layer — governed by TAN Council)
-- TEL token (governance and utility)
-- Telcoin Association governance (councils, TELIPs, proposals)
-- The GSMA MNO validator model
+- Telcoin Network (L1 blockchain protocol — governed by Platform Council)
+- TELx (DeFi liquidity layer — governed by TELx Council)
+- TAN (application network — governed by TAN Council)
+- TEL token treasury and issuance (governed by the Association)
+- All governance: councils, TELIPs, TGIPs, TIPs, snapshot votes
+- GSMA MNO validator model and compliance rules
+- Adiri testnet / mainnet roadmap milestones
 
 ### @telcoinTAO does NOT speak for: **Telcoin Holdings**
-- TDAB / Telcoin Digital Asset Bank — Holdings entity, not TA
-- eXYZ stablecoin products as primary subject matter
-- Commercial/banking partnerships that originate from Holdings
-- Revenue figures or commercial metrics from Holdings operations
+- Telcoin Wallet (telco.in) — Holdings product; reference as ecosystem context only
+- Telcoin Digital Asset Bank / TDAB — Holdings subsidiary (Telcoin Inc., Nebraska)
+- eUSD, eGBP, eJPY, eSGD, eZAR and all eXYZ stablecoins — issued by TDAB
+- eXYZ corridor strategy — explicitly described in TELx Council minutes as "Telcoin Holdings corridors"
+- Remittance corridor counts (20+ countries, 40+ e-wallets) — Holdings commercial metrics
+- Exchange listings and commercial partnerships
 
-### Gray zone — requires user/commercial confirmation before posting:
-- The MNO pitch deck (`/assets/Telcoin Network Introduction – MNO - Mar 2026 (1).pdf`) — this is a Holdings commercial document. Numbers from it (Digital Cash currency count, country licenses, 3-billion-person target) have not been confirmed as TA-owned claims. **Do not use MNO deck figures in posts without explicit user confirmation that TA can speak to them.**
-- "Digital Cash" as a branded term — may be Holdings branding, not TA branding
-- eUSD as a passing reference in infrastructure context: acceptable. eUSD as primary post subject: requires confirmation.
-- Any claim about "Telcoin" that isn't clearly attributable to Telcoin Association specifically
+### Requires [CONFIRM] from Ryan Neuner before posting:
+- Any figure from the MNO pitch deck (`/assets/Telcoin Network Introduction – MNO...pdf`) — that is a Holdings commercial document
+- "Digital Cash" as a branded term — likely Holdings branding; not confirmed as TA terminology
+- "16 countries", "23+ mobile money platforms", "3 billion people" — Holdings commercial metrics
+- Any eUSD reference beyond passing ecosystem context
+
+### About Ryan Neuner
+Ryan Neuner = Marketing Associate at **Telcoin Holdings** (not TA staff). He works for the Association under a Shared Services Agreement. He is the right person to clear Holdings-adjacent content before publish.
 
 ### Entity QA rule (apply to every post before marking ready-to-publish):
-Before finalizing any draft, ask: "Is every claim in this post attributable to Telcoin Association, not Telcoin Holdings?"
-If any claim is ambiguous, flag it rather than publish.
-
-**Open question (as of 2026-03-19)**: Ryan Neuner / commercial team should clarify the exact entity boundary for MNO deck figures and "Digital Cash" branding. Until clarification arrives, treat MNO deck stats as Holdings-territory and do not use in TA public posts.
+"Is every claim in this post attributable to Telcoin Association — not Telcoin Holdings, not Telcoin Inc., not TDAB?"
+If any claim belongs to Holdings: remove it, add entity attribution, or flag `[CONFIRM]` and route to Ryan.
 
 ---
 
