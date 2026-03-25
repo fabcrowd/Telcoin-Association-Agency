@@ -18,11 +18,11 @@ The P&T Council meeting on March 26 is the governance event where the Adiri publ
 
 ### Tweet Copy
 
-P&T Council #27 meets March 26, 2026 at 4PM EST.
+Platform & Treasury Council #34 convenes March 26, 2026 at 4PM EST / 9PM UTC.
 
-Agenda includes: Adiri testnet public release status.
+Agenda: Telcoin Network Update, Unified Web Presence, Claude AI TELIP.
 
-Observe via Discord.
+Observe via @TelcoinTAO on X or Google Meet.
 
 ---
 
@@ -41,10 +41,10 @@ Dark deep-space background using hex #090920 as dominant tone. A single large ge
 - Top-left: Telcoin Association logo (horizontal, white version) - standard placement, one mark height from top, 1.5 mark widths from left
 - Center-left text block, New Hero Bold:
   - Line 1 (small label, TEL Gray #424761, 14px): GOVERNANCE UPDATE
-  - Line 2 (headline, TEL White #F1F4FF, 28px): P&T Council #27
-  - Line 3 (subhead, TEL Indigo Blue #7393EA, 18px): March 26, 2026 - 4PM EST
-- Bottom-left descriptor, New Hero Regular, TEL Gray, 14px: Agenda: Adiri Testnet Public Release
-- Bottom-right: scan.telcoin.network in TEL Blue #14C8FF, 13px (optional - use if space permits cleanly)
+  - Line 2 (headline, TEL White #F1F4FF, 28px): P&T Council #34
+  - Line 3 (subhead, TEL Indigo Blue #7393EA, 18px): March 26, 2026 - 4PM EST / 9PM UTC
+- Bottom-left descriptor, New Hero Regular, TEL Gray, 14px: Agenda: Telcoin Network Update - Unified Web Presence - Claude AI TELIP
+- Bottom-right: @TelcoinTAO in TEL Blue #14C8FF, 13px
 
 ---
 
@@ -130,9 +130,9 @@ Same deep dark background as Tweet 1 card for visual continuity (#090920 dominan
 - [x] No contractions
 - [x] No enthusiasm language ("excited", "thrilled", "proud")
 - [x] No conversation prompt
-- [x] Directional CTA only ("Observe via Discord")
-- [x] Council name, date, and time all named
-- [x] Agenda item named precisely
+- [x] Directional CTA only ("Observe via @TelcoinTAO on X or Google Meet")
+- [x] Council name, date, time (EST + UTC) all named
+- [x] All three substantive agenda items named precisely (no speaker names)
 - [x] Under 280 characters
 - [x] No invented stats or speculative claims
 - [x] No hype language
