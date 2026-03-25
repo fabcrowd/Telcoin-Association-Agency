@@ -18,11 +18,21 @@ The P&T Council meeting on March 26 is the governance event where the Adiri publ
 
 ### Tweet Copy
 
-Platform & Treasury Council #34 convenes March 26, 2026 at 4PM EST / 9PM UTC.
+Platform & Treasury Council #34
+March 26, 2026 - 4:00 PM EST / 9:00 PM UTC
 
-Agenda: Telcoin Network Update, Unified Web Presence, Claude AI TELIP.
+Agenda:
+- Introduction & Council Overview
+- Recap of Last Meeting
+- Telcoin Network Update
+- Unified Web Presence
+- Claude AI TELIP
+- Open Q&A + Answering chat questions
+- Next Meetings: Apr 9, Apr 23, May 7
 
 Observe via @TelcoinTAO on X or Google Meet.
+
+youtube.com/@TelcoinTAO
 
 ---
 
@@ -43,8 +53,8 @@ Dark deep-space background using hex #090920 as dominant tone. A single large ge
   - Line 1 (small label, TEL Gray #424761, 14px): GOVERNANCE UPDATE
   - Line 2 (headline, TEL White #F1F4FF, 28px): P&T Council #34
   - Line 3 (subhead, TEL Indigo Blue #7393EA, 18px): March 26, 2026 - 4PM EST / 9PM UTC
-- Bottom-left descriptor, New Hero Regular, TEL Gray, 14px: Agenda: Telcoin Network Update - Unified Web Presence - Claude AI TELIP
-- Bottom-right: @TelcoinTAO in TEL Blue #14C8FF, 13px
+- Bottom-left descriptor, New Hero Regular, TEL Gray, 14px: Telcoin Network Update - Unified Web Presence - Claude AI TELIP
+- Bottom-right: youtube.com/@TelcoinTAO in TEL Blue #14C8FF, 13px
 
 ---
 
@@ -132,8 +142,9 @@ Same deep dark background as Tweet 1 card for visual continuity (#090920 dominan
 - [x] No conversation prompt
 - [x] Directional CTA only ("Observe via @TelcoinTAO on X or Google Meet")
 - [x] Council name, date, time (EST + UTC) all named
-- [x] All three substantive agenda items named precisely (no speaker names)
-- [x] Under 280 characters
+- [x] All 7 agenda items listed exactly as provided, no speaker names
+- [x] Next meeting dates included (Apr 9, Apr 23, May 7)
+- [x] YouTube link at bottom (youtube.com/@TelcoinTAO)
 - [x] No invented stats or speculative claims
 - [x] No hype language
 - [x] No em dashes

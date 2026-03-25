@@ -50,6 +50,7 @@ If any claim belongs to Holdings: remove it, add entity attribution, or flag `[C
 
 ## Standing Decisions (never override without user instruction)
 
+- **Pre-meeting council notice format (all councils)**: Bulleted agenda format. List ALL agenda items exactly as provided — do not collapse, summarize, or omit any item. No speaker names. Footer link = youtube.com/@TelcoinTAO. Observation CTA = "Observe via @TelcoinTAO on X or Google Meet." (use Discord if that is the only stream). Character limit is not a constraint. Reference pattern: P&T Council #34 notice, 2026-03-25.
 - All mainnet timing language references roadmap.telcoin.network only — never invent dates
 - Bridge partner = LayerZero (Axelar no longer active)
 - Wallet version = V5 (not V4)
