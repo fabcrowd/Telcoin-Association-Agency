@@ -1,7 +1,7 @@
 # Twitter Content — P&T Council Notice + Adiri Public Release
 **Account**: @telcoinTAO
 **Prepared**: March 25, 2026
-**Status**: READY FOR REVIEW
+**Status**: VOICE-QC-PASSED
 
 ---
 

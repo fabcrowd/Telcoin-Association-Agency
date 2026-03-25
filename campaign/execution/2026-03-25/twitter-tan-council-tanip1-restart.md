@@ -2,13 +2,13 @@
 ## Type: Tier 1 Governance (Post 1) / Tier 2 Milestone (Post 2)
 ## Account: @telcoinTAO
 ## Drafted: 2026-03-25
-## Status: READY FOR REVIEW
+## Status: VOICE-QC-PASSED
 
 ---
 
 ## Strategic Rationale
 
-The Trading Fee Rebate Program represents a governance-driven protocol adjustment with direct implications for how TEL issuance is structured on TAN - a material change that the community and observers need to understand clearly and accurately. Two posts serve distinct purposes: the pre-council announcement fulfills the standing obligation to surface governance activity before it occurs; the post-council announcement establishes the factual record of what changed, why it changed, and what mechanism now governs issuance - so that the transition from TANIP-1 to the capped model is legible to institutional observers, not just active participants. The min(R, F) formula is specific enough to anchor understanding without requiring a full forum deep-dive.
+The Trading Fee Rebate Program represents a governance-driven protocol adjustment with direct implications for how TEL issuance is structured on TAN - a material change that the community and observers need to understand clearly and accurately. Two posts serve distinct purposes: the pre-council announcement fulfills the standing obligation to surface governance activity before it occurs; the post-council announcement establishes the factual record of what changed, why it changed, and what mechanism now governs issuance - so that the transition from TANIP-1 to the capped model is legible to institutional observers, not just active participants. The min(R, F) formula is specific enough to anchor understanding without requiring a full read of the forum proposal.
 
 ---
 

@@ -5,6 +5,7 @@
 ## Format: 7-tweet thread
 ## Layer: Education — crypto-native audience
 ## Source facts: TELCOIN-RESEARCH.md (all claims verified)
+## Voice QC: PASSED
 
 ---
 
@@ -60,7 +61,6 @@ XRP is a settlement rail for institutions. Its primary use case is enabling bank
 
 Telcoin Network is built for mobile-first populations without bank accounts. The end user is a mobile subscriber in Bangladesh, Ghana, or the Philippines sending money home via BKash, MTN Money, or GCash.
 
-Different problems. Different users. Different infrastructure requirements.
 
 ---
 
@@ -91,7 +91,7 @@ XRP's validator network is operated by a mix of entities - financial institution
 
 On Telcoin Network, only GSMA full-member MNOs can validate blocks and earn network fees. Mobile network operators - licensed, regulated, geographically distributed - run the infrastructure in private bare-metal data centers alongside existing telecom packet-switching equipment.
 
-This is not a partnership arrangement. MNOs are the infrastructure.
+MNOs are the infrastructure. The validator relationship is defined by governance, not commercial partnership.
 
 ---
 
@@ -119,9 +119,9 @@ This is not a partnership arrangement. MNOs are the infrastructure.
 
 XRP functions as a bridge currency - it is held briefly during settlement, then sold. Ripple's stablecoin efforts are separate from the core XRP settlement mechanism.
 
-eUSD, the stablecoin issued on Telcoin Network's infrastructure, is different in origin. It is issued by Telcoin Digital Asset Bank - a state-chartered U.S. depository institution under the Nebraska Financial Innovation Act, signed by the Governor of Nebraska on November 12, 2025. It is 1:1 backed by USD and short-term U.S. Treasury assets, with monthly external attestations.
+eUSD is issued by Telcoin Digital Asset Bank, a state-chartered U.S. depository institution under the Nebraska Financial Innovation Act, signed by the Governor of Nebraska on November 12, 2025. It is 1:1 backed by USD and short-term U.S. Treasury assets, with monthly external attestations.
 
-The first bank-issued on-chain stablecoin in the United States. Not a bridge currency. Not a corporate-issued token.
+The first bank-issued on-chain stablecoin in the United States.
 
 ---
 
@@ -211,9 +211,7 @@ This is an operating network, not a protocol thesis.
 
 The comparison to XRP is common because both involve blockchain and cross-border payments. But the use case, infrastructure, end user, stablecoin model, and governance are distinct enough that the comparison doesn't hold at the architecture level.
 
-Telcoin Network is not a faster settlement rail for banks. It is an L1 blockchain validated by the world's licensed mobile operators, designed to reach the 1.4 billion adults globally who have a mobile phone but no bank account.
-
-The distinction matters because the target problem is different.
+Telcoin Network is an L1 blockchain validated by licensed mobile operators, designed to reach the 1.4 billion adults globally who have a mobile phone but no bank account.
 
 Which element of this comparison warrants further examination: the GSMA validator model, the bank charter and eUSD structure, or the governance architecture?
 

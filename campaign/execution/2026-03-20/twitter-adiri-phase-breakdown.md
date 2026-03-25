@@ -1,7 +1,7 @@
 # Adiri Phase Breakdown Thread
 **Account**: @telcoinTAO
 **Type**: 4-tweet thread (Tier 2 education)
-**Status**: READY FOR REVIEW
+**Status**: VOICE-QC-PASSED
 **Date**: 2026-03-20
 **Source brief**: standup.md — Item 2
 **Intel sources**: TELCOIN-RESEARCH.md Section 2 — Adiri Testnet; P&T Council #26 recap (March 12, 2026); roadmap.telcoin.network
@@ -16,9 +16,7 @@
 
 Mainnet is not being withheld. It is being sequenced.
 
-Adiri is Telcoin Network's three-phase public testnet. Each phase has a defined checklist of deliverables. The network moves to mainnet when those checklists are complete — not on a calendar date.
-
-Here is where things stand.
+Adiri is Telcoin Network's three-phase public testnet. Each phase has a defined checklist of deliverables. The network moves to mainnet when those checklists are complete, not on a calendar date.
 
 ---
 
@@ -42,7 +40,7 @@ Phase 1 established the baseline: a live network partners and validators could i
 
 Phase 2: Production hardening. In progress.
 
-This is the current phase. The work is methodical and sequential - each completed item feeds the next.
+The work is methodical and sequential - each completed item feeds the next.
 
 Completed:
 - Security findings from the Phase 1 assessment patched

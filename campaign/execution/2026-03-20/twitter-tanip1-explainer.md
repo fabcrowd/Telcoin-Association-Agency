@@ -4,7 +4,7 @@
 ## Format: 3-tweet mini-thread
 ## Topic: What is TANIP-1 and why does it matter
 ## Audience: Crypto-native, not Telcoin-native
-## Status: READY FOR REVIEW
+## Status: VOICE-QC-PASSED
 
 ---
 

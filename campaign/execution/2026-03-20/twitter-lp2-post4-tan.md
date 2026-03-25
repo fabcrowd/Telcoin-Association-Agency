@@ -1,7 +1,7 @@
 # LP2 Post 4 — TAN / Application Network Layer
 ## @telcoinTAO Twitter — Learning Path 2: Platform Architecture
 ### Created: 2026-03-20
-### Status: READY FOR REVIEW
+### Status: VOICE-QC-PASSED
 
 ---
 
@@ -30,7 +30,7 @@ TAN — the Telcoin Application Network — is the third layer of the Telcoin Pl
 
 Where Telcoin Network provides settlement infrastructure and TELx provides liquidity, TAN is the protocol layer where on-chain infrastructure becomes accessible to end users and application developers.
 
-The primary TAN application today is the Telcoin Wallet, available on iOS and Android. Beyond that, TAN is an open application network — builders are developing tools on top of it, from human-readable .tel address identifiers to on-chain charitable giving instruments.
+The primary TAN application today is the Telcoin Wallet, available on iOS and Android. TAN is an open application network. Builders are developing tools on top of it, from human-readable .tel address identifiers to on-chain charitable giving instruments.
 
 TAN participants are called stakers. Stakers deposit TEL, earn referral fees when referred users transact, and receive weekly TEL rewards based on adoption activity. This is Proof of Alignment: rewards tied to real platform usage, not passive token holding.
 
@@ -38,11 +38,11 @@ TAN participants are called stakers. Stakers deposit TEL, earn referral fees whe
 
 **Tweet 2 of 2**
 
-TAN has its own governance layer. The TAN Council — six elected members representing stakers, developers, liquidity miners, and validators — governs TAN through the TANIP process (TAN Improvement Proposals).
+TAN has its own governance layer. The TAN Council (six elected members representing stakers, developers, liquidity miners, and validators) governs TAN through the TANIP process (TAN Improvement Proposals).
 
-The most recent milestone: the Trading Fee Rebate Program passed a TAN Council snapshot vote on March 12, 2026. It replaces the original issuance-based reward model with a capped rebate formula — a wallet can earn back up to the amount it paid in TEL fees, but no more. This removes the mercenary capital incentive that produced fee cycling under the prior model.
+The most recent milestone: the Trading Fee Rebate Program passed a TAN Council snapshot vote on March 12, 2026. It replaces the original issuance-based reward model with a capped rebate formula: a wallet can earn back up to the amount it paid in TEL fees, but no more. This removes the mercenary capital incentive that produced fee cycling under the prior model.
 
-The program is funded by the TAN Council's carryforward of 164–165 million TEL from Y1 and Y2 — no new allocation required.
+The program is funded by the TAN Council's carryforward of 164-165 million TEL from Y1 and Y2. No new allocation required.
 
 Implementation target: late March 2026. Full governance record: forum.telcoin.org
 

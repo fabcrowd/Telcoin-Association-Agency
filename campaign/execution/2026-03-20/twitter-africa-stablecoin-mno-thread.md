@@ -5,7 +5,7 @@
 **Format**: 6-tweet thread
 **Layer**: Layer 2 — Education (standalone; differentiation-angle; bridges LP2 architecture content toward LP3 framing)
 **Priority post**: Yes — run 60-minute launch window after publishing
-**Status**: DRAFT — pending TAO review
+**Status**: DRAFT — pending TAO review | VOICE-QC-PASSED
 
 ---
 
@@ -31,7 +31,7 @@ Across Sub-Saharan Africa, mobile phone networks reach populations that formal b
 
 Mobile money platforms - M-Pesa, Airtel Money, MTN Money - built financial access on top of telecom rails. For many users in the region, a SIM card is the primary point of entry to financial services.
 
-The infrastructure question for any remittance system is straightforward: does it run on these rails, or does it require users to step off them?
+The question for any remittance system: does it run on these rails, or does it require users to step off them?
 
 1/6
 
@@ -63,7 +63,7 @@ The World Bank puts the global average cost of sending a remittance at approxima
 
 For many Sub-Saharan Africa corridors, costs sit at the higher end of that range or above. Western Union typically charges 3-8%. MoneyGram 4-6%. Bank wire transfers add flat fees on top.
 
-The cost of sending money home is not uniform. It is highest where people have the fewest alternatives.
+Costs are highest where people have the fewest alternatives.
 
 Telcoin Wallet's fee target: 2% or less, end-to-end.
 
@@ -94,11 +94,9 @@ Telcoin Wallet's fee target: 2% or less, end-to-end.
 
 **Copy:**
 
-A stablecoin that requires a smartphone, a self-custody wallet, and an internet connection to cash out is not accessible to everyone who needs remittances.
+Most stablecoins require a smartphone, a self-custody wallet, and an internet connection to cash out.
 
-Telcoin Wallet is integrated directly with mobile money platforms - Airtel Money in Malawi and Uganda, MTN Money in Ghana and Uganda, Equitel Money in Kenya, and 23+ others across 16 countries. Recipients receive funds in the mobile money accounts they already use.
-
-No bank account required. No additional onboarding step.
+Telcoin Wallet is integrated directly with mobile money platforms - Airtel Money in Malawi and Uganda, MTN Money in Ghana and Uganda, Equitel Money in Kenya, and 23+ others across 16 countries. Recipients use the mobile money accounts they already have.
 
 3/6
 
@@ -133,7 +131,7 @@ GSMA Operator Members are the licensed telecommunications operators that run the
 
 Telcoin Association joined GSMA as an associate member in 2018. Validators must hold the higher-tier Operator Member classification, meet criteria set by the Association, and stake TEL to validate blocks.
 
-Each MNO validator earns fees proportional to network usage. That is direct economic alignment: the validator's interests and the subscriber's access are on the same side.
+Validator income tracks network usage. When subscribers use the network, validators earn.
 
 4/6
 
@@ -168,7 +166,7 @@ Remittance use cases require price stability. A volatile transfer token introduc
 
 On December 26, 2025, Telcoin Digital Asset Bank issued eUSD - the first stablecoin issued under U.S. banking law by a state-chartered institution. It is backed 1:1 by USD and short-term U.S. Treasury assets, with monthly external attestations.
 
-eUSD is not a DeFi token with a dollar peg. It is issued by a regulated U.S. bank operating under the Nebraska Financial Innovation Act. For corridor markets subject to regulatory scrutiny, that distinction matters.
+eUSD is issued by a regulated U.S. bank under the Nebraska Financial Innovation Act. That origin matters in regulatory terms.
 
 5/6
 
@@ -200,13 +198,13 @@ eUSD is not a DeFi token with a dollar peg. It is issued by a regulated U.S. ban
 
 **Copy:**
 
-The case for mobile-first stablecoin adoption in Sub-Saharan Africa is not speculative. Mobile financial infrastructure is deployed at scale. The subscriber bases exist. The use case - moving value across borders at low cost - already has documented demand.
+Mobile financial infrastructure in Sub-Saharan Africa is deployed at scale. The subscriber bases exist. The use case - moving value across borders at low cost - has documented demand.
 
-What has been absent is a settlement layer designed to connect with that telecom infrastructure directly: validated by the same MNOs that serve those subscribers, carrying a stablecoin issued by a regulated bank, with live remittance corridors already operating.
+Telcoin Network is that settlement layer: validated by the MNOs serving those subscribers, carrying a bank-issued stablecoin, with live remittance corridors already operating.
 
 Telcoin Association holds GSMA membership since 2018. Telcoin Wallet operates across 16 countries and 23+ platforms. eUSD launched under a U.S. bank charter in December 2025. MNO validators are building toward mainnet on the Adiri testnet.
 
-These are infrastructure commitments, not product announcements.
+These are infrastructure commitments.
 
 Which element of this model - MNO validator alignment, bank-issued stablecoin, or live telco-native remittance rails - do you assess as most significant for financial inclusion at scale?
 
