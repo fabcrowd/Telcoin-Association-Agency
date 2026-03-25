@@ -291,12 +291,13 @@ Use the Agent tool with these subagent types for specific tasks:
 
 When the user types "run standup" (outside of the automated daily-agency-run.md session), read the following before producing the standup output:
 
-1. `campaign/execution/[today]/SESSION-CONTEXT.md` - active branch, recent commits, upcoming triggers
-2. `campaign/research/TELCOIN-RESEARCH.md` - current client state, confirmed facts
-3. `campaign/execution/LEARNING-PATH-TRACKER.md` - LP progress, what's next, what's drafted
-4. `campaign/AGENCY-MEMORY.md` - standing decisions, open questions, angle bank
-5. Run `git log --oneline -10` - what shipped recently
-6. Check `ls campaign/execution/[today]/` and `ls campaign/execution/[yesterday]/` - what exists
+1. `tasks/lessons.md` - active lessons, pattern summary, any recent corrections
+2. `campaign/execution/[today]/SESSION-CONTEXT.md` - active branch, recent commits, upcoming triggers
+3. `campaign/research/TELCOIN-RESEARCH.md` - current client state, confirmed facts
+4. `campaign/execution/LEARNING-PATH-TRACKER.md` - LP progress, what's next, what's drafted
+5. `campaign/AGENCY-MEMORY.md` - standing decisions, open questions, angle bank
+6. Run `git log --oneline -10` - what shipped recently
+7. Check `ls campaign/execution/[today]/` and `ls campaign/execution/[yesterday]/` - what exists
 
 Then produce a standup covering:
 - **Branch status** - clean/dirty, last push
@@ -350,10 +351,11 @@ Then produce a standup covering:
 - One task per subagent for focused execution
 
 ### 3. Self-Improvement Loop
-- After ANY correction from the user: update `tasks/lessons.md` with the pattern
-- Write rules for yourself that prevent the same mistake
-- Ruthlessly iterate on these lessons until mistake rate drops
-- Review lessons at session start for relevant project
+- After ANY correction from the user: immediately add a new entry to `tasks/lessons.md` — do not batch
+- Entry format: first output → what user said → what changed → rule derived
+- Update the Pattern Summary table in `tasks/lessons.md` after every new entry
+- Review `tasks/lessons.md` at every session start and before every content task
+- The loop is: produce → get corrected → log lesson → apply rule → produce better next time
 
 ### 4. Verification Before Done
 - Never mark a task complete without proving it works
@@ -398,7 +400,8 @@ Then produce a standup covering:
 
 On every new session, before doing anything else:
 1. Confirm active branch is `claude/campaign-iLgt5` (run `git branch` if unsure)
-2. Read `campaign/research/TELCOIN-RESEARCH.md` for current client state
-3. Read the **LLM Voice Principles** section in this file — apply to all written output
-4. Check if user has shared any new intel (council recaps, announcements) — if yes, update research file first
-5. Then proceed to the actual task
+2. Read `tasks/lessons.md` — review all active lessons and the pattern summary before producing any output
+3. Read `campaign/research/TELCOIN-RESEARCH.md` for current client state
+4. Read the **LLM Voice Principles** section in this file — apply to all written output
+5. Check if user has shared any new intel (council recaps, announcements) — if yes, update research file first
+6. Then proceed to the actual task
