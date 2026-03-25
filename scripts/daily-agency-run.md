@@ -74,7 +74,7 @@ Launch `Trend Researcher` (third instance, parallel):
 
 Read these files in parallel:
 
-1. `CLAUDE.md` — agency identity, client, tone rules, branch
+1. `CLAUDE.md` — agency identity, client, tone rules, branch, and **LLM Voice Principles** (mandatory — read the full section before producing any copy)
 2. `campaign/AGENCY-MEMORY.md` — standing decisions, what worked, open questions, angle bank
 3. `campaign/research/TELCOIN-RESEARCH.md` — current client intel
 4. `campaign/research/intel-x-[today].md` — fresh X/$TEL social listening
