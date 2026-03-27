@@ -13,6 +13,43 @@
 
 ---
 
+### Lesson 5 — Published content not detected during standup review
+**Date**: 2026-03-26
+**Session**: claude/campaign-iLgt5
+
+**What was produced**:
+Standup was run and the P&T Council #34 pre-council notice was listed as "ready to post" — even though the user had already posted it before the standup. The status was never verified.
+
+**What the user said**:
+"i already posted the pre council notice and you should have picked that up when we ran standup"
+
+**What was changed**:
+- Added to prerequisite review protocol: before producing standup output, check if any content listed as "ready to post" has already been published by checking with the user or reviewing execution files for publish confirmations.
+
+**Rule derived**:
+Never mark content as "ready to post" in a standup without asking the user if it has already gone out. If publish status is unknown, flag it explicitly: "Has [post] been published? Marking as pending confirmation."
+
+---
+
+### Lesson 4 — Manual standup run instead of full 6-phase daily agency run
+**Date**: 2026-03-26
+**Session**: claude/campaign-iLgt5
+
+**What was produced**:
+When user typed "run daily standup", a manual standup was produced directly — no Phase 0 intel agents launched, no briefing written, no content production triggered. The full `scripts/daily-agency-run.md` orchestration was skipped entirely.
+
+**What the user said**:
+"you should be running all the agents needed for daily standup including the X scraping agent. are you sure you're doing that?"
+
+**What was changed**:
+- Confirmed that "run standup" or "run daily standup" means execute `scripts/daily-agency-run.md` in full — all 6 phases — not just produce a text standup summary.
+- Phase 0 (3 parallel Trend Researcher agents: X listening, YouTube monitor, market intel) must always run before the briefing.
+
+**Rule derived**:
+"Run standup" = full 6-phase daily-agency-run.md. Never shortcut to a text summary. Always launch Phase 0 agents first, then proceed through all phases in sequence.
+
+---
+
 ### Lesson 3 — Self-improvement loop was configured but never instantiated
 **Date**: 2026-03-25
 **Session**: claude/campaign-iLgt5
@@ -103,6 +140,8 @@ Before drafting any post for @telcoinTAO, run the entity check: "Is every claim 
 | 1 | Voice principles | Apply LLM Voice Principles to every piece of content. Read before writing, not after. |
 | 2 | Standup context | Always read the full context stack before producing a standup. Never from memory. |
 | 3 | Self-improvement loop | Log every correction immediately. Never let a lesson go uncaptured. |
+| 4 | Daily run protocol | "Run standup" = full 6-phase daily-agency-run.md. Always launch Phase 0 agents first. |
+| 5 | Publish status tracking | Never assume content status. Always confirm with user whether a post has gone out. |
 
 ---
 
