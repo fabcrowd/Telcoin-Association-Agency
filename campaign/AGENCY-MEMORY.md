@@ -101,9 +101,9 @@ These are monitored daily. Output files saved to `campaign/research/intel-*.md`.
 
 | Video/Stream Title | Upload Date | Repurposed? | Output Files |
 |---|---|---|---|
-| Platform & Treasury Council #26 | ~Mar 12, 2026 | Not yet repurposed | Opportunity flagged 2026-03-17 — mainnet infrastructure sequencing thread, BLS resolution tweet, TANIP rebate thread |
-| TELx Council (Merkl vote session) | ~Mar 10, 2026 | Not yet repurposed | Opportunity flagged 2026-03-17 — Merkl trial explainer tweet, TELx governance recap |
-| TELx Council #19 | Mar 18, 2026 (UPCOMING) | Not yet repurposed | Repurpose immediately after session — live March 18, 3PM EST |
+| Platform & Treasury Council #26 | ~Mar 12, 2026 | Not yet repurposed | Opportunity: mainnet infrastructure sequencing thread, BLS resolution tweet |
+| TELx Council #19 | Mar 18, 2026 | Not yet repurposed | Opportunity: Merkl trial explainer, TELx governance recap |
+| Platform & Treasury Council #34 | Mar 26, 2026 | Partial — transcript processed | Research updated; council recap thread to be drafted (2026-03-27/twitter-pt34-recap.md) |
 
 ---
 
@@ -216,7 +216,7 @@ When Quigley is at a conference or event, user should flag: "Jeff is at [event] 
 
 *(Overwritten each session by Agents Orchestrator)*
 
-**Date**: 2026-03-17
-**What was produced**: Intel sweeps (X, YouTube, market), briefing, standup, 4 Twitter content files (eUSD/CBDC, mainnet audit, GSMA whitepaper, TELx preview + eUSD/USDC positioning)
-**Key intel**: U.S. Senate CBDC ban favors bank-issued model (eUSD); CLARITY Act stalled; GSMA whitepaper co-authored with Telcoin members; TELx Council #19 tomorrow March 18 3PM EST
-**Blocked**: DC Blockchain Summit rapid response (needs signal from Jeff Quigley); LP2 Post 4 publish timing decision
+**Date**: 2026-03-27
+**What was produced**: P&T Council #34 transcript processed; TELCOIN-RESEARCH.md updated (Adiri soft launch, MWC Barcelona, LayerZero progress, unified web presence, mainnet Q2 goal, TELx eval); Adiri tweet corrected (soft launch, not publicly accessible — on hold); GSMA $2T tweet drafted (time sensitive — post today); briefing.md and standup.md written; lessons 4 and 5 logged.
+**Key intel**: Adiri soft launch live with real MNO validators. Not publicly accessible — official launch "in coming weeks." Database overhaul complete. DApp direct observer node access added. LayerZero onboarding started. Mainnet Q2 2026 stated goal. Vitel (200M+ subs) publicly engaging. Telcoin only blockchain at MWC Barcelona. TAN April 2 and TELx next Wednesday both teasing announcements.
+**Blocked**: Adiri public tweet (hold for official launch); GENIUS Act/eUSD angle (Ryan Neuner entity QA); TELx reward distribution (embargoed 3-6 months); TAN April 2 announcement (unknown — monitor)

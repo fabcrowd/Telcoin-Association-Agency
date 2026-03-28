@@ -1,29 +1,36 @@
-# Twitter Content — Adiri Testnet Live Announcement
+# Twitter Content — Adiri Testnet Soft Launch Announcement
 **Account**: @telcoinTAO
 **Prepared**: March 26, 2026
-**Status**: READY — publish after P&T Council #34 confirms testnet live (est. after 5PM EST)
+**Revised**: March 27, 2026 — corrected from "publicly accessible" to "soft launch" per council transcript
+**Status**: HOLD — do NOT post yet. Adiri is in soft launch (limited audience). Post this after the OFFICIAL full testnet launch is announced publicly. Full launch expected "in the coming weeks."
+
+---
+
+## What Actually Happened (per council transcript)
+
+Adiri is in **soft launch** — live to a limited cohort of advanced MNO partners, not the general public. The full official launch with broader access and public announcement comes next, timeline "in the coming weeks." Real MNOs ARE validators in the soft launch. The database overhaul is complete. DApp developers can now connect directly to observer nodes.
+
+Post this tweet only when the official launch is announced. Until then: hold.
 
 ---
 
 ## Strategic Rationale
 
-Adiri testnet going publicly accessible is the most significant Telcoin Network development since the Phase 1 security assessment cleared. This is the moment partners, developers, and MNO validators can interact with the live network. The post documents a verified milestone — Phase 2 complete — with enough technical specificity to carry credibility weight with the MNO validator and developer audience. A single substantive tweet with a conversation prompt performs better in this format than a thread: the milestone statement is compact and the block explorer link gives interested readers the direct path to verify.
-
-Publish only after the P&T Council call formally addresses and confirms the public release. Do not post ahead of the council discussion.
+The soft launch milestone is real and significant — real MNOs running validator nodes, database layer overhauled, DApp developer tooling improved. But "publicly accessible" would be inaccurate. When the official launch drops, this tweet documents a verified, factually precise milestone for the MNO and developer audience.
 
 ---
 
 ## Tweet Copy
 
-Adiri testnet is now publicly accessible.
+Adiri testnet soft launch is live.
 
-Phase 2 complete: p2p production hardened, network stress tested, epoch boundary records secured, validator tooling improved. Security assessments cleared.
+Real MNO validators are running nodes. The database layer has been overhauled. DApp developers can now connect directly to observer nodes — no third-party RPC needed.
 
-Partners, developers, and MNO validators can interact with the live network.
+Full public testnet launch follows. Official announcement coming.
 
 Block explorer: scan.telcoin.network
 
-What does this stage of testnet development signal to you about the readiness of the Telcoin Network validator model?
+What does validator participation at this stage signal about the readiness of Telcoin Network for mainnet?
 
 ---
 
@@ -42,8 +49,8 @@ Deep dark background gradient from #192E58 at center to #090920 at edges. A netw
 - Top-left: Telcoin Association logo (horizontal, white version) - standard placement, one mark height from top, 1.5 mark widths from left
 - Left-aligned text block, vertically centered, New Hero Bold:
   - Line 1 (label, TEL Blue #14C8FF, 13px, letter-spaced): ADIRI TESTNET
-  - Line 2 (headline, TEL White #F1F4FF, 32px): Phase 2 Complete.
-  - Line 3 (headline, TEL White #F1F4FF, 32px): Publicly Accessible.
+  - Line 2 (headline, TEL White #F1F4FF, 32px): Soft Launch Live.
+  - Line 3 (headline, TEL White #F1F4FF, 32px): MNOs Validating Now.
 - Sub-line below headline, New Hero Regular, TEL Gray #424761, 15px: scan.telcoin.network
 - Bottom-right: roadmap.telcoin.network in TEL Indigo Blue #7393EA, 13px
 

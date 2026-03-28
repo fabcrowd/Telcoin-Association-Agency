@@ -70,10 +70,14 @@
 - Each new MNO validator = new distribution channel to that telecom's subscriber base
 - Creates direct economic alignment: more usage → more fees → MNOs promote Telcoin services
 
-### Adiri Testnet — Status: ACTIVE
-Source: roadmap.telcoin.network (March 10, 2026 screenshots)
+### Adiri Testnet — Status: SOFT LAUNCH (limited audience)
+Source: P&T Council #34 transcript, March 26, 2026
 
-> "Preparing the Adiri public testnet so partners and MNO validators can exercise the network in a live setting."
+> CRITICAL: Adiri is in **soft launch** — live to a limited cohort of advanced MNO partners only. NOT publicly accessible yet. Full official testnet launch expected "in the coming weeks." Do NOT publish content saying Adiri is publicly accessible until the official launch is announced.
+
+**Soft launch definition (per council)**: Network is live, announced to limited audience before full official launch. Allows observation of real-world behavior and targeted improvements before broader rollout.
+
+**Real MNOs ARE validators** during the soft launch phase — confirmed on the March 26 call. This is significant. More than 5 MNO partners involved; limited to advanced partners comfortable with bug-finding.
 
 #### Phase 1 — ALL COMPLETED ✓
 - Pre Cantina competition
@@ -83,46 +87,57 @@ Source: roadmap.telcoin.network (March 10, 2026 screenshots)
 - Feature complete
 - 4-week security assessment
 
-#### Phase 2 — IN PROGRESS
+#### Phase 2 — SUBSTANTIALLY COMPLETE (as of March 26, 2026)
+Source: P&T Council #34
+
 **Completed ✓**
 - Patch security findings
 - Enhance test coverage
-- Production harden database read/write strategy
-- Improve documentation
+- Production harden database read/write strategy — **complete database layer overhaul delivered** (described as "huge foundational improvement"; makes network more reliable under high volume)
+- Improve documentation — new entries at docs.telcoin.network covering base fees, gas limit penalties, EVM compatibility, epoch boundaries, chain growth concepts
 - MiCA whitepaper
 - Improve async logging for all nodes in the network
 - Updates to support open-source contributions
 - Parallelize testing infrastructure for faster, more reliable testing
+- Production harden p2p networking ✓
+- Stress test deployed network ✓ (large burst handling: batches of 100+ transactions)
+- CLI tooling for validator onboarding and staking transactions ✓
+- Relaunch network ✓ (soft launch live)
 
-**In Progress ⚡ (active as of Feb 19, 2026)**
-- Production harden p2p networking
-- Production harden syncing strategy
-- Integrate with bridge partner (**LayerZero** — initial scoping document delivered; implementation pending)
-- Stress test deployed network in preparation for public release
-- Confirming availability of specialist researchers with security partners
-- Support p2p streaming for bulk data transfer
-- Streamline database infrastructure for production
-- Custom TN RPC endpoints
-- Harden epoch boundary records for secure syncing
-- Better tools for validators to sync, stake, and activate
-- Relaunch network
+**New capabilities added (from Phase 2 work):**
+- DApp developers can connect directly to observer nodes for real-time blockchain data — no third-party RPC subscription needed; lowers builder barrier, improves DApp performance
+- Decentralized testnet faucet — MNO partners and DApp developers can run independent faucets; step toward network partner autonomy
+- Attestation service: submits transaction to testnet verifying hash of committed code — part of PR feedback loop
+
+**In Progress ⚡**
+- Harden epoch boundary records for secure syncing (ongoing)
+- Improve syncing times for new nodes
+- Block explorer (Telscan/Dex Guru partnership): not yet updated for soft launch network; coordination in progress; will be updated before official launch
 
 **Queued ⏳**
-- Support multiple workers for parallel fee markets
-- Deploy new faucet service
+- Support multiple workers for parallel fee markets (parallel fee lanes — separate transaction lanes so real-world payments don't compete with arbitrage bots for block space)
+- Deploy new faucet service (decentralized faucet page being built)
 
 #### Phase 3
-- **In Progress ⚡**: Integrate with LayerZero — LayerZero's decentralized validator network aligns naturally with the GSMA MNO validator set; initial scoping doc delivered; LayerZero launching own chain does not change partnership plans
+- **In Progress ⚡**: Integrate with LayerZero — onboarding process started; Parker met LayerZero leadership at DOS conference in New York (March 25-26, 2026); mutual alignment reaffirmed. Critical path: TEL exists on other chains but not yet on Telcoin Network — LayerZero bridge is required for mainnet
 - **Queued ⏳**: Decentralize network (onboard MNO Validators)
 
 ---
 
 ### Mainnet Release — Status: UPCOMING
-Source: roadmap.telcoin.network
+Source: roadmap.telcoin.network + P&T Council #34 (March 26, 2026)
 
 > "Mainnet launch once Adiri is stable and the final audits and security competition are complete."
 
 **No calendar date given — milestone-based launch.**
+**Grant's personal goal: end of Q2 2026.** This is a goal, not a commitment. Do not publish as a date.
+
+**Three mainnet dependencies (as stated March 26):**
+1. MNO onboarding — in progress, going well
+2. LayerZero bridge — in progress; TEL must be bridgeable to Telcoin Network for mainnet
+3. Third-party security assessments — Spiritbit and Cantina as partners; current approach uses AI penetration testing stack first (finding value, still getting results); will move to human researchers when AI scans are exhausted. Budget: hundreds of thousands of dollars committed.
+
+**TAO administrative authority**: TAO holds full administrative authority over Telcoin Network until 10 validators are operating mainnet nodes on live mainnet. By design — for operational efficiency, not power concentration.
 
 #### Mainnet Milestones — All Queued ⏳
 - Launch Mainnet
@@ -160,6 +175,38 @@ Source: Platform & Treasury Council recap (week of Mar 10, 2026)
 - Timeline: flexible to match right researcher expertise — "securing the right minds, not rushing checklists" (Grant)
 - ~12 PRs closed in this cycle: production hardening, bug patches, security improvements — no feature additions
 
+### MWC Barcelona 2026
+Source: P&T Council #34 recap (March 26, 2026)
+
+- **Telcoin was the only blockchain network at MWC Barcelona** — 100,000+ attendees
+- Clear shift in telecom sentiment: from past indifference to active interest in tokenizing currencies, deploying on-chain apps, joining the network
+- **Vitel** (200+ million subscribers) publicly engaging on blockchain use cases
+- Dozens of long-cycle deals now in motion post-MWC
+- Near-final Strategic Telecom and GSMA advisory alignment — positioning for accelerated validator onboarding
+- MNO subscriber scale context (shared on call): small/regional MNO = 1-10M subs; mid-tier national = 10-50M; large national/multinational = 50-150M; global tier-1 = 200-700M+
+
+### Unified Web Presence
+Source: P&T Council #34 (March 26, 2026)
+
+- **Goal**: Consolidate fractured websites (telcoin.org, telex.network, telcoin.network) into a single unified hub
+- **Status**: Completing 4-5 week UX research phase. Building phase begins March 27, 2026.
+- **User journeys**: "Choose your track" — separate paths for retail users, MNO validators, developers
+- **Pages in development**: Mobile homepage, MNO page, developer page (with links to docs.telcoin.network)
+- **Demo site timeline**: ~4 weeks from council (early-mid April 2026)
+- **Launch target**: Before mainnet, or by mainnet at latest
+- SEO and GEO (AI content indexing) being addressed
+- Analytics monitoring planned for visitor tracking
+- Council preview held; positive feedback internally
+
+### TELx / Calix Updates
+Source: P&T Council #34 (March 26, 2026)
+
+- Evaluating new way of distributing rewards (cannot share details yet)
+- In direct communication with Holdings about new pools
+- Won't be visible publicly for approximately 3-6 months
+- Expanding and working on better distribution and pool rewards
+- TELx Council next meeting: Wednesday (3PM EST) — teased announcement
+
 ### Team Expansion Plans (Mar 12 Council)
 Source: Platform & Treasury Council #26 (March 12, 2026)
 - 2 additional Rust protocol engineers (to be onboarded sequentially)
@@ -167,10 +214,11 @@ Source: Platform & Treasury Council #26 (March 12, 2026)
 - Dedicated security engineer
 - Stress testing now expanded to community-run nodes
 
-### Active Governance Proposals (as of Mar 12)
-- **TIP 11 — Development Process Standardization**: Advancing toward snapshot vote; establishes formal workflows preventing ad hoc Slack/Discord requests; breaks work into discrete trackable parts; defines "done" criteria
-- **Unified Web Architecture TIP**: New TIP presented proposing telcoin.network as the single trusted entry point — from solo developers through MNO enterprise partnership onboarding; internal system mapping and audits underway
-- **Miner Council elections**: Candidate introductions live, voting opened (Q1 2026)
+### Active Governance Proposals (updated March 26, 2026)
+- **TIP 11 — Development Process Standardization**: Advancing toward snapshot vote
+- **Unified Web Architecture TIP**: In progress — see Unified Web Presence section
+- **Miner Council elections**: Validator compliance seat election ends March 27, 2026. Already reached 100% snapshot. Compliance approval required within 30 days of vote end.
+- **Claude AI TELIP**: Proposed by community member (Hayden). Provides Telcoin Association access to Claude AI (team plan + some enterprise users). Use cases: compliance, research, code, marketing, forecasting, dashboards. Nonprofit pricing qualifies. Compatible with Slack, Trello, GitHub. Admin controls on usage. Proposal on forum.telcoin.org.
 
 ### TAN Council Budget (Mar 12 Council)
 Source: TAN Council recap (March 12, 2026)
