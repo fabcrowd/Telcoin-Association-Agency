@@ -20,6 +20,7 @@ fi
 mkdir -p "$EXEC_DIR"
 mkdir -p "$CLAUDE_PROJECT_DIR/design/output"
 mkdir -p "$CLAUDE_PROJECT_DIR/campaign/research"
+mkdir -p "$CLAUDE_PROJECT_DIR/campaign/research/transcripts/processed"
 
 # Write a session context file Claude will pick up
 cat > "$EXEC_DIR/SESSION-CONTEXT.md" << EOF
@@ -52,8 +53,8 @@ Search: \$TEL, Telcoin, @telcoinTAO, Telcoin Network, eUSD Telcoin
 
 ## Instruction
 Read CLAUDE.md, campaign/AGENCY-MEMORY.md, and this file.
-Then follow scripts/daily-agency-run.md — start with Phase 0 (Intelligence Sweep) immediately.
-Phase 0 runs 3 Trend Researcher agents in parallel before anything else.
+Then follow scripts/daily-agency-run.md — start with Phase 0D (transcript check) immediately,
+then Phase 0A/0B/0C, then Phase 1 briefing. Do not wait for user input.
 EOF
 
 # Inject Figma token from repo secret into local MCP settings (never committed)

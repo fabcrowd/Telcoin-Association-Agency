@@ -77,3 +77,4 @@ integrations/openclaw/*
 integrations/qwen/agents/
 !integrations/openclaw/README.md
 .claude/settings.local.json
+infrastructure/n8n/.env
