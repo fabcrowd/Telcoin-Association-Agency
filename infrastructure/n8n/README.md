@@ -1,9 +1,33 @@
-# Fellow AI → n8n → GitHub Transcript Pipeline
+# Fellow AI → GitHub Transcript Pipeline
 
 Automates the delivery of Fellow AI meeting notes into this repository.
-When a council meeting ends, Fellow generates an AI note, n8n fires a webhook,
-and the transcript is committed to `campaign/research/transcripts/`. The next
-Claude session picks it up automatically via Phase 0D of `daily-agency-run.md`.
+When a council meeting ends, a note is sent to GitHub via Zapier (one click)
+or automatically via n8n webhook. The transcript lands in
+`campaign/research/transcripts/` and is ingested automatically at the next
+Claude session start via Phase 0D of `daily-agency-run.md`.
+
+---
+
+## Option A — Zapier (active, one click per meeting)
+
+**Status: Live** — Zap ID 356663879 configured and published.
+
+After each council meeting:
+1. Open the Fellow note
+2. Click **Share → Send → Send via Zapier**
+3. Done — transcript commits to the repo within seconds
+
+No Fellow API key required. Uses Zapier's native Fellow OAuth integration.
+
+**Zap flow**: Fellow "Note Sent to Zapier" → GitHub "Create or Update File" → `campaign/research/transcripts/`
+
+---
+
+## Option B — n8n (fully automatic, requires Fellow paid plan)
+
+When upgraded to a Fellow paid plan (Team $7/user/mo+), the n8n webhook path
+eliminates the manual click. Fellow fires the webhook automatically when the
+AI note generates (~5-10 min after meeting end). See setup steps below.
 
 ---
 
