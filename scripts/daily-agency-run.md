@@ -16,57 +16,63 @@ multiple Agent tool calls.
 
 ---
 
-## PHASE 0 — INTELLIGENCE SWEEP (always runs first, in parallel)
+## PHASE 0 — INTELLIGENCE SWEEP (always runs first)
 
-Before reading internal files, sweep external sources simultaneously. Launch these three
-research tasks as a single parallel agent call:
+**Rate limit rule**: Do NOT spawn subagents for X or YouTube intel. Run those as direct searches in main context (see 0A and 0B below). Only 0C (market intel) uses a subagent — it does deeper multi-source research that justifies the overhead.
 
-### 0A — $TEL Social Listening (X/Twitter)
-Launch `Trend Researcher`:
-> "Search X/Twitter for posts about $TEL and Telcoin from the last 24–48 hours.
-> Search terms to cover: '$TEL', 'Telcoin', '@telcoinTAO', 'Telcoin Network', 'eUSD Telcoin'.
->
-> Capture and categorize:
-> 1. **Community sentiment** — are holders positive, confused, anxious, excited? Quote 2–3 representative posts.
-> 2. **Questions being asked** — what do people not understand or want to know more about?
-> 3. **Narratives forming** — any threads, criticism, or praise gaining traction?
-> 4. **Competitor mentions** — are people comparing TEL to other projects? Which ones and why?
-> 5. **Content gaps** — what are people asking that Telcoin hasn't publicly addressed?
->
-> Output: save to `campaign/research/intel-x-[YYYY-MM-DD].md`.
-> Format as: Summary → Sentiment Score (1–10) → Top Questions → Narratives → Content Opportunities."
+**Stale file rule**: Before running 0A, 0B, or 0C — check if the intel file for today already exists. If `intel-x-[today].md`, `intel-youtube-[today].md`, or `intel-market-[today].md` exists and is less than 12 hours old, skip that sweep and read the existing file instead.
+
+---
+
+### 0A — $TEL Community Sentiment (X/Twitter)
+**Run directly in main context — do NOT spawn a subagent.**
+
+Execute these 3 WebSearch calls:
+1. `"$TEL" OR "Telcoin" site:twitter.com OR x.com` — last 24h
+2. `"@telcoinTAO"` — last 24h, captures mentions and replies
+3. One topical search based on what's active (e.g., `"Telcoin testnet"`, `"Adiri"`, `"TEL token"`)
+
+Synthesize into 5-8 bullet points covering:
+- Sentiment score (1-10)
+- Top 2-3 questions being asked
+- Any narratives forming (criticism, praise, comparisons)
+- Content gaps (what's being asked that hasn't been answered)
+
+Save to `campaign/research/intel-x-[YYYY-MM-DD].md`. Total tool calls: 3.
+
+---
 
 ### 0B — YouTube Stream & Video Monitor
-Launch `Trend Researcher` (second instance, parallel):
-> "Fetch the Telcoin Association YouTube channel at https://www.youtube.com/@TelcoinTAO
-> Look for: any videos or streams uploaded or scheduled in the last 7 days.
->
-> For EACH video or stream found, extract:
-> 1. Title and publish date
-> 2. Duration and format (stream, short, explainer, council recording, etc.)
-> 3. View count and engagement (if visible)
-> 4. Key topics covered (watch/read transcript or description)
-> 5. **Repurposing opportunities** — what quotes, moments, or data from this video
->    could become a tweet, thread, forum post, or image caption?
-> 6. **Unanswered questions** — what did viewers ask in comments that we should address?
->
-> Also check: are there any upcoming livestreams scheduled?
->
-> Output: save to `campaign/research/intel-youtube-[YYYY-MM-DD].md`.
-> Format as: Video list → Key insights → Repurposing opportunities → Viewer questions → Upcoming streams."
+**Run directly in main context — do NOT spawn a subagent.**
+
+Execute ONE WebFetch: `https://www.youtube.com/@TelcoinTAO/videos`
+
+Check for:
+- Any new videos or streams in the last 7 days (title, date, format)
+- Upcoming livestreams scheduled
+- If a new council recording is up: flag it as repurpose priority
+
+Cross-reference `campaign/AGENCY-MEMORY.md` YouTube Content Log — skip anything already logged as repurposed.
+
+Save findings to `campaign/research/intel-youtube-[YYYY-MM-DD].md`. Total tool calls: 1.
+
+---
 
 ### 0C — Market & Ecosystem Intel
-Launch `Trend Researcher` (third instance, parallel):
+**Launch ONE `Trend Researcher` agent in background** (this is the only subagent in Phase 0):
+
 > "Search for the latest news on:
-> - Telcoin and TEL token (any press, listings, partnerships)
+> - Telcoin and TEL token (any press, listings, partnerships, announcements)
 > - Stablecoin regulation news (especially bank-issued or CBDC adjacent)
 > - Mobile money / remittance market (M-Pesa, Wave, Western Union, Wise)
 > - GSMA and telecom blockchain initiatives
-> - Competing L1/L2 projects positioning in financial inclusion space
+> - Competing L1/L2 projects positioning in financial inclusion space (Celo, Stellar, XRP)
 >
-> Output: 5–8 bullet intelligence items. For each: headline, what it means for Telcoin's
+> Output: 5-8 bullet intelligence items. For each: headline, what it means for Telcoin's
 > positioning, and whether it's a content opportunity or a threat to address.
 > Save to `campaign/research/intel-market-[YYYY-MM-DD].md`."
+
+While 0C runs in the background, proceed immediately to Phase 1 using the results of 0A and 0B.
 
 ---
 
@@ -74,23 +80,27 @@ Launch `Trend Researcher` (third instance, parallel):
 
 Read these files in parallel:
 
-1. `CLAUDE.md` — agency identity, client, tone rules, branch, and **LLM Voice Principles** (mandatory — read the full section before producing any copy)
-2. `campaign/AGENCY-MEMORY.md` — standing decisions, what worked, open questions, angle bank
+1. `CLAUDE.md` — agency identity, client, tone rules, branch, and **LLM Voice Principles** (mandatory)
+2. `campaign/AGENCY-MEMORY.md` — standing decisions, open questions, angle bank
 3. `campaign/research/TELCOIN-RESEARCH.md` — current client intel
-4. `campaign/research/intel-x-[today].md` — fresh X/$TEL social listening
-5. `campaign/research/intel-youtube-[today].md` — YouTube content intel
-6. `campaign/research/intel-market-[today].md` — market intelligence
-7. Run: `git log --oneline -10` — what shipped recently
-8. Check: `ls campaign/execution/` — what exists already
+4. `campaign/analytics/PERFORMANCE-LOG.md` — post performance data; use to shape format and topic decisions
+5. `campaign/research/intel-x-[today].md` — X/$TEL community sentiment (from Phase 0A)
+6. `campaign/research/intel-youtube-[today].md` — YouTube content intel (from Phase 0B)
+7. `campaign/research/intel-market-[today].md` — market intelligence (from Phase 0C, may still be running)
+8. Run: `git log --oneline -10` — what shipped recently
+9. Check: `ls campaign/execution/[today]/` and `ls campaign/execution/[yesterday]/`
 
-Synthesize into a **Daily Briefing** (write to `campaign/execution/[YYYY-MM-DD]/briefing.md`):
-- External intel summary: what's happening in the community and market today
-- YouTube content available for repurposing (list specific videos + moments)
-- Community questions we can answer with content today
+**Performance log check**: If PERFORMANCE-LOG.md has no data yet, note it in the briefing and flag to user that weekly X Analytics export is needed. If last update was >7 days ago, flag it.
+
+Synthesize into a **Daily Briefing** (`campaign/execution/[YYYY-MM-DD]/briefing.md`):
+- Performance insight: what's working based on PERFORMANCE-LOG data (or flag if no data)
+- X sentiment: community mood, top questions, narratives (from 0A)
+- YouTube: any new content to repurpose (from 0B)
+- Market intel summary (from 0C, use prior day's file if today's not ready yet)
 - What shipped yesterday (git log)
-- What's in the angle bank that's overdue
-- Upcoming triggers (council meetings, launches from research file)
-- Today's recommended 3–5 deliverables with rationale — each grounded in today's intel
+- Angle bank items overdue
+- Upcoming triggers (council meetings, launches)
+- Today's recommended 3-5 deliverables — each tied to real intel signal
 
 ---
 

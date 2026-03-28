@@ -296,12 +296,14 @@ When the user types "run standup" (outside of the automated daily-agency-run.md 
 3. `campaign/research/TELCOIN-RESEARCH.md` - current client state, confirmed facts
 4. `campaign/execution/LEARNING-PATH-TRACKER.md` - LP progress, what's next, what's drafted
 5. `campaign/AGENCY-MEMORY.md` - standing decisions, open questions, angle bank
-6. Run `git log --oneline -10` - what shipped recently
-7. Check `ls campaign/execution/[today]/` and `ls campaign/execution/[yesterday]/` - what exists
+6. `campaign/analytics/PERFORMANCE-LOG.md` - post performance data; flag if stale (>7 days) or empty
+7. Run `git log --oneline -10` - what shipped recently
+8. Check `ls campaign/execution/[today]/` and `ls campaign/execution/[yesterday]/` - what exists
 
 Then produce a standup covering:
 - **Branch status** - clean/dirty, last push
 - **Last session output** - files produced, what's drafted and waiting
+- **Performance signal** - top/bottom performers from PERFORMANCE-LOG, any format patterns to apply today; flag if log needs updating
 - **Learning Path status** - LP1/2/3/4 summary, next post due
 - **Upcoming triggers** - council meetings, launches, deadlines within 7 days
 - **Today's priority calls** - top 2-3 things to action today with rationale
@@ -402,6 +404,7 @@ On every new session, before doing anything else:
 1. Confirm active branch is `claude/campaign-iLgt5` (run `git branch` if unsure)
 2. Read `tasks/lessons.md` — review all active lessons and the pattern summary before producing any output
 3. Read `campaign/research/TELCOIN-RESEARCH.md` for current client state
-4. Read the **LLM Voice Principles** section in this file — apply to all written output
-5. Check if user has shared any new intel (council recaps, announcements) — if yes, update research file first
-6. Then proceed to the actual task
+4. Read `campaign/analytics/PERFORMANCE-LOG.md` — check what's working, flag if stale or empty
+5. Read the **LLM Voice Principles** section in this file — apply to all written output
+6. Check if user has shared any new intel (council recaps, announcements) — if yes, update research file first
+7. Then proceed to the actual task
