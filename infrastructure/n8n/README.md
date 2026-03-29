@@ -203,6 +203,32 @@ Run any council meeting with Fellow recording active. After the meeting:
 | Transcript payload missing transcript text | Check n8n execution log for raw payload — Fellow may send note ID only; see note below |
 | GitHub commit fails | Verify PAT has `repo` scope; confirm branch name matches |
 | Ngrok URL changed | Update `N8N_WEBHOOK_URL` in `.env` and restart: `docker compose down && docker compose up -d` |
+| Zapier commits files to nested subdirectories | See fix below |
+
+### Fix: Zapier file path format
+
+**Symptom**: Transcripts land at `campaign/research/transcripts/03/28/26 06:08PM-Title.md` instead of `campaign/research/transcripts/2026-03-28-title.md`. Zapier's default date token (`{{zap_meta_human_now}}`) outputs `MM/DD/YY HH:MMam` — the slashes become directory separators in the GitHub file path.
+
+**Fix** (do this in the Zapier editor):
+
+1. Open the Zap: https://zapier.com/editor/356663879
+2. Click the **GitHub — Create or Update File** step
+3. Find the **File Path** field
+4. Replace the current value with:
+   ```
+   campaign/research/transcripts/{{zap_meta_human_now|date:Y-m-d}}-{{1__title|lower|replace: ,:_|replace: ,:_}}.md
+   ```
+   Or use a **Formatter by Zapier** step before the GitHub step:
+   - Action: Text → Format → set `{{zap_meta_human_now}}` with format `YYYY-MM-DD`
+   - Use the output as the date prefix in the file path
+5. Save and re-publish the Zap
+6. Test by sending a note — verify the file path in the resulting GitHub commit
+
+The simplest reliable value for the File Path field:
+```
+campaign/research/transcripts/{{zap_meta_human_now|date:Y-m-d}}-fellow-note.md
+```
+This produces `campaign/research/transcripts/2026-03-29-fellow-note.md` — flat, unambiguous, Phase 0D will find it.
 
 ### Note on transcript payload content
 

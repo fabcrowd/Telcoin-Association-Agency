@@ -22,7 +22,31 @@ multiple Agent tool calls.
 
 **Stale file rule**: Before running 0A, 0B, or 0C — check if the intel file for today already exists. If `intel-x-[today].md`, `intel-youtube-[today].md`, or `intel-market-[today].md` exists and is less than 12 hours old, skip that sweep and read the existing file instead.
 
-**Transcript rule**: 0D always runs first and is never skipped — new transcripts must be ingested before the briefing is written.
+---
+
+### 0D — New Meeting Transcripts (Fellow AI → GitHub pipeline)
+**Run this first — before 0A, 0B, or 0C. Never skip.**
+
+Check for unprocessed transcript files dropped by the Zapier/Fellow pipeline:
+
+```
+find campaign/research/transcripts/ -name "*.md" -not -path "*/processed/*" -type f
+```
+
+If no files are returned: skip this step entirely.
+
+If `.md` files are found in `campaign/research/transcripts/` (not in `transcripts/processed/`):
+
+For each unprocessed file:
+1. Read the full transcript
+2. Extract key intel: decisions made, milestones announced, blockers, quotes, governance outcomes
+3. Update `campaign/research/TELCOIN-RESEARCH.md` — add a dated section under the relevant product/governance area
+4. Note content opportunities unlocked by this transcript (threads, recap tweets, forum posts)
+5. Move the file to `campaign/research/transcripts/processed/[filename]` to mark as done
+
+After processing all new transcripts, continue to 0A. The briefing in Phase 1 should include a "Transcripts processed" section listing what was ingested and what content it unlocks.
+
+**Rule**: If a transcript contains an unannounced public milestone (mainnet launch, named MNO validator, exchange listing), stop and flag to user before continuing. Do not draft content from embargoed intel without confirmation.
 
 ---
 
@@ -57,32 +81,6 @@ Check for:
 Cross-reference `campaign/AGENCY-MEMORY.md` YouTube Content Log — skip anything already logged as repurposed.
 
 Save findings to `campaign/research/intel-youtube-[YYYY-MM-DD].md`. Total tool calls: 1.
-
----
-
-### 0D — New Meeting Transcripts (Fellow AI → GitHub pipeline)
-**Run directly in main context before anything else in Phase 0.**
-
-Check for unprocessed transcript files dropped by the n8n/Fellow pipeline:
-
-```
-ls campaign/research/transcripts/
-```
-
-If the folder is empty or doesn't exist: skip this step entirely.
-
-If `.md` files exist in `campaign/research/transcripts/` (not in `transcripts/processed/`):
-
-For each unprocessed file:
-1. Read the full transcript
-2. Extract key intel: decisions made, milestones announced, blockers, quotes, governance outcomes
-3. Update `campaign/research/TELCOIN-RESEARCH.md` — add a dated section under the relevant product/governance area
-4. Note content opportunities unlocked by this transcript (threads, recap tweets, forum posts)
-5. Move the file to `campaign/research/transcripts/processed/[filename]` to mark as done
-
-After processing all new transcripts, continue to 0A. The briefing in Phase 1 should include a "Transcripts processed" section listing what was ingested and what content it unlocks.
-
-**Rule**: If a transcript contains an unannounced public milestone (mainnet launch, named MNO validator, exchange listing), stop and flag to user before continuing. Do not draft content from embargoed intel without confirmation.
 
 ---
 
