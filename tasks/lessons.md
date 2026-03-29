@@ -13,6 +13,26 @@
 
 ---
 
+### Lesson 6 — Council transcript received: full workflow
+**Date**: 2026-03-29
+**Session**: claude/campaign-iLgt5
+
+**What was produced**:
+User shared the full P&T Council #34 transcript. A structured recap was produced and committed.
+
+**What the user said**:
+"build a recap and commit this to your lessons"
+
+**What was changed**:
+- Produced `campaign/execution/2026-03-29/PT-COUNCIL-34-RECAP.md` with chapters, key announcements, Q&A summary, content flags, and usable quotes
+- Confirmed research file (`TELCOIN-RESEARCH.md`) already contained P&T #34 intel (updated in a prior session); no additional update needed this pass
+- Added this lesson entry
+
+**Rule derived**:
+When a council transcript is shared: (1) check if TELCOIN-RESEARCH.md already has the intel — if not, update it first; (2) always produce a structured recap file to `campaign/execution/[today]/[COUNCIL-NAME]-RECAP.md`; (3) include chapters, key announcements, Q&A summary, content flags (cleared vs. hold), and direct quotes; (4) commit both files.
+
+---
+
 ### Lesson 5 — Published content not detected during standup review
 **Date**: 2026-03-26
 **Session**: claude/campaign-iLgt5
@@ -142,6 +162,7 @@ Before drafting any post for @telcoinTAO, run the entity check: "Is every claim 
 | 3 | Self-improvement loop | Log every correction immediately. Never let a lesson go uncaptured. |
 | 4 | Daily run protocol | "Run standup" = full 6-phase daily-agency-run.md. Always launch Phase 0 agents first. |
 | 5 | Publish status tracking | Never assume content status. Always confirm with user whether a post has gone out. |
+| 6 | Council transcript workflow | Transcript received → check research file → produce structured recap → commit both. Recap must include chapters, key announcements, Q&A summary, content flags, usable quotes. |
 
 ---
 
