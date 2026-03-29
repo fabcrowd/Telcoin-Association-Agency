@@ -216,7 +216,7 @@ When Quigley is at a conference or event, user should flag: "Jeff is at [event] 
 
 *(Overwritten each session by Agents Orchestrator)*
 
-**Date**: 2026-03-27
-**What was produced**: P&T Council #34 transcript processed; TELCOIN-RESEARCH.md updated (Adiri soft launch, MWC Barcelona, LayerZero progress, unified web presence, mainnet Q2 goal, TELx eval); Adiri tweet corrected (soft launch, not publicly accessible — on hold); GSMA $2T tweet drafted (time sensitive — post today); briefing.md and standup.md written; lessons 4 and 5 logged.
-**Key intel**: Adiri soft launch live with real MNO validators. Not publicly accessible — official launch "in coming weeks." Database overhaul complete. DApp direct observer node access added. LayerZero onboarding started. Mainnet Q2 2026 stated goal. Vitel (200M+ subs) publicly engaging. Telcoin only blockchain at MWC Barcelona. TAN April 2 and TELx next Wednesday both teasing announcements.
-**Blocked**: Adiri public tweet (hold for official launch); GENIUS Act/eUSD angle (Ryan Neuner entity QA); TELx reward distribution (embargoed 3-6 months); TAN April 2 announcement (unknown — monitor)
+**Date**: 2026-03-29
+**What was produced**: Debugged Phase 0D and transcript pipeline. Fixed 3 bugs: (1) Phase 0D section was ordered after 0A/0B in daily-agency-run.md — moved to first position. (2) Phase 0D used `ls` which missed Zapier files in subdirectories — replaced with `find`. (3) Two empty Zapier-committed transcript files at wrong paths deleted. Zapier path fix documented in infrastructure/n8n/README.md.
+**Key intel**: Zapier/Fellow Slack integration pending admin approval — on hold. Transcript automation pipeline is paused until Slack admin approves the integration. n8n remains Option B (requires Fellow paid plan).
+**Blocked**: Zapier transcript pipeline (Slack admin approval pending); Adiri public tweet (hold for official launch); GENIUS Act/eUSD angle (Ryan Neuner entity QA); TELx reward distribution (embargoed 3-6 months)
