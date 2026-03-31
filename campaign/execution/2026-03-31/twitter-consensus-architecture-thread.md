@@ -4,7 +4,7 @@
 **Format**: 14-tweet technical thread
 **Type**: Thought leadership — protocol architecture
 **Audience**: Crypto-native developers, protocol researchers, EVM builders
-**Status**: Ready for review — [CONFIRM] items require verification before publishing
+**Status**: Ready to publish — pending Cantina figure verification (see Notes)
 
 ---
 
@@ -57,7 +57,7 @@ Finality triggers when 2f+1 validators - weighted by staked TEL - have signed ce
 
 In a 50-validator deployment, Bullshark benchmarks show 125,000 TPS at 2-second WAN latency. Throughput scales as committee size increases - the inverse of how most leader-based systems behave.
 
-Block times on telscan.io at roughly one second are the direct output of this architecture.
+Approximately one-second block times on the network are the direct output of this architecture.
 
 ---
 
@@ -90,9 +90,7 @@ The repo maintains a forked rust-libp2p and implements a custom consensus.rs and
 ---
 
 **12/14**
-[CONFIRM: Axelar ITS vs LayerZero — see Notes section before publishing]
-
-On the smart contract side, the InterchainTEL module handles bridging TEL from Ethereum mainnet to the network's native gas currency. The total TEL supply, adjusted for the initial validator set's stake, is allocated to the InterchainTEL module at genesis. Inbound bridging mints native TEL. Outbound bridging is double-wrapped to iTEL and subject to a 7-day timelock enforced by Circle Research's RecoverableWrapper, ensuring only settled balances are eligible to bridge off-chain.
+On the smart contract side, the InterchainTEL module handles bridging TEL between Ethereum mainnet and the network's native gas currency via LayerZero. The total TEL supply, adjusted for the initial validator set's stake, is allocated to the InterchainTEL module at genesis. Inbound bridging mints native TEL. Outbound bridging is double-wrapped to iTEL and subject to a 7-day timelock enforced by Circle Research's RecoverableWrapper, ensuring only settled balances are eligible to bridge off-chain.
 
 ---
 
@@ -114,17 +112,9 @@ What is your assessment of DAG-BFT as the appropriate consensus architecture for
 
 ## Notes & Flags
 
-### [CONFIRM 1] — Axelar ITS vs LayerZero — MUST RESOLVE BEFORE PUBLISHING
+### [RESOLVED] — Bridge partner: LayerZero confirmed
 
-**The issue**: The source article states the InterchainTEL module bridges TEL via "Axelar's Interchain Token Service." Standing agency research (TELCOIN-RESEARCH.md, confirmed via P&T Council #34, March 26, 2026) documents LayerZero as the active bridge integration — specifically: "Integrate with LayerZero — onboarding process started; Parker met LayerZero leadership at DOS conference in New York."
-
-**Two non-exclusive possibilities**:
-1. The smart contract architecture uses Axelar's Interchain Token Service (ITS) as the standard/interface (i.e., the contract conforms to the ITS spec), while LayerZero is the transport layer actually executing bridge transactions today.
-2. Axelar was the original bridge integration and has been fully replaced by LayerZero — making any Axelar reference in Tweet 12 inaccurate.
-
-**Current approach**: Tweet 12 is intentionally vague on the bridge partner name — it describes the InterchainTEL mechanism without naming either Axelar or LayerZero. This is conservative and safe for publishing if the distinction cannot be confirmed before the post goes out.
-
-**Recommendation**: Before publishing, confirm with the protocol team whether (a) Axelar ITS is the contract standard vs. active transport, and (b) whether LayerZero is currently the active bridge integration or still in progress. If LayerZero is active, Tweet 12 can be updated to name it. If the Cantina-era contract used Axelar ITS and that standard still applies, clarify the relationship.
+Tweet 12 updated to reference LayerZero as the active bridge. Axelar was the original integration; LayerZero is current. Confirmed by user.
 
 ### [CONFIRM 2] — Cantina competition timing
 
@@ -134,9 +124,9 @@ The article states the Cantina competition ran "June-July 2025." Agency research
 
 The 1,313 figure comes from the source article. This should be verified against the public Cantina competition report before publishing. A wrong findings count on a security claim is high-visibility.
 
-### [NOTE] — TelScan reference
+### [NOTE] — Block explorer reference
 
-The article references "TelScan" — confirmed URL is telscan.io (used in Tweet 7). Consistent with TELCOIN-RESEARCH.md.
+telscan.io removed from tweet 7. Generic language used ("approximately one-second block times on the network") to avoid referencing a specific explorer that may change before mainnet.
 
 ### [NOTE] — Thread hook
 

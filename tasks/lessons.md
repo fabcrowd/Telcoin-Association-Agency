@@ -13,6 +13,47 @@
 
 ---
 
+### Lesson 8 — Agents must verify facts via web search, not defer to human confirmation
+
+**Date**: 2026-03-31
+**Session**: claude/campaign-iLgt5
+
+**What was produced**:
+Technical thread produced with [CONFIRM] flags for benchmark figures (HotStuff TPS, Narwhal TPS, Bullshark TPS, Cantina prize pool, findings count) — deferring verification to the user.
+
+**What the user said**:
+"Your agents should always be the ones that verify the information with web searches"
+
+**What was changed**:
+- Going forward: before marking any technical claim as [CONFIRM], agents must first attempt verification via web search (Trend Researcher or general-purpose agent with WebSearch tool)
+- [CONFIRM] flags are for claims that cannot be verified by web search (e.g., internal team decisions, unreleased roadmap details) — not for published academic benchmarks, public competition results, or public partnership announcements
+- Cantina competition details, Narwhal/Bullshark benchmark figures, HotStuff fault-tolerance data, Neura Protocol fork status — all verifiable via web search and should be verified before the thread is drafted, not flagged for user follow-up
+
+**Rule derived**:
+Agents must run web searches to verify technical claims before flagging them as [CONFIRM]. [CONFIRM] is reserved for information that cannot be found publicly (internal decisions, unannounced partnerships, unreleased roadmap items). Never push a verification task back to the user when a web search can resolve it.
+
+---
+
+### Lesson 7 — Block explorer URL referenced in content before finalization
+
+**Date**: 2026-03-31
+**Session**: claude/campaign-iLgt5
+
+**What was produced**:
+Tweet 7 referenced "telscan.io" by URL in the published thread.
+
+**What the user said**:
+"Don't mention telscan.io as we might use a diff block explorer"
+
+**What was changed**:
+- telscan.io removed from tweet 7; replaced with generic "approximately one-second block times on the network"
+- Standing rule added: do not reference telscan.io or any specific block explorer URL in published content until the final explorer is confirmed for mainnet
+
+**Rule derived**:
+Never reference telscan.io or any specific block explorer URL in content intended for publication. Use generic language ("the network's block explorer", "on-chain") until a canonical explorer URL is officially confirmed for mainnet. This applies to all posts, threads, and forum content.
+
+---
+
 ### Lesson 6 — Council transcript received: full workflow
 **Date**: 2026-03-29
 **Session**: claude/campaign-iLgt5
@@ -163,6 +204,8 @@ Before drafting any post for @telcoinTAO, run the entity check: "Is every claim 
 | 4 | Daily run protocol | "Run standup" = full 6-phase daily-agency-run.md. Always launch Phase 0 agents first. |
 | 5 | Publish status tracking | Never assume content status. Always confirm with user whether a post has gone out. |
 | 6 | Council transcript workflow | Transcript received → check research file → produce structured recap → commit both. Recap must include chapters, key announcements, Q&A summary, content flags, usable quotes. |
+| 7 | Block explorer references | Never reference telscan.io or any specific block explorer URL in published content. Use generic language until mainnet explorer is officially confirmed. |
+| 8 | Fact verification ownership | Agents verify technical claims via web search before flagging as [CONFIRM]. [CONFIRM] is only for information that cannot be found publicly. Never push verifiable facts back to the user. |
 
 ---
 

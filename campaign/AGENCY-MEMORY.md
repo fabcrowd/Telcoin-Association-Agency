@@ -62,6 +62,8 @@ If any claim belongs to Holdings: remove it, add entity attribution, or flag `[C
 - **"Digital dollars"**: Do NOT use this phrase in any public post without explicit user instruction.
 - **eUSD** as a stablecoin product post: requires user confirmation. eUSD as a passing reference in a Telcoin Network/TELx post is acceptable.
 - **Stablecoin liquidity roadmap** (e.g. TELx Council agenda items referencing eXYZ liquidity): OK to mention as council/governance context — no confirmation needed.
+- **Block explorer URL**: Do NOT reference telscan.io or any specific block explorer URL in published content. Use generic language ("the network's block explorer", "on-chain", "block times on the network") until a canonical explorer URL is officially confirmed for mainnet.
+- **Fact verification ownership**: Agents must attempt web search verification of any technical claim before flagging it as [CONFIRM] for the user. [CONFIRM] is reserved for information that cannot be found publicly (internal decisions, unannounced partnerships, unreleased roadmap items). Published benchmarks, public audit results, public partnership announcements — all require agent-side web search verification, not user follow-up.
 
 ---
 
