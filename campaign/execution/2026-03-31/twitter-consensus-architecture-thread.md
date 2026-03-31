@@ -11,14 +11,12 @@
 ## THREAD
 
 **1/14**
-Telcoin Network runs Narwhal + Bullshark — a DAG-BFT consensus system from the same research lineage as Sui and Aptos, with Reth powering full EVM execution underneath. Written entirely in Rust. Peer-reviewed at ACM CCS 2022. One-second blocks. Instant finality. No reorgs.
-
-This is how it works.
+Telcoin Network runs Narwhal + Bullshark - a DAG-BFT consensus system from the same research lineage as Sui and Aptos - with Reth powering full EVM execution underneath. Written entirely in Rust. Peer-reviewed at ACM CCS 2022. One-second blocks. Instant finality. No reorgs.
 
 ---
 
 **2/14**
-Most EVM chains share the same core design: one validator is elected leader, proposes a block, the rest vote, chain moves forward. Every round is sequential — one pipe, one leader.
+Most EVM chains share the same core design: one validator is elected leader, proposes a block, the rest vote, chain moves forward. Every round is sequential - one pipe, one leader.
 
 The state of the art for that model, HotStuff, tops out around 3,500 TPS on geo-replicated networks. Introduce three crash faults and throughput drops by over 10x, with latency spiking 15x.
 
@@ -29,7 +27,7 @@ That is the ceiling and the fault profile of standard PoS EVM chains.
 **3/14**
 Telcoin Network's consensus layer is built in two distinct crates in the protocol repo: a consensus layer running Narwhal + Bullshark, and a tn-reth crate integrating Reth for EVM execution.
 
-Data dissemination and transaction ordering are decoupled at the architecture level. This is not an optimization — it is the foundational design principle.
+Data dissemination and transaction ordering are decoupled at the architecture level. This is not an optimization - it is the foundational design principle.
 
 ---
 
@@ -41,32 +39,32 @@ There is no idle validator set waiting on a single proposer. Each primary node c
 ---
 
 **5/14**
-The research behind Narwhal won the EuroSys 2022 Best Paper award for demonstrating that the throughput bottleneck in blockchain systems is not consensus logic — it is transaction dissemination. Dissemination is embarrassingly parallelizable.
+The research behind Narwhal won the EuroSys 2022 Best Paper award for demonstrating that the throughput bottleneck in blockchain systems is not consensus logic - it is transaction dissemination. Dissemination is embarrassingly parallelizable.
 
 Narwhal benchmarks exceed 160,000 TPS in geo-replicated environments.
 
 ---
 
 **6/14**
-Bullshark sits on top and causally orders the DAG into a sequence Reth can execute. The protocol operates with zero additional message overhead — validators look at their local DAG view and derive canonical ordering independently without sending a single extra message.
+Bullshark sits on top and causally orders the DAG into a sequence Reth can execute. The protocol operates with zero additional message overhead - validators look at their local DAG view and derive canonical ordering independently without sending a single extra message.
 
 Once a vertex is committed, its entire causal history is immediately ordered as well. No transactions are discarded on a proposal that fails to commit.
 
 ---
 
 **7/14**
-Finality triggers when 2f+1 validators — weighted by staked TEL — have signed certificates on a round. That threshold clears and the block is final. Not accumulating confirmations, not probabilistically settled. Final.
+Finality triggers when 2f+1 validators - weighted by staked TEL - have signed certificates on a round. That threshold clears and the block is final. Not accumulating confirmations, not probabilistically settled. Final.
 
-In a 50-validator deployment, Bullshark benchmarks show 125,000 TPS at 2-second WAN latency. Throughput scales as committee size increases — the opposite of what happens in every leader-based system.
+In a 50-validator deployment, Bullshark benchmarks show 125,000 TPS at 2-second WAN latency. Throughput scales as committee size increases - the inverse of how most leader-based systems behave.
 
-What you observe on telscan.io at roughly one-second block times is the direct output of this architecture.
+Block times on telscan.io at roughly one second are the direct output of this architecture.
 
 ---
 
 **8/14**
 The validator access model is as distinctive as the consensus design. Validators cannot be anonymous actors who stake capital and run software.
 
-Entry requires a governance process that begins with the Telcoin Compliance Council. Before touching the ConsensusRegistry, a validator must obtain a ConsensusNFT — a non-transferable token issued only to entities that have passed a governance authorization review.
+Entry requires a governance process that begins with the Telcoin Compliance Council. Before touching the ConsensusRegistry, a validator must obtain a ConsensusNFT, a non-transferable token issued only to entities that have passed a governance authorization review.
 
 ---
 
@@ -78,13 +76,9 @@ Exit is equally structured: a validator must be excluded from voting committees 
 ---
 
 **10/14**
-TNIP-2 specifies three distinct validator roles:
+TNIP-2 specifies three distinct validator roles: Current Voting Validators (CVVs) who cast votes and extend the canonical chain; Non-Voting Validators (NVVs) who track and execute consensus without voting each block; and Observer Validators (OVs) who independently verify execution results without voting.
 
-- Current Voting Validators (CVVs): cast votes and extend the canonical chain
-- Non-Voting Validators (NVVs): track and execute consensus without voting each block
-- Observer Validators (OVs): independently verify execution results without voting
-
-Committee composition for future epochs is predetermined and stored on-chain. Validator selection uses a Fisher-Yates shuffle algorithm seeded by the aggregate BLS12-381 signature from the last committed consensus round leader certificate. The randomness source is a product of consensus output — not an external oracle.
+Committee composition for future epochs is predetermined and stored on-chain. Validator selection uses a Fisher-Yates shuffle algorithm seeded by the aggregate BLS12-381 signature from the last committed consensus round leader certificate. The randomness source is a direct product of consensus output - not an external oracle.
 
 ---
 
@@ -98,7 +92,7 @@ The repo maintains a forked rust-libp2p and implements a custom consensus.rs and
 **12/14**
 [CONFIRM: Axelar ITS vs LayerZero — see Notes section before publishing]
 
-On the smart contract side, the InterchainTEL module handles bridging TEL from Ethereum mainnet to the network's native gas currency. The total TEL supply, adjusted for the initial validator set's stake, is allocated to the InterchainTEL module at genesis. Inbound bridging mints native TEL. Outbound bridging is double-wrapped to iTEL and subject to a 7-day timelock enforced by Circle Research's RecoverableWrapper — settled balances only are eligible to bridge off-chain.
+On the smart contract side, the InterchainTEL module handles bridging TEL from Ethereum mainnet to the network's native gas currency. The total TEL supply, adjusted for the initial validator set's stake, is allocated to the InterchainTEL module at genesis. Inbound bridging mints native TEL. Outbound bridging is double-wrapped to iTEL and subject to a 7-day timelock enforced by Circle Research's RecoverableWrapper, ensuring only settled balances are eligible to bridge off-chain.
 
 ---
 
@@ -112,11 +106,9 @@ Neura Protocol publicly forked the telcoin-network repo and described it as the 
 **14/14**
 Sui pioneered this consensus family. Aptos built on the same research. Both run Move.
 
-Telcoin Network runs Reth — the Ethereum execution client built in Rust by Paradigm, the same client powering Base, Optimism, and a growing portion of serious EVM infrastructure. Developers do not need to learn a new language. EVM contracts deploy directly.
+Telcoin Network runs Reth, the Ethereum execution client built in Rust by Paradigm, which also powers Base and Optimism. Developers do not need to learn a new language. EVM contracts deploy directly.
 
-The technical conversation around Telcoin Network should sit alongside the fastest L1s ever designed. Most of it is focused elsewhere.
-
-What is your assessment of DAG-BFT as the appropriate consensus architecture for a telecom-validator network?
+What is your assessment of DAG-BFT as the appropriate consensus architecture for a chain targeting global mobile financial infrastructure?
 
 ---
 
