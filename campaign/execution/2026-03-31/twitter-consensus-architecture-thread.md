@@ -8,6 +8,19 @@
 
 ---
 
+## Marketing Rationale
+
+- **Audience targeting** — written for crypto-native developers and protocol researchers, not general crypto. Keeps the tone technically credible rather than explanatory, which signals authority to the accounts most likely to amplify and engage substantively
+- **Problem-first structure** — opens with HotStuff's fault profile before Telcoin Network is named. Grounds the thread in a real architectural constraint the audience already knows, so the product claim lands as a solution rather than a pitch
+- **No hype language** — benchmarks are the argument; the writing doesn't amplify them. "One-second blocks. Instant finality. No reorgs." works because it's verifiable, not because it's exciting
+- **Peer-review citations** — EuroSys 2022 Best Paper and ACM CCS 2022 are named explicitly. Technical readers use these as trust signals; they signal that claims have a documented foundation
+- **Validator model framing** — the ConsensusNFT / governed validator set could read as a limitation. Framing it as a deliberate design choice for a specific threat model recontextualizes it as an architectural decision, not a feature gap
+- **Sui/Aptos comparison** — places Telcoin Network in a credible research lineage without overstating the comparison. Both are high-profile validators of the consensus model; the EVM differentiator (vs. Move) is the actual product argument
+- **Closing question** — targets protocol researchers specifically on DAG-BFT liveness under governed validator sets. Designed to pull in technical engagement that gives the thread institutional credibility, not casual replies
+- **No cashtag on Tweet 1** — this is an architecture thread, not a trading post. Opening with $TEL signals price speculation; omitting it signals builder/researcher intent and changes which accounts the algorithm surfaces it to
+
+---
+
 ## THREAD
 
 **1/14**

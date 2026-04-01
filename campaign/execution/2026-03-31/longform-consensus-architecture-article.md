@@ -9,6 +9,19 @@
 
 ---
 
+## Marketing Rationale
+
+- **Audience targeting** — same technical audience as the thread (developers, protocol researchers, EVM builders), not broadened to general crypto. Keeping the scope narrow preserves credibility and surfaces the piece to the accounts most likely to share it into the right communities
+- **Headline framing** — "Rethinks the Consensus Stack" positions this as an architectural argument, not a product announcement. It signals substance before the reader has read a word, which reduces bounce from technical readers who have low tolerance for marketing-disguised-as-analysis
+- **Problem-first structure** — HotStuff's fault profile opens the piece before Telcoin Network is named. Grounds the argument in a constraint the audience already understands, so the product claim reads as a solution rather than a pitch
+- **Subheadline specificity** — "decoupling data dissemination from ordering" is the actual technical claim; it's in the subheadline. Readers who know what that means immediately understand the argument; readers who don't are primed to find out
+- **Peer-review citations carried forward** — EuroSys 2022 and ACM CCS 2022 are more impactful in long-form than in a tweet. In a 1,600-word piece, citing academic sources signals rigor in a way that carries weight with technical publications and researchers who might link to or quote the piece
+- **Validator model as architecture, not limitation** — governed validator access is framed as a deliberate response to a specific threat model. The alternative framing (permissioned = restricted) would undermine the piece; the chosen framing invites readers to evaluate the design on its own terms
+- **Closing question depth** — the open question goes deeper than the tweet version, asking about liveness/safety bounds under governed validator sets. Long-form readers expect more specificity; this closes the piece with a genuine research question that invites substantive replies and positions @telcoinTAO as a protocol research voice
+- **Cross-post value** — this piece is designed to live on Medium and forum.telcoin.org as well as X. Structured section headers, full technical explanations, and a research question at the close all optimize for discoverability and dwell time on those platforms
+
+---
+
 ## The Ceiling Nobody Talks About
 
 Every major EVM chain in production today shares the same foundational consensus topology: one validator is elected leader, that leader proposes a block, the rest of the committee votes, and the chain advances. The design is clean, well-understood, and has been hardened across billions of dollars of economic security.
