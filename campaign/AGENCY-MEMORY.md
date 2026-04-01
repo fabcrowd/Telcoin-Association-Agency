@@ -123,6 +123,14 @@ These are monitored daily. Output files saved to `campaign/research/intel-*.md`.
 
 Ideas generated but not yet executed. Pull from here when planning daily output.
 
+**New items from April 1, 2026 intel sweep:**
+- [ ] Regulatory clarity positioning — eUSD as first-mover in GENIUS/CLARITY Acts framework. TL: "Regulated digital cash is now the standard. Telcoin predicted it."
+- [ ] GSMA execution layer — Position Telcoin as settlement rail for GSMA stablecoin vision. Window: 12-18 months before competitors build against spec.
+- [ ] Case study: Telcoin Network for existing remittance corridors (US-Mexico, Asia-Pacific). Partner story: How blockchain acceleration benefits Wise/Western Union integration paths.
+- [ ] Comparative positioning: Regulated digital banking (eUSD + TDAB + MNO L1) vs. Celo's L2 + unregulated stablecoin. Angle: "Financial inclusion requires regulatory alignment."
+- [ ] Validator recruitment education — Identified gap in Phase 0A (no community discussion). Thread: ConsensusNFT, CVV/NVV/OV roles, entry/exit process. Demystify "permissioned" vs. "open."
+- [ ] Mainnet timing narrative — SWIFT launches mid-2026, Telcoin mainnet in hardening phase (Q1 target). Angle: "Narrow window for Telcoin differentiation." Competitive urgency without hype.
+- [ ] Partnership case studies — Powerhive (energy finance), Game Company (gaming micropayments). Proof of use case expansion beyond remittance.
 - [ ] Thread: "Why telecoms are the right validators for a financial blockchain" — MNO infrastructure story
 - [x] ~~Thread: "What eUSD actually means"~~ — out of scope; TDAB/stablecoin product not @telcoinTAO territory
 - [ ] Thread: "Building on Telcoin Network now" — developer onboarding, EVM-compatible, start on Base
