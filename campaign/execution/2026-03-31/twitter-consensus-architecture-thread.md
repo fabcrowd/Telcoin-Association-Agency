@@ -4,7 +4,7 @@
 **Format**: 14-tweet technical thread
 **Type**: Thought leadership — protocol architecture
 **Audience**: Crypto-native developers, protocol researchers, EVM builders
-**Status**: Ready to publish — pending Cantina figure verification (see Notes)
+**Status**: Ready to publish
 
 ---
 
@@ -95,7 +95,7 @@ On the smart contract side, the InterchainTEL module handles bridging TEL betwee
 ---
 
 **13/14**
-The codebase completed a $110,000 open security competition on Cantina in June-July 2025. 1,313 findings were submitted, covering the full Rust protocol layer and the Solidity contracts.
+The codebase completed a $110,000 open security competition on Cantina in Q3-Q4 2025. Hundreds of findings were submitted, covering the full Rust protocol layer and the Solidity contracts.
 
 Neura Protocol publicly forked the telcoin-network repo and described it as the reference implementation for "Narwhal + Bullshark + Reth client." The combination of DAG-BFT consensus with full EVM execution on Reth is not a common architecture.
 
@@ -116,13 +116,9 @@ What is your assessment of DAG-BFT as the appropriate consensus architecture for
 
 Tweet 12 updated to reference LayerZero as the active bridge. Axelar was the original integration; LayerZero is current. Confirmed by user.
 
-### [CONFIRM 2] — Cantina competition timing
+### [RESOLVED] — Cantina competition timing and findings count
 
-The article states the Cantina competition ran "June-July 2025." Agency research documents it as part of Phase 1 completions but does not specify the month range. Confirm the June-July 2025 date before publishing Tweet 13.
-
-### [CONFIRM 3] — "1,313 findings"
-
-The 1,313 figure comes from the source article. This should be verified against the public Cantina competition report before publishing. A wrong findings count on a security claim is high-visibility.
+Q3-Q4 2025, hundreds of findings. Confirmed by user. Original source figures (June-July 2025, 1,313) replaced.
 
 ### [NOTE] — Block explorer reference
 
@@ -192,4 +188,4 @@ This qualifies as a Priority post (Key Education). Run the 60-minute launch wind
 
 **Cross-posting**: Thread is suitable for repurposing as a long-form post on forum.telcoin.org under Platform & Technology category after publishing.
 
-**Prerequisite**: Resolve [CONFIRM 1] (Axelar vs LayerZero) and [CONFIRM 3] (1,313 findings count) before scheduling. Thread can publish without naming the bridge partner in Tweet 12 if confirmation is unavailable — the current draft is constructed to be accurate either way.
+**Prerequisite**: All blocking items resolved. Thread is clear to schedule.

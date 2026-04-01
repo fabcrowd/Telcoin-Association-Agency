@@ -87,7 +87,7 @@ On the bridging side, the `InterchainTEL` module handles movement of TEL between
 
 ## Security Posture and Ecosystem Signal
 
-The codebase completed an open security competition on Cantina in June–July 2025 [verify], drawing 1,313 submitted findings [verify] across the full Rust protocol layer and the Solidity contracts. The competition was priced at $110,000. Security competitions at this scale produce a documented public finding history that internal audits do not, and the decision to run one on both the consensus layer and the contracts simultaneously reflects the scope of the attack surface being considered.
+The codebase completed an open security competition on Cantina in Q3–Q4 2025, drawing hundreds of submitted findings across the full Rust protocol layer and the Solidity contracts. The competition was priced at $110,000. Security competitions at this scale produce a documented public finding history that internal audits do not, and the decision to run one on both the consensus layer and the contracts simultaneously reflects the scope of the attack surface being considered.
 
 The architecture has attracted meaningful external signal. Neura Protocol publicly forked the `telcoin-network` repository and described it as the reference implementation for the Narwhal + Bullshark + Reth client combination. That description is accurate in the narrow sense: DAG-BFT consensus with full EVM execution on Reth is not a common architecture. Sui and Aptos pioneered this consensus family and demonstrated it at scale, but both chains run Move. The EVM compatibility layer here is not a wrapper or a compatibility shim — Reth is the execution client, and EVM contracts deploy to it directly. Developers do not need to learn a new language or adapt tooling. The full EVM developer surface is available unchanged.
 
@@ -113,9 +113,8 @@ Specifically: how do the liveness and safety bounds of DAG-BFT protocols change 
 
 ## Editor Checklist Before Publishing
 
-- [ ] **[verify]** Cantina competition date — confirm June–July 2025 against the public Cantina competition report
-- [ ] **[verify]** 1,313 findings count — verify against the public Cantina competition report
-- [ ] LayerZero confirmed as active bridge (resolved per campaign notes)
+- [x] Cantina competition — Q3–Q4 2025, hundreds of findings (confirmed by user)
+- [x] LayerZero confirmed as active bridge (confirmed by user)
 - [ ] Schedule: Tuesday–Thursday, 9–11AM EST or 2–4PM EST
 - [ ] Pin for 48–72 hours post-publication
 - [ ] Cross-post to forum.telcoin.org under Platform & Technology after publishing
