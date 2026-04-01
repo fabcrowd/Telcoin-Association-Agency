@@ -58,6 +58,7 @@ Rules:
 - Always include X + YouTube listen-in links
 - Always include next 2-3 upcoming council meetings at the bottom
 - Times in EST and UTC
+- All councils meet on a 2-week cadence — use this to calculate "next meetings" dates without asking the user
 
 ---
 
