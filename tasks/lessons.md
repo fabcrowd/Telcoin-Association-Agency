@@ -13,6 +13,54 @@
 
 ---
 
+### Lesson 9 — Council meeting reminder post format
+
+**Date**: 2026-04-01
+**Session**: claude/campaign-iLgt5
+
+**What was produced**:
+A meeting reminder tweet that listed agenda items with presenters, used a table-based Figma card spec, and omitted the YouTube link, listen-in call to action, and next meetings section.
+
+**What the user said**:
+"This is the correct format you should always follow" — then provided the canonical format.
+
+**What was changed**:
+- Canonical council meeting reminder format established (see rule below)
+- Applied immediately to TELx Council April 1 reminder post
+
+**Rule derived**:
+Council meeting reminder posts follow this exact format — no deviations:
+
+```
+[Council Name]
+[Day], [Month Date], [Year] - [Time] EST / [Time] UTC
+
+Agenda:
+- [Item 1]
+- [Item 2]
+- [Item n]
+
+Listen in on the council call here on X
+@TelcoinTAO
+or Youtube at http://youtube.com/@TelcoinTAO
+
+Next meetings:
+[Council Name]
+- [Date] - [Time] EST / [Time] UTC
+[Council Name]
+- [Date] - [Time] EST / [Time] UTC
+```
+
+Rules:
+- No presenters listed next to agenda items in the public post
+- No emojis, no contractions, no enthusiasm language (Tier 1 governance)
+- No conversation prompt
+- Always include X + YouTube listen-in links
+- Always include next 2-3 upcoming council meetings at the bottom
+- Times in EST and UTC
+
+---
+
 ### Lesson 8 — Agents must verify facts via web search, not defer to human confirmation
 
 **Date**: 2026-03-31
@@ -206,6 +254,7 @@ Before drafting any post for @telcoinTAO, run the entity check: "Is every claim 
 | 6 | Council transcript workflow | Transcript received → check research file → produce structured recap → commit both. Recap must include chapters, key announcements, Q&A summary, content flags, usable quotes. |
 | 7 | Block explorer references | Never reference telscan.io or any specific block explorer URL in published content. Use generic language until mainnet explorer is officially confirmed. |
 | 8 | Fact verification ownership | Agents verify technical claims via web search before flagging as [CONFIRM]. [CONFIRM] is only for information that cannot be found publicly. Never push verifiable facts back to the user. |
+| 9 | Council meeting reminder format | Use the canonical format: council name + date/times, agenda bullets (no presenters), listen-in links (X + YouTube), next meetings. No deviations. |
 
 ---
 
