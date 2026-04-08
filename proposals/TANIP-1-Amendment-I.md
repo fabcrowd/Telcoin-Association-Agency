@@ -50,22 +50,27 @@ The only modification is the introduction of a rebate cap.
 
 ### Rebate Formula
 
-```
-R = calculated issuance from own and referee fees
-    (following same calculation as original TANIP-1 implementation)
+The calculation applies two sequential caps:
+
+**Step 1 — Calculate issuance (unchanged from TANIP-1)**
+
+R = pro-rata share of the weekly allocation based on own and referee fees, capped by the wallet's remaining stake allowance (time-weighted average stake minus total lifetime earned)
+
+**Step 2 — Apply rebate cap (new)**
 
 F = total TEL fees paid by the wallet during the period
 
 Final rebate = min(R, F)
-```
+
+The only change from the original TANIP-1 implementation is Step 2. Step 1 is identical to how rewards were calculated previously.
 
 **Meaning:**
 
-If the calculated rebate exceeds the wallet's fee spending, the wallet receives back the amount it paid in fees.
+If R is lower than F: the wallet receives the full calculated rebate, as it spent more in fees than it earned back.
 
-If the calculated rebate is lower than the wallet's fee spending, the wallet receives the full rebate.
+If R is higher than F: the wallet receives back what it paid in fees and no more. It cannot profit from the program.
 
-This ensures no participant can earn more TEL than they spend, removing the main driver of mercenary volume.
+Both caps must be satisfied. The stake cap in Step 1 prevents rewards from exceeding a wallet's proportional stake. The fee cap in Step 2 then ensures no wallet earns more TEL than it spent.
 
 ## Governance, Funding and Transparency
 
