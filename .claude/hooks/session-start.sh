@@ -52,9 +52,14 @@ https://www.youtube.com/@TelcoinTAO — check for new streams/videos every sessi
 Search: \$TEL, Telcoin, @telcoinTAO, Telcoin Network, eUSD Telcoin
 
 ## Instruction
-Read CLAUDE.md, campaign/AGENCY-MEMORY.md, and this file.
-Then follow scripts/daily-agency-run.md — start with Phase 0D (transcript check) immediately,
-then Phase 0A/0B/0C, then Phase 1 briefing. Do not wait for user input.
+Read CLAUDE.md, then read the memory store in this order:
+1. tasks/lessons.md
+2. campaign/research/TELCOIN-RESEARCH.md
+3. campaign/AGENCY-MEMORY.md
+
+Memory is kept current by the nightly dreaming Routine (scripts/dreaming-pass.md).
+No daily run required — proceed directly to the user's task.
+Run /dream manually if memory needs consolidation mid-session.
 EOF
 
 # Inject Figma token from repo secret into local MCP settings (never committed)

@@ -1,8 +1,27 @@
 # Agency OS — Claude Code Persistent Context
 
-## Daily Automation
+## Memory Architecture
 
-**On every session start**: The SessionStart hook runs automatically and writes a context file to `campaign/execution/[today]/SESSION-CONTEXT.md`. After reading this file, immediately execute `scripts/daily-agency-run.md` in full — all 6 phases — without waiting for user instruction. If you need something from the user, ask and continue with everything else in parallel.
+The agency runs a two-layer memory system:
+
+**Real-time** — During sessions, update memory files immediately when new intel arrives
+(new council recap, announcement, correction). Don't batch.
+
+**Dreaming** — A nightly Routine consolidates all session output files into the memory store.
+It reads recent `campaign/execution/YYYY-MM-DD/` folders and intel files, runs parallel subagents
+per session to extract verified facts and learnings, then writes the updates back to the 5 memory files.
+Full spec: `scripts/dreaming-pass.md`. Manual trigger: `/dream`.
+
+**Result**: Memory files are always current at session start. No daily run required.
+
+### Memory Store ($MEM)
+| File | Contents |
+|---|---|
+| `campaign/research/TELCOIN-RESEARCH.md` | Verified client intel |
+| `campaign/AGENCY-MEMORY.md` | Standing decisions, angle bank, open questions |
+| `tasks/lessons.md` | Operational lessons |
+| `campaign/execution/LEARNING-PATH-TRACKER.md` | Content status |
+| `campaign/analytics/PERFORMANCE-LOG.md` | Performance data |
 
 ---
 
@@ -403,8 +422,11 @@ Then produce a standup covering:
 On every new session, before doing anything else:
 1. Confirm active branch is `claude/campaign-iLgt5` (run `git branch` if unsure)
 2. Read `tasks/lessons.md` — review all active lessons and the pattern summary before producing any output
-3. Read `campaign/research/TELCOIN-RESEARCH.md` for current client state
-4. Read `campaign/analytics/PERFORMANCE-LOG.md` — check what's working, flag if stale or empty
+3. Read `campaign/research/TELCOIN-RESEARCH.md` — memory is kept current by the nightly dreaming pass
+4. Read `campaign/AGENCY-MEMORY.md` — standing decisions, angle bank, open questions
 5. Read the **LLM Voice Principles** section in this file — apply to all written output
-6. Check if user has shared any new intel (council recaps, announcements) — if yes, update research file first
-7. Then proceed to the actual task
+6. Check if user has shared any new intel (council recaps, announcements) — if yes, update research file first, then proceed
+7. Proceed to the actual task
+
+The nightly Routine has already consolidated recent session output. No daily run required.
+If memory feels stale, run `/dream` to consolidate manually.
