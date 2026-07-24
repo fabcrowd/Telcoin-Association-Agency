@@ -1,6 +1,6 @@
 # Telcoin Association & Network — Campaign Research
-## Last updated: March 19, 2026
-## Sources: telcoin.org, telcoin.network, forum.telcoin.org, CoinMarketCap, Business Wire, Governor of Nebraska, GitHub, web search, council call recap (week of Mar 10), telcoinwiki.com (full site crawl March 15, 2026), TELx Council #19 stream (March 18, 2026) https://www.youtube.com/watch?v=QsDDDLFPr8c
+## Last updated: July 24, 2026
+## Sources: telcoin.org, telcoin.network, forum.telcoin.org, CoinMarketCap, Business Wire, Governor of Nebraska, GitHub, web search, council call recap (week of Mar 10), telcoinwiki.com (full site crawl March 15, 2026), TELx Council #19 stream (March 18, 2026) https://www.youtube.com/watch?v=QsDDDLFPr8c, github.com/Telcoin-Association (full repo crawl July 24, 2026), docs.telcoin.network
 
 > Roadmap data sourced directly from roadmap.telcoin.network (screenshots, March 10, 2026).
 > Developer Notes last updated: **February 19, 2026** per roadmap page.
@@ -815,6 +815,198 @@ Note: TEL burned in network transactions replenishes the Treasury - this is the 
 - Treasury Council: 2,272,727 TEL/year per member (streamed per block while holding NFT)
 - Other councils: Pro-rated from 60M annual council allocation
 - 33 total council members across all 5 councils
+
+---
+
+## 14. GITHUB TECHNICAL DEEP DIVE (Source: github.com/Telcoin-Association — crawled July 24, 2026)
+
+> All details below sourced directly from public GitHub repositories and documentation.
+
+### Repository Index (21 total repos)
+
+| Repository | Description | Language |
+|---|---|---|
+| telcoin-network | Core L1 node — Narwhal + Bullshark + EVM | Rust |
+| tn-contracts | Telcoin Network smart contracts | Solidity |
+| telcoin-application-network-issuance | Calculates and distributes TAN & TELx incentives | TypeScript |
+| tel-v3 | Token upgrade for EVM chains (2 → 18 decimals) | Solidity |
+| telcoin-explorer | Telcoin Network Explorer v1 (TelScan) | Rust |
+| tn-node-deployment | Node deployment tools and scripts for MNO operators | Shell |
+| tn-roadmap | Static site for Telcoin Network roadmap | TypeScript |
+| tn-uptime-kuma | Uptime monitoring for Adiri Testnet validator infrastructure | Python |
+| forge-deploy-utils | Shared Foundry deployment utilities (Safe-based, deterministic multi-chain via CreateX) | Solidity |
+| safe-utils | Interact with Safe API from Foundry scripts | Solidity |
+
+### Core Tech Stack
+
+- **Language**: Rust (minimum version 1.94)
+- **Networking**: libp2p with QUIC-v1 over UDP
+- **Consensus lineage**: Derived from Mysten Labs / Sui codebase (Bullshark, Apache 2.0)
+- **Execution lineage**: Inspired by Reth (Ethereum protocol implementation)
+- **Smart contracts**: Foundry + Solidity, using CreateX for deterministic multi-chain deploys
+- **Block explorer**: Rust + Dioxus (compiles to WebAssembly) — retro CRT aesthetic, JetBrains Mono + Syne fonts, zero external UI dependencies
+- **Monitoring**: Uptime Kuma + Loki centralized logging
+
+### Internal Crates Architecture (telcoin-network)
+
+The node is organized as a Rust workspace with clearly separated concerns:
+
+| Crate | Role |
+|---|---|
+| consensus | Narwhal + Bullshark DAG consensus |
+| batch-builder | Constructs transaction batches for DAG propagation |
+| batch-validator | Validates batch integrity before DAG inclusion |
+| engine | Core execution engine (EVM block production) |
+| node | Main node orchestration and lifecycle |
+| network-libp2p | libp2p-based P2P networking |
+| network-types | Network protocol type definitions |
+| state-sync | State synchronization across nodes |
+| exex | Execution Extension plugin framework |
+| execution/tn-rpc | Standard Ethereum JSON-RPC interface |
+| tn-reth | Reth integration layer |
+| storage | Persistent database layer |
+| config | Configuration management |
+| tn-metrics | Prometheus-compatible metrics collection |
+| types | Shared protocol type definitions |
+| telcoin-network-cli | Command-line interface |
+| e2e-tests | End-to-end test suite |
+| test-utils | Testing helpers |
+| test-utils-committee | Committee-specific test utilities |
+
+### ExEx (Execution Extension) — Technical Specification
+
+ExEx is Telcoin Network's plugin system for external software to react to on-chain state changes in real time. Unlike Reth's original ExEx (which fires only at block execution), Telcoin's version tracks the full transaction lifecycle across three stages:
+
+1. **Certificate accepted** — A peer's transaction batch header has been certified and added to the local DAG
+2. **Consensus committed** — Bullshark has committed the sub-DAG; ordering is final
+3. **Chain executed** — EVM blocks have been executed and are canonical
+
+**Key design properties:**
+- **Non-critical isolation**: ExEx plugins run as independent tasks. A slow or panicking plugin cannot stall consensus, delay execution, or crash the node — it falls behind and must resync via replay
+- **Immediate finality**: Bullshark provides BFT finality with no reorganizations. ExEx consumers never need reorg-handling logic
+- **Live vs. replay asymmetry**: During live operation, `ChainExecuted` events include full BundleState (account/storage diffs). During replay catch-up, BundleState is empty — plugins must query `reth_env` directly to reconstruct state changes
+- **Read-only by convention**: ExEx handles expose two databases — `reth_env` (EVM state: blocks, headers, receipts, accounts, storage) and `consensus_chain` (consensus headers, epochs, committed sub-DAGs). The read-only contract is not type-enforced; plugin developers must not call mutation methods
+
+### ConsensusRegistry Smart Contract
+
+The `ConsensusRegistry` is the single on-chain source of truth for consensus-related state.
+
+**Address**: `0x07E17e17E17e17E17e17E17E17e17E17e17E17e1` (system contract)
+
+**Four functions:**
+1. **ConsensusNFT Whitelist** — Governance issues non-transferable NFTs to approve validators
+2. **TEL Staking** — Manages validator stakes, reward distribution, and slashing penalties
+3. **Validator Set Management** — Processes activation and exit queues
+4. **Epoch Records** — Stores historical epoch data and voting committee snapshots
+
+**Validator lifecycle (7 stages):**
+1. Governance approval (Compliance Council + GSMA Operator Member status)
+2. ConsensusNFT minted to validator address
+3. Stake TEL (BLS public key + proof-of-possession submitted)
+4. Enter activation queue
+5. Become active (at epoch boundary, via `activate()` call)
+6. Exit request (when validator wishes to leave)
+7. Protocol-managed finalization → unstake + ConsensusNFT burned
+
+### Validator vs. Observer Node Model
+
+Critical distinction from deployment tooling: **every node is installed validator-capable from day one.** The node binary and configuration are identical for validators and observers. What determines validator participation is on-chain state — staking TEL + receiving ConsensusNFT + calling `activate()`. Before those steps, the node behaves as a full node / observer.
+
+This means:
+- A future MNO validator can install, sync, and run as an observer for months before formal activation
+- Hardware is provisioned to validator spec from the start; there is no "upgrade" process between observer and validator roles at the software level
+
+### Hardware Requirements (Official Specs)
+
+| Role | CPU | RAM | Storage | Network |
+|---|---|---|---|---|
+| Observer / Full Node | 8 cores / 16 threads | 16GB DDR4 ECC | 500GB TLC NVMe SSD | 24Mbps+ stable |
+| Validator | 16+ cores / 32 threads | 128GB DDR4/DDR5 ECC RDIMM | 4TB TLC NVMe SSD | 1Gbps sustained, 1GbE+ |
+
+**Storage note**: TLC NVMe required (1,000–3,000 P/E cycles). QLC explicitly prohibited (100–1,000 P/E cycles insufficient for continuous blockchain writes).
+
+**Supported OS**: Ubuntu 22.04+ LTS, Debian 12+, RHEL 8+, macOS Sequoia 15+ (observer only)
+
+### Network Ports
+
+| Port | Protocol | Purpose |
+|---|---|---|
+| 8545 | HTTP/TCP | Ethereum JSON-RPC |
+| 8546 | WebSocket/TCP | Ethereum WebSocket RPC |
+| 49590 | UDP/QUIC | P2P consensus (primary) |
+| 49594 | UDP/QUIC | P2P consensus (worker) |
+| 9101 | TCP | Prometheus metrics (loopback restricted) |
+| 43174 | TCP | TAO health monitor endpoint (restricted to 104.155.184.201/32) |
+
+### Validator Onboarding Requirements
+
+1. **GSMA approval first** — Contact grant@telcoin.org before purchasing hardware
+2. **Hardware approval** — Telcoin Association verifies specified equipment before deployment
+3. **Governance approval** — Compliance Council authorization required
+4. **Registered Ethereum address** — For receiving TEL staking rewards
+
+One-liner deployment after approval:
+```bash
+curl -fsSL https://install.telcoin.network | bash
+```
+
+**Security hardening built in**: Dedicated unprivileged service user (`telcoin/telcoin`), systemd `LoadCredential` for BLS passphrase (never embedded in service file), optional TPM/vTPM sealing for cloud environments, `NoNewPrivileges`/`PrivateTmp`/`ProtectSystem=strict` systemd restrictions.
+
+**CVE-2026-31431**: Setup scripts enforce mitigation of a HIGH severity local privilege escalation vulnerability affecting all Linux kernels since 2017 (via `algif_aead` kernel module). Setup will not proceed without operator remediation.
+
+### TEL V3 Token Upgrade — Technical Mechanics
+
+**Old**: OldToken (TEL v2) — 2 decimal places
+**New**: TelcoinV3 — 18 decimal places, hard cap 100 billion TEL (10^29 base units)
+
+**Conversion rate**: 1:1 by token count, automatic decimal conversion (multiply base units by 10^16). Example: 1,000 OldToken (100,000 base units) → 1,000 TelcoinV3 (10^21 base units).
+
+**Two-phase migration:**
+
+Phase 1 — TokenMigration (1–2 years):
+- User approves migration contract, calls `migrate()` to exchange entire OldToken balance
+- Contract mints TelcoinV3 on-demand (no pre-funded reserve required)
+- Legacy tokens held in escrow (not burned) — allows legacy LP positions to unwind after migration concludes
+- Bounded by `migrationExpiry`; owner can extend via `setMigrationExpiry()`
+- After expiry + withdrawal delay, owner reclaims escrowed tokens
+
+Phase 2 — MigrationVault (after Phase 1 closes):
+- Remaining unminted TEL v3 deposited into reserve-based vault
+- Late migrants swap v2 for v3 at 1:1 value until reserves deplete
+- One-way only — reverse swaps prohibited
+- UUPS upgradeable with pausable operations
+
+**Cross-chain architecture**: All satellite chains (Ethereum, Base, Polygon) run `TelcoinBridge` contracts; Telcoin Network runs `NativeBridge`. All bridges communicate exclusively through **LayerZero V2** — no direct chain-to-chain connections. TEL implemented as a LayerZero V2 OFT (Omnichain Fungible Token) mesh with `sharedDecimals = 6`.
+
+**Security architecture:**
+- `MintBurnWrapper` holds MINTER_ROLE and BURNER_ROLE; bridge contracts hold no direct token roles — prevents compromised bridge from directly minting
+- `burn()` requires prior approval; `rescueBurn()` bypasses for governance emergencies
+- EIP-2612 (permit), EIP-3009 (transferWithAuthorization), EIP-1271 (smart wallet) support
+- Roles cannot be voluntarily renounced (prevents self-lockout)
+- EIP-712 domain separation prevents cross-chain signature replay
+
+**Deployment**: Uses CREATE3 for deterministic addresses across all supported chains. Same address on every chain.
+
+### TelScan Block Explorer
+
+Built entirely in Rust, compiled to WebAssembly via Dioxus framework. Distinctive characteristics:
+- Zero external UI dependencies — pure CSS implementation
+- Retro CRT aesthetic: amber and green on near-black background, scanline overlays
+- Fonts: JetBrains Mono, Syne
+- Live status polling every 12 seconds
+- Smart search routing (auto-detects block hash / tx hash / address from input)
+- ERC-20 event decoding via `eth_getLogs` for token transfer history
+- Direct JSON-RPC to `https://rpc.telcoin.network` — no middleware layer
+- Deployed at scan.telcoin.network (testnet)
+
+### TAN Issuance Distribution System
+
+Technical pipeline for TANIP and TELxIP reward distribution:
+- TypeScript backend calculators process historical blockchain data for specified periods
+- Output: JSON files containing address-to-reward mappings
+- Execution: Packaged for multisig execution via Safe governance UI
+- TANIP-1 staker incentives paused as of Period 26
+- TELx liquidity rewards remain active through Uniswap v4 hook implementation
 
 ---
 
