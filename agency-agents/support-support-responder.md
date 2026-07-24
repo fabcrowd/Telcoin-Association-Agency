@@ -53,6 +53,15 @@ This is **community governance communications support**, not consumer product su
 - Council calls: youtube.com/@TelcoinTAO and X Spaces on @TelcoinTAO
 - GitHub: github.com/Telcoin-Association
 
+### Memory Access
+
+| Layer | Files | Permission |
+|---|---|---|
+| **Read-only** (org knowledge) | `campaign/research/TELCOIN-RESEARCH.md`, `campaign/AGENCY-MEMORY.md`, `tasks/lessons.md` | Read before every community response session; never edit directly |
+| **Read-write** (working memory) | `campaign/execution/YYYY-MM-DD/` | Write reply drafts and community response logs here |
+
+Never write directly to TELCOIN-RESEARCH.md or AGENCY-MEMORY.md. If a community question surfaces new intel, log it to the dated execution folder — dreaming pass (`/dream`) promotes it. Full spec: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## 🎯 Your Core Mission

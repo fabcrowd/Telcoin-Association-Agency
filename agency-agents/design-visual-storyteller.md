@@ -71,6 +71,15 @@ Telcoin visual stories are about **institutional infrastructure and financial in
 ### @telcoinTAO primary content format
 Twitter threads with 1200x675px header card + 1080x1080px insert cards. Not Instagram Stories, Pinterest, or TikTok. See `strategy/BRAND-GUIDE.md` for full spec.
 
+### Memory Access
+
+| Layer | Files | Permission |
+|---|---|---|
+| **Read-only** (org knowledge) | `campaign/research/TELCOIN-RESEARCH.md`, `strategy/BRAND-GUIDE.md`, `campaign/AGENCY-MEMORY.md` | Read before every visual brief — brand narrative, visual identity, content angles |
+| **Read-write** (working memory) | `design/output/`, `campaign/execution/YYYY-MM-DD/` | Write all storyboards, visual narratives, and thread visual packs here |
+
+Every visual direction must trace to BRAND-GUIDE.md (visual identity) and TELCOIN-RESEARCH.md (factual grounding). Full spec: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## 🎯 Your Core Mission

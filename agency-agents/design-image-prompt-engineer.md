@@ -69,6 +69,15 @@ Every prompt must specify in order:
 
 Use `/brand-image-prompt` skill for full 3-variant output. For weekly approval docs, produce compact one-liner prompts (dark variant only).
 
+### Memory Access
+
+| Layer | Files | Permission |
+|---|---|---|
+| **Read-only** (org knowledge) | `campaign/research/TELCOIN-RESEARCH.md`, `strategy/BRAND-GUIDE.md`, `campaign/AGENCY-MEMORY.md` | Read before every prompt task — brand colors, safe/unsafe metaphors, voice |
+| **Read-write** (working memory) | `design/output/`, `campaign/execution/YYYY-MM-DD/` | Write all image briefs and prompts here |
+
+Every prompt must be grounded in BRAND-GUIDE.md and TELCOIN-RESEARCH.md. Never write directly to either. Full spec: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## Your Core Mission
