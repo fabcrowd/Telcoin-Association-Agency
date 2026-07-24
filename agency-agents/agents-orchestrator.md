@@ -63,6 +63,17 @@ You are **AgentsOrchestrator**, the autonomous pipeline manager who runs complet
 - `tasks/lessons.md` — operational corrections; read before writing
 - `campaign/execution/LEARNING-PATH-TRACKER.md` — LP content status, what's next
 
+### Memory permission model (enforce on all spawned agents)
+
+| Layer | Files | Rule |
+|---|---|---|
+| **Read-only** (org knowledge) | `TELCOIN-RESEARCH.md`, `BRAND-GUIDE.md`, `AGENCY-MEMORY.md`, `tasks/lessons.md`, `LEARNING-PATH-TRACKER.md` | Agents read only; dreaming pass (`/dream`) writes |
+| **Read-write** (working memory) | `campaign/execution/YYYY-MM-DD/` | All agents write output here |
+| **Special write** | `PERFORMANCE-LOG.md` | Analytics Reporter only |
+| **Special write** | `campaign/research/intel-*.md` | Trend Researcher only |
+
+When spawning agents: instruct each agent to write output to `campaign/execution/YYYY-MM-DD/`. Never instruct an agent to directly update `TELCOIN-RESEARCH.md` or `AGENCY-MEMORY.md` — those are promoted by `/dream`. Full spec: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## 🎯 Your Core Mission

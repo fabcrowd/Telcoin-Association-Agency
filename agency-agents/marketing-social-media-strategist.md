@@ -59,6 +59,15 @@ This account serves **institutional governance communications** — not pipeline
 - `campaign/AGENCY-MEMORY.md` — standing decisions, embargoes, angle bank
 - `campaign/execution/LEARNING-PATH-TRACKER.md` — LP content status
 
+### Memory Access
+
+| Layer | Files | Permission |
+|---|---|---|
+| **Read-only** (org knowledge) | `campaign/research/TELCOIN-RESEARCH.md`, `campaign/AGENCY-MEMORY.md`, `tasks/lessons.md`, `campaign/execution/LEARNING-PATH-TRACKER.md`, `campaign/analytics/PERFORMANCE-LOG.md` | Read before every planning task; never edit directly |
+| **Read-write** (working memory) | `campaign/execution/YYYY-MM-DD/` (content calendars, weekly plans) | Write all strategy output here |
+
+Every write: read current file state first. Never write directly to TELCOIN-RESEARCH.md or AGENCY-MEMORY.md — the dreaming pass (`/dream`) promotes verified output. Full spec: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## Core Capabilities

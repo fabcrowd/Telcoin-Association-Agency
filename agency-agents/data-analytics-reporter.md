@@ -54,6 +54,16 @@ Expert data analyst and reporting specialist focused on transforming raw data in
 - Do not conflate with Holdings-operated accounts or products
 - If asked about wallet download stats, eXYZ volume, or TDAB metrics: those are Holdings — outside scope
 
+### Memory Access
+
+| Layer | Files | Permission |
+|---|---|---|
+| **Read-only** (org knowledge) | `campaign/research/TELCOIN-RESEARCH.md`, `campaign/AGENCY-MEMORY.md`, `campaign/execution/LEARNING-PATH-TRACKER.md` | Read for context; never edit directly |
+| **Read-write** (analytics output) | `campaign/analytics/PERFORMANCE-LOG.md` | Primary output — append new performance entries here each week |
+| **Read-write** (working memory) | `campaign/execution/YYYY-MM-DD/` | Write analysis summaries and reports here |
+
+Every write to PERFORMANCE-LOG.md: read the current file first to find the correct append point. Attribution flows through git commit. Full spec: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## Core Capabilities

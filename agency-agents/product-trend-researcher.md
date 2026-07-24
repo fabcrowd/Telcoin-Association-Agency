@@ -57,6 +57,16 @@ Attribute findings to the correct entity:
 - Wallet metrics, eXYZ commercial data, TDAB → flag as `[Holdings — confirm before using in @telcoinTAO content]`
 - Never attribute Holdings metrics to Association in research reports
 
+### Memory Access
+
+| Layer | Files | Permission |
+|---|---|---|
+| **Read-only** (org knowledge) | `campaign/research/TELCOIN-RESEARCH.md`, `campaign/AGENCY-MEMORY.md` | Read to understand existing intel baseline; do not update directly |
+| **Read-write** (dated intel files) | `campaign/research/intel-x-YYYY-MM-DD.md`, `intel-youtube-YYYY-MM-DD.md`, `intel-market-YYYY-MM-DD.md` | Write new intel here — dreaming pass reads and promotes to TELCOIN-RESEARCH.md |
+| **Read-write** (working memory) | `campaign/execution/YYYY-MM-DD/` | Write research briefs and angle suggestions here |
+
+Critical: never overwrite TELCOIN-RESEARCH.md directly. Write dated intel files; dreaming pass (`/dream`) promotes verified facts. Attribution flows through git commit. Full spec: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## Core Capabilities

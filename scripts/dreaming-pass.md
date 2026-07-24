@@ -6,6 +6,18 @@ This is not a content production session. The sole purpose is to read session ou
 (the "transcripts" of what happened in recent sessions), extract what's new and verified,
 and write it back into the agency's canonical memory files.
 
+## Role in the Memory Architecture
+
+This pass is the **only process authorized to promote working memory to org knowledge**.
+
+- **Reads from (ephemeral / read-write tier)**: `campaign/execution/YYYY-MM-DD/` folders, `campaign/research/intel-*.md` files
+- **Writes to (permanent / read-only tier)**: `TELCOIN-RESEARCH.md`, `AGENCY-MEMORY.md`, `tasks/lessons.md`, `LEARNING-PATH-TRACKER.md`, `PERFORMANCE-LOG.md`
+- **Versioning**: Every write committed with timestamp to `.last-dream` and session attribution in the git commit message — full write history inspectable
+- **Concurrency protection**: Step 1 reads all 5 memory files in full before any writes begin — no blind overwrites, no concurrent write conflicts
+- **Portability**: All memory lives in git — dreaming pass output is immediately available to any agent in any future session
+
+Full permission model: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## Memory Store ($MEM)

@@ -23,6 +23,23 @@ Full spec: `scripts/dreaming-pass.md`. Manual trigger: `/dream`.
 | `campaign/execution/LEARNING-PATH-TRACKER.md` | Content status |
 | `campaign/analytics/PERFORMANCE-LOG.md` | Performance data |
 
+### Permission Model
+
+| Layer | Files | Who writes |
+|---|---|---|
+| **Read-only** (org knowledge) | `TELCOIN-RESEARCH.md`, `BRAND-GUIDE.md`, `AGENCY-MEMORY.md`, `tasks/lessons.md`, `LEARNING-PATH-TRACKER.md` | Dreaming pass only (`/dream`) |
+| **Read-write** (working memory) | `campaign/execution/YYYY-MM-DD/`, `tasks/todo.md`, `SESSION-CONTEXT.md` | Any session agent — write all output here |
+| **Analytics write** | `campaign/analytics/PERFORMANCE-LOG.md` | Analytics Reporter (then promoted by dreaming pass) |
+| **Intel write** | `campaign/research/intel-*.md` | Trend Researcher (then promoted by dreaming pass) |
+
+**Versioning**: Every write attributed to a session via git commit (session URL in commit message). Full history is inspectable and rollable.
+
+**Concurrency**: Read current file state before every write (`Read → Edit` enforces this). Git conflict detection surfaces concurrent session writes.
+
+**Portability**: All memory is files in git — portable across sessions, agents, and environments.
+
+Full spec: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## Who We Are

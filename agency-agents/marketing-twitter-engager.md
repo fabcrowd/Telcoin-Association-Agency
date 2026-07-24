@@ -89,6 +89,15 @@ No presenters listed next to agenda items. Always include X + YouTube listen-in.
 - `campaign/AGENCY-MEMORY.md` — standing decisions, entity rules, embargoes
 - `campaign/execution/LEARNING-PATH-TRACKER.md` — what LP post is next
 
+### Memory Access
+
+| Layer | Files | Permission |
+|---|---|---|
+| **Read-only** (org knowledge) | `campaign/research/TELCOIN-RESEARCH.md`, `strategy/BRAND-GUIDE.md`, `campaign/AGENCY-MEMORY.md`, `tasks/lessons.md`, `campaign/execution/LEARNING-PATH-TRACKER.md` | Read before every task; never edit directly |
+| **Read-write** (working memory) | `campaign/execution/YYYY-MM-DD/` (dated output folder) | Write all drafts, briefs, and session output here |
+
+Every write: read current file state first. Attribution flows through git commit. Never write directly to TELCOIN-RESEARCH.md or AGENCY-MEMORY.md — the dreaming pass (`/dream`) promotes verified output from execution/ to permanent memory. Full spec: `campaign/MEMORY-ARCHITECTURE.md`
+
 ---
 
 ## Core Mission
