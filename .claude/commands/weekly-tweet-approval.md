@@ -18,10 +18,28 @@ Launch all three simultaneously:
 > Read `campaign/execution/` for all posts published in the prior 7 days. Identify: (1) best-performing post by engagement signals or explicit metrics if available, (2) worst performer, (3) any format that underperformed its tier expectation. Return a 4-line summary: top post, bottom post, format insight, one recommendation for next week. If no analytics data exists yet, return "No prior data — defaulting to Content OS baseline."
 
 **Agent B — Sprint Prioritizer**
-> Read `campaign/research/TELCOIN-RESEARCH.md`, `strategy/CONTENT-OS.md`, and the `## Current Campaign Status` section of `CLAUDE.md`. Determine: (1) which learning path post is next (LP2 status, LP3/LP4 not started), (2) any governance events in the upcoming week (council calls, votes, proposals), (3) any milestone triggers due (Trading Fee Rebate, Merkl trial). Output a proposed 7-post content mix with day/time, type (Governance/Education/Milestone/Community), topic, and one-line structural rationale for each slot. Apply Content OS volume rules for the week type (Standard/Event/Quiet).
+> Read `campaign/research/TELCOIN-RESEARCH.md`, `campaign/execution/LEARNING-PATH-TRACKER.md`, `campaign/AGENCY-MEMORY.md`, and `strategy/CONTENT-OS.md`.
+>
+> Determine:
+> (1) **Learning path status** — check LEARNING-PATH-TRACKER.md for which LP post is next across all active paths (LP1 through LP4). Do not infer from CLAUDE.md — read the tracker directly.
+> (2) **Governance events this week** — council cadences: Platform & Treasury and TAN alternate Thursdays 4-5PM EST (fortnightly); TELx alternates Wednesdays 3PM EST (fortnightly). Calculate from today's date to identify which councils meet this week.
+> (3) **Embargoes and blockers** — read AGENCY-MEMORY.md Standing Decisions section for any content on hold (e.g., content awaiting confirmation, embargoed topics). Do not schedule embargoed content.
+> (4) **Active angles** — check AGENCY-MEMORY.md Angle Bank for `[ ]` items ready to execute.
+>
+> Output a proposed 7-post content mix with day/time (EST), type (Governance/Education/Milestone/Community), topic, and one-line structural rationale for each slot. Apply Content OS volume rules for the week type (Standard/Event/Quiet).
 
 **Agent C — Twitter Engager**
-> Read `campaign/research/TELCOIN-RESEARCH.md` and `strategy/CONTENT-OS.md`. Draft the actual tweet text for each post in the week's proposed mix (use the mix from Agent B). For each post: write the complete tweet or thread (all tweets numbered), apply all tone and style rules from CLAUDE.md, include the correct conversation prompt for non-Tier-1 posts. Do NOT invent stats — only use verified facts from the research file.
+> Read `campaign/research/TELCOIN-RESEARCH.md`, `tasks/lessons.md`, and `strategy/CONTENT-OS.md`. Draft the actual tweet text for each post in the week's proposed mix (use the mix from Agent B).
+>
+> For each post:
+> - Write the complete tweet or thread (all tweets numbered if thread)
+> - Apply all tone and style rules from CLAUDE.md Voice Principles: no hype language, no em dashes, no false drama, no invented stats
+> - Include one Neutral Authority conversation prompt on all non-Tier-1 posts (never "What do you think?" — institutional framing only)
+> - Apply entity check: every claim must be attributable to Telcoin Association, not Holdings. Flag any Holdings-adjacent content with `[NEEDS CONFIRM — Holdings]` rather than drafting it
+> - Governance posts (Tier 1): no emojis, no contractions, directional CTA only
+> - Council meeting notices: use the canonical format from tasks/lessons.md Lesson 9 — no deviations
+>
+> Do NOT invent stats, dates, or claims not in TELCOIN-RESEARCH.md.
 
 **Agent D — Image Prompt Engineer** *(launch simultaneously with Agent C)*
 > Read `strategy/BRAND-GUIDE.md`. For each post in the week's mix (use the topic list from Agent B), generate a Midjourney/Flux/DALL-E prompt for the accompanying image. Every post requires an image — no exceptions. Single tweet posts: one 1200x675px card prompt. Thread posts: one header prompt (1200x675px) + one insert prompt per 2-3 tweets. Apply brand rules: TEL Black #090920 background, Royal Blue #3642B2, TEL Blue #14C8FF highlights, hexagon motifs, glass effects. Include negative prompt. No text in generated images. Format as a compact one-liner per post (not the full 3-variant output from /brand-image-prompt — just the primary dark variant).
@@ -44,7 +62,7 @@ Use EXACTLY the format below.
 **Week type**: [Standard / Event / Quiet] — [one-line reason, e.g., "TELx Council Tuesday, no major milestone"]
 **Total posts**: [N]
 **Content mix**: [N] Governance · [N] Education · [N] Milestone · [N] Community
-**Learning path progress**: LP[N] Post [N] of 6
+**Learning path progress**: [read from LEARNING-PATH-TRACKER.md — e.g., "LP2 Post 4/10 — LP3/LP4 not started"]
 
 ---
 
@@ -112,11 +130,15 @@ Use EXACTLY the format below.
 
 ## Standing Instructions (applied to every post)
 
-- All non-Tier-1 posts include one Neutral Authority conversation prompt
-- No hype language, no invented stats, no timing claims without roadmap link
+- All non-Tier-1 posts include one Neutral Authority conversation prompt (never "What do you think?")
+- No hype language, no invented stats, no timing claims without roadmap.telcoin.network link
+- No em dashes — use hyphens or rewrite the sentence
 - Tier 1 governance: no emojis, no contractions, directional CTAs only
+- Council meeting notices: canonical format only (Lesson 9 in tasks/lessons.md)
 - Priority posts (Milestones, Votes, Key Education): 60-min launch window applies
 - Graphics: use `/tweet-card-brief` for single cards, `/thread-visual-pack` for threads
+- Entity check: every post must be attributable to Telcoin Association only — not Holdings, not TDAB
+- Block explorer: never reference telscan.io or any specific explorer URL — use generic language
 
 ---
 
