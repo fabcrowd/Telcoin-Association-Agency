@@ -4,7 +4,7 @@
 
 ---
 
-The first two parts of this series covered why Telcoin Network exists and how it runs. This week starts with the part that actually matters most: what gets built on it. Then it covers a foundational piece of work happening ahead of mainnet, the TEL token upgrade, and why it needed to happen first.
+The first two parts of this series covered why Telcoin Network exists and how it runs. ~~This week starts with the part that actually matters most: what gets built on it. Then it covers~~ **[ADDED: This week: what gets built on it, and]** a foundational piece of work happening ahead of mainnet, the TEL token upgrade, and why it needed to happen first.
 
 ## What actually gets built on Telcoin Network
 
@@ -26,7 +26,7 @@ There are two distinct routes to build any of this on Telcoin Network, and they 
 
 **The GSMA Application Developer route.** This is specific to Telcoin's ecosystem, and it's broader than just the telcos validating the network. Any company holding GSMA membership, not only Mobile Network Operators, can register as an Application Developer within the Telcoin Platform's formal structure. That comes with real advantages the open route doesn't: a seat inside the Telcoin Application Network's governance and incentive programs, network rewards and TEL earned for building and operating on the platform, and the ability to build customized, automated financial products tailored to a specific local market. For an MNO specifically, that also means launching on top of a subscriber base and regulatory relationships it already has, rather than building trust and distribution from zero the way a typical crypto app has to.
 
-Put together, that's the shape of the ecosystem: open enough that any developer can build here, and structured enough that GSMA members, telcos and beyond, have a dedicated, incentivized path to build the applications this network was actually designed to carry.
+~~Put together, that's~~ **[ADDED: That's]** the shape of the ecosystem: open enough that any developer can build here, and structured enough that GSMA members, telcos and beyond, have a dedicated, incentivized path to build the applications this network was actually designed to carry.
 
 ## Why TEL is being upgraded, not migrated
 

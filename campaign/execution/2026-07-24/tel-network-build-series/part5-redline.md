@@ -4,7 +4,7 @@
 
 ---
 
-Four parts in, here's where it comes together. We've covered why Telcoin Network exists, how it runs, what gets built on it, and we'll come back to how it scales once the real numbers are ready. This week is about specifics: who this is actually for, what getting involved looks like, and what you'd actually be doing depending on where you sit.
+Four parts in, ~~here's where it comes together~~ **[ADDED: here's who it's for]**. We've covered why Telcoin Network exists, how it runs, what gets built on it, and we'll come back to how it scales once the real numbers are ready. This week is about specifics: who this is actually for, what getting involved looks like, and what you'd actually be doing depending on where you sit.
 
 ## If you're a Mobile Network Operator
 
@@ -24,7 +24,7 @@ Two concrete entry points, not one generic "build here" pitch.
 
 **GSMA Application Developer route.** If your company holds GSMA membership, this is the route that gets you further than open deployment alone: governance participation in the Telcoin Application Network, access to incentive programs and network rewards, and the ability to build a product explicitly positioned to reach the unbanked and underbanked users this network is designed for — rather than competing for attention in a generic DeFi app store. The tradeoff is real: it's a formal registration process with obligations attached, not a permissionless deploy-and-go. Which route makes sense depends on whether you're building a general-purpose app or something specifically meant to plug into telco distribution and trust.
 
-Either way, the TDAB-issued stablecoins from Part 1 and the forward-looking AI-agent commerce angle from Part 3 both matter here directly: they're the payment rail your product would actually settle through — today for human users, and potentially for agent-initiated transactions as that space matures.
+Either way, the TDAB-issued stablecoins ~~from Part 1~~ and the forward-looking AI-agent commerce angle ~~from Part 3~~ both matter here directly: they're the payment rail your product would actually settle through — today for human users, and potentially for agent-initiated transactions as that space matures.
 
 ## If you're a validator-adjacent node operator
 
@@ -36,6 +36,6 @@ That's a legitimate position, and it doesn't mean there's nothing to do. Specifi
 
 ## Back to where we started
 
-Part 1 opened with a specific problem: sending $200 home to family costs real money and takes real days, for hundreds of millions of people with no better option. Everything since — the MNO validator model, the Narwhal and Bullshark architecture, ExEx, the TDAB stablecoin layer, the TEL upgrade, the two developer routes — exists in service of that one problem, not as features for their own sake. Judge this network the way you'd judge any payments infrastructure: not by what it's built to do in theory, but by whether the money actually moves faster and cheaper for the person sending it. That's the bar the rest of this series has been building toward, and it's the one that matters once the numbers in Part 4 are real.
+~~Part 1 opened with~~ **[ADDED: The series started with]** a specific problem: sending $200 home to family costs real money and takes real days, for hundreds of millions of people with no better option. Everything since — the MNO validator model, the Narwhal and Bullshark architecture, ExEx, the TDAB stablecoin layer, the TEL upgrade, the two developer routes — exists in service of that one problem, not as features for their own sake. Judge this network the way you'd judge any payments infrastructure: not by what it's built to do in theory, but by whether the money actually moves faster and cheaper for the person sending it. That's the bar the rest of this series has been building toward, and it's the one that matters once the numbers in Part 4 are real.
 
 MNOs: the validator conversation starts with ~~the~~ Telcoin Association. Developers: the docs and RPC are open now **[ADDED: at github.com/Telcoin-Association]**. Everyone else: ~~the upgrade~~ **[ADDED: the TEL upgrade]** and the performance data are the two things to watch for next.

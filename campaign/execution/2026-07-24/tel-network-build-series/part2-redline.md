@@ -64,7 +64,7 @@ And because it's built for production use, a slow or misbehaving plugin can neve
 
 ## What this means in practice
 
-When someone sends digital cash across Telcoin Network, here's the shape of what's happening: the transaction gets broadcast to the network, the validator set reaches consensus on including it and in what order, and that new state gets propagated out to relay nodes, wallets, and applications that need to know about it. All of that happens in the background, in seconds, whether the person sending it is on a laptop or a low-end phone on a patchy mobile connection in a country most crypto infrastructure was never built to serve.
+When someone sends digital cash across Telcoin Network, here's ~~the shape of~~ what's happening: the transaction gets broadcast to the network, the validator set reaches consensus on including it and in what order, and that new state gets propagated out to relay nodes, wallets, and applications that need to know about it. All of that happens in the background, in seconds, whether the person sending it is on a laptop or a low-end phone on a patchy mobile connection in a country most crypto infrastructure was never built to serve.
 
 That's the job the architecture is doing. Not speed for its own sake, and not decentralization as a slogan, but a specific, deliberate structure built to make a compliant, trustworthy, mobile-first payments network actually work.
 

@@ -8,7 +8,7 @@ Send $200 to family in another country and you'll lose a chunk of it before it a
 
 Telcoin started with a simple bet: mobile money and blockchain rails, put together properly, could fix this. Not "improve it slightly." Fix it. Send value the way you send a text message, at a cost close to zero, settled in seconds, without a bank branch in the middle taking its cut.
 
-That bet needed infrastructure that didn't exist yet. So we built it.
+That bet needed infrastructure that didn't exist yet. ~~So~~ we built it.
 
 ## Why not just use an existing chain
 
@@ -25,7 +25,7 @@ None of the existing chains were built with that combination of constraints in m
 
 ## What Telcoin Network actually is
 
-At a high level, it's a blockchain network run by a decentralized set of validators, designed specifically to power Telcoin's digital cash and remittance products alongside third-party financial applications. It's the settlement layer underneath everything: the place where a transaction actually clears, whether that's a person sending money abroad or a developer building a lending product on top.
+~~At a high level, it's~~ **[ADDED: It's]** a blockchain network run by a decentralized set of validators, designed specifically to power Telcoin's digital cash and remittance products alongside third-party financial applications. It's the settlement layer underneath everything: the place where a transaction actually clears, whether that's a person sending money abroad or a developer building a lending product on top.
 
 It sits inside a wider ecosystem. Telcoin Association and Telcoin Autonomous Ops steward the protocol and its governance. Telcoin Digital Cash operates the fiat-backed digital cash that runs on the network. The network itself is the shared foundation all of that depends on: the validators producing blocks, the nodes keeping the system honest, the infrastructure that has to stay up whether ten people are using it or ten million.
 
@@ -45,7 +45,7 @@ A validator set of telcos gets you a compliant, globally distributed network. It
 
 TDAB is the regulated bank that connects Telcoin Network to the traditional financial system. It's what lets the network issue stablecoins that are ~~actually backed, actually redeemable, and actually compliant~~ **[ADDED: backed, redeemable, and compliant]** — rather than a synthetic token with a promise attached to it. Those stablecoins are what move through the network for remittances and everyday transactions: digital cash with a real bank standing behind it, deployed on infrastructure the MNOs are validating.
 
-Put the two pieces together and the picture is complete. MNOs provide the compliant, globally distributed rails. TDAB provides the regulated money that runs on those rails. Neither one works as well without the other.
+~~Put the two pieces together and the picture is complete.~~ MNOs provide the compliant, globally distributed rails. TDAB provides the regulated money that runs on those rails. Neither one works as well without the other.
 
 ## Where this series goes from here
 
