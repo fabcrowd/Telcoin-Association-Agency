@@ -1008,6 +1008,53 @@ Technical pipeline for TANIP and TELxIP reward distribution:
 - TANIP-1 staker incentives paused as of Period 26
 - TELx liquidity rewards remain active through Uniswap v4 hook implementation
 
+### Additional Technical Details (from deep repo analysis)
+
+**Dependency versions (July 2026):**
+- Reth v1.11.3 (execution layer)
+- Alloy 1.6.3 (EVM types)
+- libp2p 0.56.0 (Gossipsub pub/sub + Kademlia DHT for peer discovery)
+- blst 0.3.14 (BLS signatures)
+- tonic 0.13 (gRPC), Axum 0.8.6 (HTTP server), rayon (parallel CPU tasks)
+- tokio 1.44 (async runtime)
+- OpenTelemetry 0.31.0 (distributed tracing)
+
+**BFT Quorum**: 2/3+1 of the validator committee must certify each batch before it enters the DAG.
+
+**Custom EVM Precompiles (net-new details):**
+- BLS proof-of-verification implemented as an EVM precompile (not a deployed contract) — enables efficient on-chain BLS key validation without contract execution gas overhead
+- Telcoin token operations precompile (specific to Telcoin Network)
+- WorkerConfigs read via EVM staticcall during block building — on-chain config doesn't incur state write cost
+
+**Trustless Sync Architecture (dual mini-chains):**
+Two parallel metadata chains enable any node to sync trustlessly from genesis knowing only the genesis committee:
+- **Epoch Chain**: `EpochHeader` records — epoch ID, current and next committee public keys, execution state hash, consensus output hash; signed by outgoing committee at each epoch transition
+- **Consensus Chain**: `ConsensusHeader` records — parent hash, incrementing numbers, committed sub-DAG references
+
+Three-stage trustless sync: verify epoch records sequentially → verify consensus headers in parallel → execute consensus outputs sequentially to rebuild state. No trust in peers required.
+
+**Worker-Gateway Binary**: A dedicated stateless reverse proxy (`bin/worker-gateway`) — a separate binary in the workspace (not embedded in the main node). Forwards full JSON-RPC surface (`eth_*`, `net_*`, `web3_*`, `tn_*`) to workers. Exposes liveness/readiness endpoints for container orchestration, includes rate limiting and health-gated traffic.
+
+**ExEx named types**: `TnExExContext`, `TnExExNotification` (enum: `ChainExecuted` | `Lagged`), `TnExExEvent`, `TnExExManager`, `TnExExManagerHandle`, `ReplayStream`, `ExExInstallFn`
+
+**Engine backpressure**: Execution engine maintains a bounded queue of max 8 `ConsensusOutput` items — prevents execution from falling too far behind consensus under burst load.
+
+**TELxIncentivesHook**: TELx liquidity incentives on the application layer are implemented as a custom Uniswap v4 hook (`TELxIncentivesHook`), not a standalone staking contract — incentives integrated directly into swap routing.
+
+**Bridge delay eliminated**: The original TEL Interchange contract had a 7-day recoverable delay. Removed. LayerZero V2 OFT enables near-instant cross-chain TEL transfers.
+
+**CREATE3 factory**: `0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed` — Safe address prepended to salts so only the authorized Safe can deploy at any given deterministic address.
+
+**Development progress**: 93.8% complete as of July 3, 2026 (from roadmap site)
+
+**Audit posture (July 2026)**: 0 public findings across all severity categories (critical, high, medium, low, informational). 30+ issues resolved in a two-week sprint.
+
+**Contact emails**: security@telcoin.org (vulnerability disclosure, 48h ACK / 5-day assessment SLA) · devs@telcoin.org (developer inquiries) · grant@telcoin.org (MNO validator inquiries)
+
+**Roadmap site tech**: Vite + React + TypeScript + TailwindCSS, deployed to GitHub Pages via `tn-roadmap` repo.
+
+**ExEx developer examples**: `examples/exex-indexer`, `examples/exex-lifecycle` (shipped in the main repo)
+
 ---
 
 ## 13. MARKETING ANGLES UNLOCKED BY GOVERNANCE DOCS
