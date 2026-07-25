@@ -48,6 +48,17 @@ If any claim belongs to Holdings: remove it, add entity attribution, or flag `[C
 
 ---
 
+## Personal vs. Official Content — Standing Rule (added 2026-07-25)
+
+When the user asks for a tweet (or any social post), **always ask first**: personal account or @telcoinTAO?
+
+- **Personal account**: Brand Guardian disengaged. No entity scope restrictions, no tone policy, no Neutral Authority prompt requirement. User's voice, user's opinions. Price commentary, token fundamentals, personal takes — all permitted.
+- **@telcoinTAO (official)**: Full brand policy applies. Entity scope, tone rules, image mandate, Neutral Authority CTAs, all standing editorial directives.
+
+Never assume. Ask every time unless context makes it unambiguous (e.g. user says "tweet for the account" or pastes a draft with @telcoinTAO attribution).
+
+---
+
 ## Standing Decisions (never override without user instruction)
 
 - **Pre-meeting council notice format (all councils)**: Bulleted agenda format. List ALL agenda items exactly as provided — do not collapse, summarize, or omit any item. No speaker names. Footer link = youtube.com/@TelcoinTAO. Observation CTA = "Observe via @TelcoinTAO on X or Google Meet." (use Discord if that is the only stream). Character limit is not a constraint. Reference pattern: P&T Council #34 notice, 2026-03-25.
