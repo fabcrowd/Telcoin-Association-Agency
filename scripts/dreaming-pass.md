@@ -63,7 +63,14 @@ find campaign/execution -maxdepth 1 -type d -name "????-??-??" | sort
 
 If `.last-dream` exists: process only folders dated AFTER that timestamp.
 If `.last-dream` does not exist: process all folders in `campaign/execution/`.
-If no new folders exist since last dream: write "Memory is current — no new sessions to process." and stop.
+If no new folders exist since last dream:
+```bash
+date -u +%Y-%m-%dT%H:%M:%SZ > campaign/research/.last-dream
+git add campaign/research/.last-dream
+git commit -m "Dreaming pass $(date -u +%Y-%m-%d): no new sessions — marker updated"
+git push origin claude/campaign-iLgt5
+```
+Report: "Memory is current — no new sessions to process." and stop. **Do not skip this commit. The marker must be written on every exit path.**
 
 Note the date range of sessions you will process.
 
