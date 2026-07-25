@@ -13,6 +13,35 @@
 
 ---
 
+### Lesson 10 — Content format: clean prose, no markdown headers inside post bodies
+
+**Date**: 2026-07-25
+**Session**: claude/campaign-iLgt5
+
+**What was produced**:
+A personal tweet about TEL staking mechanics drafted with heavy markdown headers (`**Validators**`, `**Liquidity miners**`, etc.) and a "The gas loop:" section header — structuring a standalone post like a document outline.
+
+**What the user said**:
+"Look at the examples on how things should be written. You should have a newsletter example. You'll want to write to memory these items."
+
+**What was changed**:
+- Reviewed Content OS DOCX in full — all post examples use clean prose paragraphs, no markdown headers inside the post body
+- The ~500-char official posts: 3-4 short prose paragraphs, no internal headers, one conversation prompt at end
+- The longform (1,600+ words): section headers are appropriate because it's a structured article for Medium/X Long-Form
+- Personal long-form analytical tweets: clean prose paragraphs, no headers. Headers fragment analytical writing into a list of buckets instead of building an argument
+- Created `content/newsletter-format.md` as a missing format reference
+
+**Rule derived**:
+Never use markdown headers (`##`, `**Section:**`) inside a social post, tweet, or personal tweet body — regardless of length. Headers are for documents and structured articles only. Long-form analytical writing uses prose paragraphs that flow from one to the next, building argument rather than listing categories. If the content is genuinely document-length (1,600+ words for Medium/forum), section headers are appropriate. A tweet — even a long one — is not a document.
+
+The reference hierarchy:
+- Single tweet (~500 chars): clean prose, 3-4 short paragraphs, conversation prompt (official) or statement close (personal)
+- Thread (14+ tweets): each tweet is a clean prose unit; no headers within a tweet
+- Long-form article (1,600+ words, Medium/forum): section headers appropriate
+- Newsletter: dedicated format in `content/newsletter-format.md`
+
+---
+
 ### Lesson 9 — Council meeting reminder post format
 
 **Date**: 2026-04-01
@@ -256,6 +285,7 @@ Before drafting any post for @telcoinTAO, run the entity check: "Is every claim 
 | 7 | Block explorer references | Never reference telscan.io or any specific block explorer URL in published content. Use generic language until mainnet explorer is officially confirmed. |
 | 8 | Fact verification ownership | Agents verify technical claims via web search before flagging as [CONFIRM]. [CONFIRM] is only for information that cannot be found publicly. Never push verifiable facts back to the user. |
 | 9 | Council meeting reminder format | Use the canonical format: council name + date/times, agenda bullets (no presenters), listen-in links (X + YouTube), next meetings. No deviations. |
+| 10 | Content format — no headers in posts | Never use markdown headers inside a tweet or post body. Clean prose paragraphs only. Headers are for long-form articles (1,600+ words). See `content/newsletter-format.md` for newsletter format. |
 
 ---
 
