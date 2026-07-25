@@ -65,9 +65,12 @@ If `.last-dream` exists: process only folders dated AFTER that timestamp.
 If `.last-dream` does not exist: process all folders in `campaign/execution/`.
 If no new folders exist since last dream:
 ```bash
+SESSION_URL="https://claude.ai/code/${CLAUDE_CODE_REMOTE_SESSION_ID/cse_/session_}"
 date -u +%Y-%m-%dT%H:%M:%SZ > campaign/research/.last-dream
 git add campaign/research/.last-dream
-git commit -m "Dreaming pass $(date -u +%Y-%m-%d): no new sessions — marker updated"
+git commit -m "Dreaming pass $(date -u +%Y-%m-%d): no new sessions — marker updated
+
+$SESSION_URL"
 git push origin claude/campaign-iLgt5
 ```
 Report: "Memory is current — no new sessions to process." and stop. **Do not skip this commit. The marker must be written on every exit path.**
@@ -171,10 +174,14 @@ date -u +%Y-%m-%dT%H:%M:%SZ > campaign/research/.last-dream
 
 ### Step 6 — Commit and Push
 
+Build the session URL from the environment — do not use the hardcoded URL in CLAUDE.md, which belongs to the human working session, not this automated pass:
+
 ```bash
+SESSION_URL="https://claude.ai/code/${CLAUDE_CODE_REMOTE_SESSION_ID/cse_/session_}"
 git add campaign/ tasks/
-git commit -m "Dreaming pass [YYYY-MM-DD]: memory consolidated from [N] sessions ([date-range])"
-# Append session URL per CLAUDE.md protocol
+git commit -m "Dreaming pass $(date -u +%Y-%m-%d): memory consolidated from [N] sessions ([date-range])
+
+$SESSION_URL"
 git push origin claude/campaign-iLgt5
 ```
 
