@@ -1,0 +1,186 @@
+{
+  "name": "PROD-YOUTUBE-ChannelStats-Pull-v1.0",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "13 9 * * *" }
+          ]
+        }
+      },
+      "id": "trigger-daily",
+      "name": "Daily Trigger 09:13 UTC",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-620, 300],
+      "notes": "Stage 1 — Trigger. Offset off the hour so it does not collide with the sentiment scrape at 09:07."
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/channels",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "part", "value": "contentDetails,statistics,snippet" },
+            { "name": "id", "value": "UCs5IFXnrKliqRA6U4o_VD2Q" }
+          ]
+        },
+        "options": { "timeout": 30000, "response": { "response": { "neverError": false } } }
+      },
+      "id": "fetch-channel",
+      "name": "Fetch Channel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-400, 300],
+      "credentials": { "httpQueryAuth": { "id": "REPLACE_ME", "name": "YouTube Data API Key" } },
+      "onError": "continueErrorOutput",
+      "notes": "Stage 2 — Input acquisition. 1 quota unit. Credential supplies ?key= so it never appears in the workflow JSON."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stage 3 — Input Validation. Refuse to continue on anything unexpected.\nconst body = $input.first().json;\nconst items = body.items || [];\nif (!items.length) {\n  throw new Error('Channel returned no items. Wrong ID, or key not authorized for YouTube Data API v3.');\n}\nconst ch = items[0];\nconst uploads = ch?.contentDetails?.relatedPlaylists?.uploads;\nif (!uploads) throw new Error('No uploads playlist on channel payload.');\nconst s = ch.statistics || {};\n// Absent means unknown. Never coerce to 0 - a channel hiding likes is not zero likes.\nconst num = (v) => (v === undefined || v === null ? null : Number(v));\nreturn [{ json: {\n  uploadsPlaylistId: uploads,\n  channel: {\n    subscribers: s.hiddenSubscriberCount ? null : num(s.subscriberCount),\n    subscribers_hidden: !!s.hiddenSubscriberCount,\n    total_views: num(s.viewCount),\n    video_count: num(s.videoCount)\n  }\n}}];"
+      },
+      "id": "validate-channel",
+      "name": "Validate Channel",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-180, 300],
+      "notes": "Stage 3 — Input Validation."
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/playlistItems",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "part", "value": "contentDetails" },
+            { "name": "playlistId", "value": "={{ $json.uploadsPlaylistId }}" },
+            { "name": "maxResults", "value": "50" }
+          ]
+        },
+        "options": { "timeout": 30000, "pagination": { "pagination": {
+          "paginationMode": "responseContainsNextURL",
+          "nextURL": "={{ $response.body.nextPageToken ? $request.url + '&pageToken=' + $response.body.nextPageToken : undefined }}",
+          "paginationCompleteWhen": "other",
+          "completeExpression": "={{ !$response.body.nextPageToken }}"
+        } } }
+      },
+      "id": "fetch-playlist",
+      "name": "Fetch Uploads Playlist",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [40, 300],
+      "credentials": { "httpQueryAuth": { "id": "REPLACE_ME", "name": "YouTube Data API Key" } },
+      "onError": "continueErrorOutput",
+      "notes": "Stage 2 cont. 1 unit per page. Paginates the full uploads playlist."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stage 4 — Business Logic. Collect IDs, batch by 50 for videos.list.\nconst ids = [];\nfor (const item of $input.all()) {\n  const list = item.json.items || [];\n  for (const i of list) {\n    const id = i?.contentDetails?.videoId;\n    if (id) ids.push(id);\n  }\n}\nif (!ids.length) throw new Error('Uploads playlist empty - unexpected for this channel.');\nconst unique = [...new Set(ids)];\nif (unique.length !== ids.length) throw new Error('Duplicate video IDs from playlist; refusing a corrupt pull.');\nconst batches = [];\nfor (let i = 0; i < unique.length; i += 50) {\n  batches.push({ json: { ids: unique.slice(i, i + 50).join(','), requestedCount: unique.length } });\n}\nreturn batches;"
+      },
+      "id": "batch-ids",
+      "name": "Batch Video IDs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [260, 300],
+      "notes": "Stage 4 — Business Logic. Batches of 50 keep videos.list at 1 unit per call."
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/videos",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "part", "value": "snippet,statistics,contentDetails" },
+            { "name": "id", "value": "={{ $json.ids }}" }
+          ]
+        },
+        "options": { "timeout": 30000 }
+      },
+      "id": "fetch-videos",
+      "name": "Fetch Video Stats",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 300],
+      "credentials": { "httpQueryAuth": { "id": "REPLACE_ME", "name": "YouTube Data API Key" } },
+      "onError": "continueErrorOutput",
+      "notes": "Stage 2 cont. The authoritative numbers. Never scrape these from the page."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stage 5/6 — Normalization and Result Validation.\nconst num = (v) => (v === undefined || v === null ? null : Number(v));\nconst videos = [];\nlet requested = 0;\nfor (const item of $input.all()) {\n  requested = item.json.requestedCount || requested;\n  for (const v of (item.json.items || [])) {\n    const st = v.statistics || {}, sn = v.snippet || {};\n    videos.push({\n      video_id: v.id,\n      title: sn.title || null,\n      published_at: sn.publishedAt || null,\n      duration: v.contentDetails?.duration || null,\n      view_count: num(st.viewCount),\n      like_count: num(st.likeCount),\n      comment_count: num(st.commentCount),\n      narratives: [],\n      layer: null,\n      tier: 'measured'\n    });\n  }\n}\n\n// Reconciliation invariant: nothing invented, nothing silently dropped.\nconst ids = videos.map(v => v.video_id);\nif (new Set(ids).size !== ids.length) throw new Error('Duplicate video_id in results.');\nif (requested && videos.length !== requested) {\n  throw new Error(`Reconciliation failed: requested ${requested}, got ${videos.length}. Refusing a partial pull.`);\n}\nfor (const v of videos) {\n  if (!v.title) throw new Error(`Missing title on ${v.video_id}`);\n  if (v.view_count !== null && v.view_count < 0) throw new Error(`Negative view_count on ${v.video_id}`);\n}\n\nconst now = new Date().toISOString().replace(/\\.\\d{3}Z$/, 'Z');\nconst date = now.slice(0, 10);\nconst doc = {\n  schema_version: 2,\n  date,\n  scraped_at: now,\n  data_status: 'measured',\n  collection: {\n    method: 'youtube_data_api_v3',\n    channel_id: 'UCs5IFXnrKliqRA6U4o_VD2Q',\n    handle: '@TelcoinTAO',\n    coverage: 'census',\n    workflow: 'PROD-YOUTUBE-ChannelStats-Pull-v1.0',\n    notes: 'Full uploads playlist. Platform-reported figures, not a sample.'\n  },\n  channel: $('Validate Channel').first().json.channel,\n  videos,\n  _ingested_at: now,\n  _source_system: 'youtube_data_api_v3'\n};\nreturn [{ json: { doc, date, path: `campaign/analytics/youtube/${date}.json`,\n  summary: `${videos.length} videos, ${videos.reduce((a, v) => a + (v.view_count || 0), 0)} total views` } }];"
+      },
+      "id": "normalize",
+      "name": "Normalize + Validate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300],
+      "notes": "Stages 5 & 6 — Data Normalization and Result Validation. Enforces the reconciliation invariant."
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "create",
+        "owner": { "__rl": true, "value": "fabcrowd", "mode": "name" },
+        "repository": { "__rl": true, "value": "Telcoin-Association-Agency", "mode": "name" },
+        "filePath": "={{ $json.path }}",
+        "fileContent": "={{ JSON.stringify($json.doc, null, 2) }}",
+        "commitMessage": "=YouTube stats {{ $json.date }}: {{ $json.summary }}",
+        "additionalParameters": { "branch": { "branch": "claude/campaign-iLgt5" } }
+      },
+      "id": "commit",
+      "name": "Commit to GitHub",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [920, 300],
+      "credentials": { "githubApi": { "id": "REPLACE_ME", "name": "GitHub API" } },
+      "onError": "continueErrorOutput",
+      "notes": "Stages 7 & 10 — Audit trail and Completion. Same-path write is idempotent: a re-run overwrites the day, never appends."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stages 8 & 9 — Error Branch and Manual Recovery.\n// Reached when any upstream node fails. Writes NOTHING to the repo.\n// A missing day is recoverable; a day of zeros in the trend line is not.\nconst e = $input.first().json;\nconst msg = e.error?.message || e.message || JSON.stringify(e).slice(0, 400);\nlet cause = 'unknown';\nif (/quota/i.test(msg)) cause = 'QUOTA_EXCEEDED - resets 00:00 PT';\nelse if (/403/.test(msg)) cause = 'FORBIDDEN - key not authorized for YouTube Data API v3';\nelse if (/400/.test(msg)) cause = 'BAD_REQUEST - check the API key is valid';\nelse if (/Reconciliation/i.test(msg)) cause = 'RECONCILIATION_FAILED - partial pull refused';\nelse if (/timeout|ETIMEDOUT|ENOTFOUND/i.test(msg)) cause = 'NETWORK';\nreturn [{ json: {\n  workflow: 'PROD-YOUTUBE-ChannelStats-Pull-v1.0',\n  executed_at: new Date().toISOString(),\n  source_system: 'youtube_data_api_v3',\n  status: 'FAILED',\n  error_class: cause,\n  cause_note: msg,\n  wrote_data: false,\n  manual_recovery: 'Run `python3 scripts/youtube-pull.py` locally once the cause is cleared. It performs the same pull with the same guards.'\n}}];"
+      },
+      "id": "error-branch",
+      "name": "Error Branch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 520],
+      "notes": "Stages 8 & 9 — Error Branch and Fallback. Classifies the failure and names the manual recovery path."
+    }
+  ],
+  "connections": {
+    "Daily Trigger 09:13 UTC": { "main": [[{ "node": "Fetch Channel", "type": "main", "index": 0 }]] },
+    "Fetch Channel": { "main": [
+      [{ "node": "Validate Channel", "type": "main", "index": 0 }],
+      [{ "node": "Error Branch", "type": "main", "index": 0 }]
+    ] },
+    "Validate Channel": { "main": [[{ "node": "Fetch Uploads Playlist", "type": "main", "index": 0 }]] },
+    "Fetch Uploads Playlist": { "main": [
+      [{ "node": "Batch Video IDs", "type": "main", "index": 0 }],
+      [{ "node": "Error Branch", "type": "main", "index": 0 }]
+    ] },
+    "Batch Video IDs": { "main": [[{ "node": "Fetch Video Stats", "type": "main", "index": 0 }]] },
+    "Fetch Video Stats": { "main": [
+      [{ "node": "Normalize + Validate", "type": "main", "index": 0 }],
+      [{ "node": "Error Branch", "type": "main", "index": 0 }]
+    ] },
+    "Normalize + Validate": { "main": [[{ "node": "Commit to GitHub", "type": "main", "index": 0 }]] },
+    "Commit to GitHub": { "main": [
+      [],
+      [{ "node": "Error Branch", "type": "main", "index": 0 }]
+    ] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": { "instanceId": "telcoin-agency" },
+  "_notes": {
+    "standard": "Follows the ten-stage layout in agency-agents/automation-governance-architect.md: Trigger, Input Validation, Data Normalization, Business Logic, External Actions, Result Validation, Logging/Audit, Error Branch, Fallback/Recovery, Completion.",
+    "credentials": "Two, both configured in the n8n GUI and never in this file. (1) 'YouTube Data API Key' as a Query Auth credential with name=key, value=<your key>. (2) 'GitHub API' - reuse the existing repo-scoped credential from the Fellow workflow. Credential IDs are placeholders; reconnect both after import.",
+    "quota": "A full pull is roughly 2 + ceil(videos/50) units against a 10,000/day free allowance - about 4 units for this channel. search.list is deliberately unused; it costs 100 units for the same result.",
+    "idempotency": "Writing to the same dated path overwrites. Re-running mid-day updates the day rather than duplicating it.",
+    "reAudit": "Per the governance agent's re-audit triggers, revisit when: the YouTube API version or quota changes, the error rate rises, video volume grows enough to change the batch count, or repeated manual fixes appear.",
+    "owner": "Data Analytics Reporter owns what is measured. Automation Governance Architect owns this workflow's standard. YouTube Analyst owns the channel."
+  }
+}

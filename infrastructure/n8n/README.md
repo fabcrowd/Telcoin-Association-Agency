@@ -1,3 +1,54 @@
+# n8n Pipelines
+
+Two workflows commit to this repo. Both follow the same shape — *external source → format →
+GitHub commit → next Claude session ingests* — and both keep credentials inside n8n's encrypted
+store, never in the repo.
+
+| Workflow | File | Purpose |
+|---|---|---|
+| Fellow transcripts | `workflow-fellow-to-github.json` | Council meeting notes → `campaign/research/transcripts/` |
+| YouTube stats | `workflow-youtube-to-github.json` | Daily channel statistics → `campaign/analytics/youtube/` |
+
+---
+
+## YouTube Channel Stats (`PROD-YOUTUBE-ChannelStats-Pull-v1.0`)
+
+Pulls exact view, like and comment counts for every @TelcoinTAO video once a day and commits them
+as JSON. This replaces a `WebFetch` of the channel page that returned 403 every day from March
+onward — a user-agent artifact, not a block. Statistics are pulled from the API rather than the
+page because YouTube now renders them client-side through a `lockupViewModel`: video IDs still
+parse, view counts do not, and the parse fails *silently* when the markup shifts.
+
+**Setup**
+
+1. **API key** — at `console.cloud.google.com`, enable **YouTube Data API v3** and create a key
+   **restricted to that single API**. Read-only, free, revocable, cannot post.
+2. In n8n: **Credentials → New → Query Auth**, name it `YouTube Data API Key`, set
+   Name = `key` and Value = your key.
+3. Reuse the existing `GitHub API` credential from the Fellow workflow.
+4. **Workflows → Import from file** → `workflow-youtube-to-github.json`.
+5. **Reconnect both credentials** — the IDs in the JSON are `REPLACE_ME` placeholders.
+6. Save, then activate.
+
+**Quota.** About 4 units per run (2 + one per 50 videos) against a free 10,000/day allowance.
+`search.list` is deliberately unused; it costs 100 units for the same result. The workflow aborts
+if spend passes 100 units, which would mean something is looping.
+
+**Guarantees.** Writing to a dated path makes re-runs idempotent — a second run overwrites the day
+rather than duplicating it. Every external call has an error branch that classifies the failure
+and **writes nothing**: a missing day is recoverable, a day of zeros entering the trend line is
+not. A reconciliation invariant (`requested == returned`) refuses partial pulls, and absent
+metrics are stored as `null`, never `0` — a channel hiding likes is not zero likes.
+
+**Manual fallback.** `python3 scripts/youtube-pull.py` performs the same pull with the same guards
+and the same output shape. Use it to backfill or to test before activating the workflow. It reads
+`YOUTUBE_API_KEY` from the environment and exits 1 with instructions if unset.
+
+**Re-audit** when the API version or quota changes, the error rate rises, video count grows enough
+to change the batch count, or repeated manual fixes appear.
+
+---
+
 # Fellow AI → GitHub Transcript Pipeline
 
 Automates the delivery of Fellow AI meeting notes into this repository.

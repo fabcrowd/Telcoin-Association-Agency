@@ -71,12 +71,29 @@ Save to `campaign/research/intel-x-[YYYY-MM-DD].md`. Total tool calls: 3.
 ### 0B — YouTube Stream & Video Monitor
 **Run directly in main context — do NOT spawn a subagent.**
 
-Execute ONE WebFetch: `https://www.youtube.com/@TelcoinTAO/videos`
+Run the API pull, not a WebFetch:
 
-Check for:
+```bash
+python3 scripts/youtube-pull.py
+```
+
+This writes `campaign/analytics/youtube/[YYYY-MM-DD].json` with exact view, like and comment
+counts. If `YOUTUBE_API_KEY` is unset the script exits 1 with instructions and writes nothing —
+that is correct behaviour. Note it in the briefing and continue; do not fall back to scraping.
+
+Read the resulting JSON for:
 - Any new videos or streams in the last 7 days (title, date, format)
-- Upcoming livestreams scheduled
+- View/like/comment counts per video — real numbers, not estimates
 - If a new council recording is up: flag it as repurpose priority
+
+**Why this replaced the old WebFetch.** This step previously ran
+`WebFetch https://www.youtube.com/@TelcoinTAO/videos` and logged a 403 every day from March
+onward — seven `intel-youtube-*` files record "channel unreachable." That diagnosis was wrong: the
+403 was a user-agent artifact, and the channel returns 200 to a normal browser UA. The deeper
+reason not to go back to fetching the page is that YouTube now renders statistics through a
+client-side `lockupViewModel`; video IDs still parse, but view counts do not, and the parse fails
+*silently* when the markup shifts. Silent failure is what produced the data quarantined in
+`campaign/analytics/sentiment/_seed-synthetic/`.
 
 Cross-reference `campaign/AGENCY-MEMORY.md` YouTube Content Log — skip anything already logged as repurposed.
 
