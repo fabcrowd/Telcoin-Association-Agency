@@ -42,26 +42,35 @@ Search queries (run each separately):
 - `"Telcoin Network" site:twitter.com OR site:x.com`
 - `@telcoinTAO`
 
-For each result found, record:
-- Post text (first 200 chars)
-- Estimated engagement weight (1.0 = average, 2.0+ = high engagement based on visible reply/RT signals)
-- Sentiment classification (see Sentiment Rules below)
-- Time of post (UTC hour if visible)
+**Record one row in `posts[]` per result.** Aggregate counts are derived from these rows at the
+end — never counted separately, so the totals can always be traced back to the records that
+produced them.
+
+Per post, capture what is actually visible and set everything else to `null`:
+- `text_excerpt` — first ~200 chars
+- `author_handle` — if the result exposes it
+- `posted_at` + `posted_hour_known` — only if a real timestamp is shown. **Never infer an hour.**
+- `metrics` — likes/reposts/replies only if literal numbers are visible. Search snippets almost
+  never show these, so expect `null` and set `metrics_tier: "unavailable"`. A guess is not a
+  metric; the previous version's "estimated engagement weight" is abolished.
+- `sentiment` + `sentiment_confidence` — mark `low` when the snippet is too short to judge
+- `narratives[]` — see the taxonomy, below
+- `is_question` / `question_text` — see Step 3b
 
 **Sentiment Rules:**
 - **Positive**: price optimism, milestone celebration, technical achievement praise, project support, "bullish", buying signals, governance approval
 - **Negative**: price frustration, FUD, project criticism, "wen", "dead", "dump", sell signals, governance dissatisfaction
 - **Neutral**: factual updates, news shares, technical questions, price observation without opinion, governance observation
 
-**Topic Tags** — tag each post with all that apply:
-- `mainnet` — references to mainnet launch, launch timing, Adiri testnet, hardening
-- `governance` — council meetings, proposals, votes, TELIPs, TANIPs
-- `price` — price action, market cap, exchange listings, buy/sell
-- `staking` — TAN staking, TANIP, reward distribution, staking mechanics
-- `validators` — MNO validators, GSMA, ConsensusNFT, validator onboarding
-- `tel_upgrade` — TEL token upgrade, 18 decimals, migration
-- `layerzero` — bridge, cross-chain, LayerZero V2
-- `telx` — TELx liquidity, liquidity mining, Merkl, pools
+**Narrative tags** — read `campaign/analytics/NARRATIVE-TAXONOMY.json` and tag each post with
+every narrative it genuinely discusses. Match against each entry's `aliases`.
+
+Do not hardcode the tag list here. The taxonomy file is the single source of truth, and it
+carries policy the scraper must respect: entries with `publishable: false` (currently `price`
+and `banking`) are tracked for listening but never generate a recommendation to publish.
+
+Every post lands on at least one narrative. If nothing fits, use `other` — never drop a post.
+If `other` is climbing across days, the taxonomy needs a new entry.
 
 ---
 
@@ -74,7 +83,10 @@ Run WebSearch:
 
 Target subreddits: r/Telcoin, r/CryptoCurrency, r/CryptoMoonShots, r/altcoin
 
-For each result: post title, subreddit, sentiment, topic tags. Apply same sentiment rules as Step 1.
+Record `posts[]` rows exactly as in Step 1. Reddit search results usually DO expose a score and
+comment count — capture them as `metrics.score` and `metrics.comments` with
+`metrics_tier: "observed"`. This is currently the only platform where real engagement numbers
+are reachable without a paid API.
 
 ---
 
@@ -88,6 +100,47 @@ Run WebSearch (substitute the current year for `$YEAR` — do not hardcode it):
 Collect article titles and snippets from: CoinDesk, CoinTelegraph, Decrypt, The Block, Benzinga, Business Wire, PRNewswire, crypto news outlets.
 
 Exclude: results older than 7 days. Classify sentiment of headline + snippet.
+
+---
+
+## Step 3b — Question ledger
+
+Standing rule (`campaign/analytics/X-ANALYTICS-GUIDE.md:91`): *if the community is asking a
+question we haven't answered, it becomes content that day.* This step is what gives that rule a
+memory.
+
+For every captured post that asks something, set `is_question: true` and record `question_text`.
+Then fold it into the ledger:
+
+1. Read the most recent prior day's file and carry its `questions[]` forward.
+2. For each question found today, canonicalise it to its underlying ask — "wen mainnet", "any
+   date for launch?" and "when is mainnet going live" are all one entry, not three.
+3. If it matches an existing entry: increment `times_observed`, update `last_seen`. **Do not
+   create a duplicate** — recurrence is the whole point.
+4. If it is new: add it with `first_seen` = today, `status: "open"`.
+5. If a @telcoinTAO post has since answered it, set `status: "answered"`, `answered_at`, and
+   `answered_by_post_url`.
+6. Mark `out_of_scope` for questions the Association will not answer (Holdings products, price
+   predictions, validator names) so they stop resurfacing as content prompts.
+
+A question asked forty times over ninety days is a different object than one asked once. That
+distinction is invisible in prose intel files and is the reason this ledger exists.
+
+---
+
+## Step 3c — Share of voice
+
+Three additional WebSearch queries, for relative volume only:
+- `XRP remittance`
+- `Stellar XLM remittance`
+- `Celo mobile payments`
+
+Record the result volume for each alongside Telcoin's in `share_of_voice.raw_counts`.
+
+This is a **weak instrument** and must be labelled `derived`. Search result volume is a proxy for
+conversation, not a measurement of it. Report the series **indexed to 100 at its start** so the
+dashboard shows *change in relative share* — absolute share against XRP will always read as a
+rounding error and tells the reader nothing.
 
 ---
 
@@ -128,10 +181,30 @@ where a number came from. Store the counts; derive shares at render time.
 the leader is separated from second place by more than the sampling noise; otherwise write
 `null`.
 
-Save output to:
+Set `data_status: "measured"` and fill `collection{}` with the method, every query actually run,
+and the raw result count. That block is what makes each number auditable back to its source.
+
+Save output to `campaign/analytics/sentiment/$TODAY.json`, then **validate before continuing**:
+
 ```bash
-campaign/analytics/sentiment/$TODAY.json
+python3 - campaign/analytics/sentiment/$TODAY.json <<'PY'
+import json,sys
+d=json.load(open(sys.argv[1]))
+tax={n["id"] for n in json.load(open("campaign/analytics/NARRATIVE-TAXONOMY.json"))["narratives"]}
+c=d["composite"]
+hs=sum(int(v) for v in c["hour_distribution"].values())
+assert d["schema_version"]==2, "wrong schema version"
+assert hs==c["total_mentions"], f"hour buckets {hs} != total_mentions {c['total_mentions']}"
+assert set(d.get("narratives",{})) <= tax, f"unknown narrative: {set(d['narratives'])-tax}"
+assert c["n_classified"]>0 or c["total_mentions"]==0, "sentiment without a sample size"
+for p in d.get("posts",[]):
+    assert p["narratives"], f"untagged post {p['id']}"
+print("OK", d["date"], c["total_mentions"], "mentions,", len(d.get("posts",[])), "posts")
+PY
 ```
+
+If validation fails, fix the data — do not relax the check. The hour-bucket invariant is
+specifically what would have caught the fabricated data now quarantined in `_seed-synthetic/`.
 
 ---
 
@@ -142,13 +215,19 @@ Read all JSON files:
 ls campaign/analytics/sentiment/*.json | sort
 ```
 
-Compile all data into a single JavaScript constant. For each file, extract:
-- date
-- composite.sentiment_score
-- composite.activity_score
-- composite.total_mentions
-- composite.hour_distribution
-- composite.topic_scores
+Compile into a single JavaScript constant, **skipping any file whose `data_status` is not
+`"measured"`**. Per file, extract:
+- `date`
+- `composite.sentiment_score` and `composite.n_classified` (never one without the other)
+- `composite.total_mentions`, `composite.unique_authors`
+- `composite.hour_distribution` (including the `unknown` bucket)
+- `narratives{}`
+- `own_account{}` if present
+- `questions[]`
+- `share_of_voice{}`
+
+While fewer than 14 measured days exist, keep the dashboard in its "Collecting — day N" state
+and update the counter rather than plotting a trend line through a handful of points.
 
 Build the complete artifact HTML with all historical data embedded.
 
