@@ -104,9 +104,38 @@ All agents below are callable via the Agent tool with the exact `subagent_type` 
 **Example**:
 > "Search github.com/Telcoin-Association for documentation on how MNO validator onboarding works."
 
-### `Analytics Reporter`
-**File**: `agency-agents/support-analytics-reporter.md`
+### `Data Analytics Reporter`
+**File**: `agency-agents/data-analytics-reporter.md`
 **Use for**: Interpreting social metrics, campaign performance reports, council data summaries
+
+This is the Telcoin-configured analytics agent and the only definition of what @telcoinTAO
+measures — engagement rate targets, council-notice reach, LP series performance, the
+PERFORMANCE-LOG entry format, and the Association/Holdings entity boundary.
+
+Do **not** route to `agency-agents/support-analytics-reporter.md`. That is the generic upstream
+persona; it shares an identical `description` string but carries zero Telcoin KPIs, so invoking it
+silently produces analysis against the wrong yardstick.
+
+**It cannot build or run anything.** Its `tools:` line withholds Bash by design, so it defines
+*what* is measured, not *how* it is collected. For pipeline work — API pulls, CSV parsing,
+scheduled jobs — use `Data Engineer`, `API Tester`, or `Automation Governance Architect` below.
+
+### `Automation Governance Architect`
+**File**: `agency-agents/automation-governance-architect.md`
+**Use for**: Designing or reviewing any scheduled/automated data pull (n8n-first)
+
+Owns the standard for `infrastructure/n8n/` workflows: ten-stage node layout, the
+`[ENV]-[SYSTEM]-[PROCESS]-[ACTION]-v[MAJOR.MINOR]` naming convention, logging records, integration
+auth and token-lifecycle documentation, and the six-test baseline every integration must pass
+before it is called done.
+
+### `Data Engineer`
+**File**: `agency-agents/engineering-data-engineer.md`
+**Use for**: Building the pulls — schema contracts, idempotency, freshness tests, validation gates
+
+### `API Tester`
+**File**: `agency-agents/testing-api-tester.md`
+**Use for**: Proving an integration actually works against live responses before it ships
 
 ### `Feedback Synthesizer`
 **File**: `agency-agents/product-feedback-synthesizer.md`
@@ -164,7 +193,7 @@ All agents below are callable via the Agent tool with the exact `subagent_type` 
 **Weekly research + planning:**
 - Agent 1 (`Trend Researcher`): Competitive snapshot
 - Agent 2 (`Social Media Strategist`): Next week's calendar
-- Agent 3 (`Analytics Reporter`): Last week's performance summary
+- Agent 3 (`Data Analytics Reporter`): Last week's performance summary
 
 ---
 
