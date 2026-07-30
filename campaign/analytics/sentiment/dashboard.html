@@ -1,0 +1,226 @@
+<title>TEL Social Intelligence</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#090920;
+  --panel:#101029;
+  --panel-2:#14142f;
+  --border:#22224a;
+  --border-soft:#1b1b3d;
+  --ink:#dfe2ff;
+  --ink-dim:#9aa0cc;
+  --muted:#6a719f;
+  --tel:#14c8ff;
+  --royal:#3642b2;
+  --amber:#e0a33a;
+  --pos:#199e70;
+  --neg:#e66767;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 80% 50% at 50% -10%,rgba(54,66,178,.22),transparent 70%)}
+.wrap{max-width:1000px;margin:0 auto;padding:40px 20px 72px;display:flex;flex-direction:column;gap:28px}
+
+header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;
+  padding-bottom:24px;border-bottom:1px solid var(--border)}
+.brand{display:flex;flex-direction:column;gap:6px}
+h1{font-size:1.5rem;font-weight:700;letter-spacing:-.01em;color:#fff;text-wrap:balance}
+.sub{font-size:.82rem;color:var(--muted);font-family:var(--mono)}
+.status-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(224,163,58,.1);
+  border:1px solid rgba(224,163,58,.4);color:var(--amber);
+  padding:7px 14px;border-radius:999px;font-size:.75rem;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex:none}
+@media(prefers-reduced-motion:no-preference){
+  .dot{animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+}
+
+.notice{background:var(--panel);border:1px solid var(--border);
+  border-left:3px solid var(--amber);border-radius:6px;padding:24px 26px;
+  display:flex;flex-direction:column;gap:14px}
+.notice h2{font-size:1rem;font-weight:650;color:#fff;letter-spacing:-.005em}
+.notice p{font-size:.88rem;color:var(--ink-dim);max-width:68ch}
+.notice p strong{color:var(--ink);font-weight:600}
+
+.progress-block{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.progress-head{display:flex;justify-content:space-between;align-items:baseline;font-size:.78rem;
+  color:var(--muted);font-family:var(--mono);letter-spacing:.02em}
+.progress-head b{color:var(--tel);font-size:1.05rem;font-variant-numeric:tabular-nums}
+.track{height:6px;background:var(--panel-2);border:1px solid var(--border-soft);
+  border-radius:3px;overflow:hidden;display:flex;gap:2px;padding:1px}
+.track i{flex:1;background:var(--border);border-radius:1px}
+.track i.on{background:var(--tel)}
+
+h3.sec{font-size:.72rem;font-weight:650;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.12em;padding-bottom:10px;border-bottom:1px solid var(--border-soft)}
+
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:1px;
+  background:var(--border-soft);border:1px solid var(--border-soft);border-radius:6px;overflow:hidden}
+.tier{background:var(--panel);padding:18px 20px;display:flex;flex-direction:column;gap:7px}
+.tier-key{display:flex;align-items:center;gap:9px}
+.swatch{width:26px;height:14px;border-radius:2px;flex:none}
+.s-t1{background:var(--tel)}
+.s-t2{background:transparent;border:1.5px solid var(--tel)}
+.s-t3{background:repeating-linear-gradient(45deg,var(--royal) 0 3px,transparent 3px 6px);
+  border:1px solid var(--royal)}
+.s-t0{background:var(--panel-2);border:1px dashed var(--muted)}
+.tier-name{font-size:.73rem;font-weight:700;letter-spacing:.09em;font-family:var(--mono);color:var(--ink)}
+.tier p{font-size:.79rem;color:var(--muted);line-height:1.5}
+
+.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+.slot{background:var(--panel);border:1px solid var(--border-soft);border-radius:6px;
+  padding:18px 20px;display:flex;flex-direction:column;gap:8px;min-height:112px}
+.slot-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.slot h4{font-size:.88rem;font-weight:640;color:var(--ink)}
+.pend{font-size:.62rem;font-family:var(--mono);color:var(--muted);border:1px solid var(--border);
+  padding:2px 7px;border-radius:3px;letter-spacing:.06em;white-space:nowrap}
+.slot p{font-size:.79rem;color:var(--muted);line-height:1.5}
+.slot.lead{border-color:var(--royal);background:linear-gradient(var(--panel),var(--panel)) padding-box,
+  linear-gradient(150deg,var(--royal),transparent 60%) border-box;border:1px solid transparent}
+.slot.lead h4{color:var(--tel)}
+
+.method{background:var(--panel);border:1px solid var(--border-soft);border-radius:6px;padding:24px 26px;
+  display:flex;flex-direction:column;gap:18px}
+.method-row{display:flex;flex-direction:column;gap:5px}
+.method-row dt{font-size:.7rem;font-family:var(--mono);color:var(--tel);letter-spacing:.08em;
+  text-transform:uppercase}
+.method-row dd{font-size:.85rem;color:var(--ink-dim);max-width:70ch}
+.method-row dd b{color:var(--ink);font-weight:600}
+
+footer{font-size:.74rem;color:var(--muted);font-family:var(--mono);line-height:1.7;
+  padding-top:20px;border-top:1px solid var(--border-soft)}
+@media(max-width:620px){.wrap{padding:28px 16px 48px}h1{font-size:1.3rem}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>TEL Social Intelligence</h1>
+      <p class="sub">Telcoin Association &middot; community listening</p>
+    </div>
+    <span class="status-chip"><span class="dot"></span>Collecting &middot; day 0</span>
+  </header>
+
+  <section class="notice">
+    <h2>Collection restarted on verified data</h2>
+    <p>
+      This dashboard previously displayed fourteen days of readings that were <strong>generated
+      during development, not collected</strong>. They have been withdrawn and quarantined with a
+      full forensic record.
+    </p>
+    <p>
+      Three signatures confirmed it. Each file's hourly breakdown exceeded its own post count by
+      24&ndash;51%, so no file could be a true census of when posts appeared. Sentiment tracked
+      conversation volume at <strong>r&nbsp;=&nbsp;0.97</strong>, a coupling real communities do not
+      show &mdash; a busy day is not reliably a positive one. And all fourteen files carried an
+      identical collection timestamp. The cause was a single instruction in the collection script
+      telling it to spread posts evenly across the day whenever a timestamp was missing. That rule
+      is gone, replaced by an explicit <em>unknown</em> bucket.
+    </p>
+    <p>
+      Nothing is plotted until it is measured. The trend panels below stay empty until fourteen real
+      days accumulate, and the loader now refuses any file not marked as measured.
+    </p>
+    <div class="progress-block">
+      <div class="progress-head"><span>Verified days collected</span><b>0 / 14</b></div>
+      <div class="track">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="sec">How to read every number here</h3>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tier-key"><span class="swatch s-t1"></span><span class="tier-name">MEASURED</span></div>
+        <p>Reported by the platform's own analytics for an account we control. Our post impressions, engagements, link clicks.</p>
+      </div>
+      <div class="tier">
+        <div class="tier-key"><span class="swatch s-t2"></span><span class="tier-name">OBSERVED</span></div>
+        <p>Counts visible on a third-party post we actually saw. A sample of the conversation, never a census of it.</p>
+      </div>
+      <div class="tier">
+        <div class="tier-key"><span class="swatch s-t3"></span><span class="tier-name">DERIVED</span></div>
+        <p>Calculated from the two above by a stated formula. Always shown with a range or an approximation mark.</p>
+      </div>
+      <div class="tier">
+        <div class="tier-key"><span class="swatch s-t0"></span><span class="tier-name">UNAVAILABLE</span></div>
+        <p>Known gaps, drawn as gaps. An unknown is never quietly rendered as a zero.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="sec">Panels, once data exists</h3>
+    <div class="panels">
+      <div class="slot lead">
+        <div class="slot-top"><h4>Narrative ledger</h4><span class="pend">day 1</span></div>
+        <p>Each narrative in one row: what the community is discussing, against what we published and how far it travelled.</p>
+      </div>
+      <div class="slot lead">
+        <div class="slot-top"><h4>Open questions</h4><span class="pend">day 1</span></div>
+        <p>Questions the community keeps asking, how often, and how long each has gone unanswered.</p>
+      </div>
+      <div class="slot">
+        <div class="slot-top"><h4>Coverage gap</h4><span class="pend">day 7</span></div>
+        <p>Where community attention and our published output diverge, in either direction.</p>
+      </div>
+      <div class="slot">
+        <div class="slot-top"><h4>Narrative momentum</h4><span class="pend">day 14</span></div>
+        <p>Which subjects are rising, steady, or fading against the prior seven days.</p>
+      </div>
+      <div class="slot">
+        <div class="slot-top"><h4>Sentiment over time</h4><span class="pend">day 14</span></div>
+        <p>Daily positive share with its sample size. Thin days are shaded rather than drawn as confident points.</p>
+      </div>
+      <div class="slot">
+        <div class="slot-top"><h4>Who is talking</h4><span class="pend">day 7</span></div>
+        <p>Unique authors and concentration &mdash; whether a reading reflects a broad community or a handful of accounts.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="method">
+    <h3 class="sec">What this can and cannot see</h3>
+    <div class="method-row">
+      <dt>The hard limit</dt>
+      <dd>Impressions and reach describe <b>our own posts only</b>. For everyone else's posts we
+        report conversation volume from an observed sample. Link clicks and profile clicks on a
+        third party's post are not obtainable at any price, and are never estimated here.</dd>
+    </div>
+    <div class="method-row">
+      <dt>Sample, not census</dt>
+      <dd>Community collection runs on public search, which returns a portion of the conversation
+        rather than all of it. Every community figure carries its sample size. Treat direction and
+        change as meaningful; treat absolute totals as a floor.</dd>
+    </div>
+    <div class="method-row">
+      <dt>Sources</dt>
+      <dd>X/Twitter, Reddit, and crypto news outlets for community signal. Our own post performance
+        comes from X native analytics for @telcoinTAO.</dd>
+    </div>
+    <div class="method-row">
+      <dt>Classification</dt>
+      <dd>Each post is read and tagged for sentiment and subject against a fixed taxonomy. Subjects
+        the Association does not publish on, such as price, are tracked for listening and marked
+        accordingly &mdash; they never generate a recommendation to publish.</dd>
+    </div>
+    <div class="method-row">
+      <dt>Deliberately absent</dt>
+      <dd>No single composite score. A blended 0&ndash;10 number hides which input moved and cannot
+        be audited, and this page is read by people who will act on it.</dd>
+    </div>
+  </section>
+
+  <footer>
+    Telcoin Association &middot; Autonomous Ops<br>
+    Refreshed daily 09:07 UTC &middot; source records in <code>campaign/analytics/sentiment/</code><br>
+    Withdrawn data retained under <code>_seed-synthetic/</code> with full provenance.
+  </footer>
+</div>

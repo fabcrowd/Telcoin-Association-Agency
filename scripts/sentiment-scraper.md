@@ -80,8 +80,8 @@ For each result: post title, subreddit, sentiment, topic tags. Apply same sentim
 
 ## Step 3 — Scrape News
 
-Run WebSearch:
-- `Telcoin news 2024`
+Run WebSearch (substitute the current year for `$YEAR` — do not hardcode it):
+- `Telcoin news $YEAR`
 - `"TEL token" news`
 - `Telcoin blockchain`
 
@@ -97,16 +97,36 @@ Count totals across all collected posts. Compute:
 
 **sentiment_score** = (positive_count) / (positive_count + neutral_count + negative_count)
 - Clamp to 0.01–0.99
+- Always record `n` (the total classified) alongside it. A 0.70 from 7 posts and a 0.70 from
+  200 posts are different facts; the score is meaningless without its sample size.
 
-**activity_score** = normalize(total_mentions, 0, 120, 0, 10)
-- 120 = approximate historical max. If total > 120, score = 10.
+**activity_score** — REMOVED. It was normalized against an invented "historical max" of 120,
+which made it unitless and uninterpretable. Report `total_mentions` as a raw observed count
+with its collection method instead. Do not reintroduce a 0–10 composite.
 
-**hour_distribution** = count of posts by UTC hour (0–23). If hour not visible for a post, distribute evenly.
+**hour_distribution** = count of posts by UTC hour (0–23), plus an `"unknown"` bucket.
 
-**topic_scores** = for each topic tag, sum: 1.0 per mention + 0.5 per high-engagement post (weight ≥ 2.0) + 0.3 per Reddit post + 0.5 per news article.
-Clamp each to 0–10.
+Record a post's hour ONLY if the timestamp is actually visible. If it is not, increment
+`"unknown"`. Never estimate, interpolate, or distribute posts across hours — a manufactured
+hour grid is worse than an empty one. The sum of all buckets including `"unknown"` must equal
+`total_mentions` exactly; if it does not, the file is wrong and must not be written.
 
-**top_narrative** = topic with highest topic_score.
+Search results rarely expose timestamps, so expect `"unknown"` to dominate until a source with
+real timestamps (Reddit API) is wired in. That is the honest state and the dashboard renders it
+as such.
+
+**narrative counts** = for each narrative in `campaign/analytics/NARRATIVE-TAXONOMY.json`,
+record the raw count of posts tagged with it, split by platform, plus its own
+positive/neutral/negative tally and its unique-author count.
+
+Do not compute a weighted "topic score". The previous formula included a term
+(+0.5 per high-engagement post) that always evaluated to zero because engagement was never
+captured, and blending platform weights into a single float destroyed the ability to audit
+where a number came from. Store the counts; derive shares at render time.
+
+**top_narrative** = narrative with the highest community mention count. Record it only when
+the leader is separated from second place by more than the sampling noise; otherwise write
+`null`.
 
 Save output to:
 ```bash
@@ -130,8 +150,16 @@ Compile all data into a single JavaScript constant. For each file, extract:
 - composite.hour_distribution
 - composite.topic_scores
 
-Build the complete artifact HTML with all historical data embedded (see artifact template in
-`campaign/analytics/sentiment/ARTIFACT_TEMPLATE_NOTE.md`).
+Build the complete artifact HTML with all historical data embedded.
+
+**Do not author the artifact from scratch.** Fetch the current published artifact with WebFetch
+against ARTIFACT_URL, replace only the `RAW` data constant with the recompiled series, and
+republish. The chart code, styling, and panel structure carry forward unchanged. If the fetch
+fails, the artifact source of record is the last version committed under
+`campaign/analytics/sentiment/dashboard.html`.
+
+**Never plot a file whose `data_status` is not `"measured"`.** Files marked `seed_synthetic` or
+`partial` are excluded from the series and counted only in the "days collected" tally.
 
 Call the Artifact tool to update the artifact at ARTIFACT_URL (see top of this file).
 The artifact title is "TEL Social Intelligence" and favicon is "📊".

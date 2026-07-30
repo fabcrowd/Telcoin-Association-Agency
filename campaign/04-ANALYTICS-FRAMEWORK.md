@@ -23,6 +23,11 @@
 
 ### Campaign-Level OKRs
 
+> **⚠️ Impression and follower targets below are void pending rebaseline** — see the warning
+> under Twitter/X Scorecard. They were derived from a 111,000-follower assumption; the measured
+> figure is 4,573. The wallet-downloads KR is also out of scope: wallet metrics are Telcoin
+> Holdings, not Association (`agency-agents/data-analytics-reporter.md:55`).
+
 | Objective | Key Result | Target | Measurement |
 |---|---|---|---|
 | Awareness | Total campaign impressions | 10M+ | Sum across all platforms |
@@ -36,6 +41,25 @@
 ## 📊 Platform KPI Scorecards
 
 ### Twitter/X Scorecard
+
+> **⚠️ UNVERIFIED BASELINE — DO NOT REPORT AGAINST THESE TARGETS.**
+>
+> The 111,000-follower baseline below has no source in this repo. The only measurement on
+> record is `campaign/research/intel-x-2026-03-30.md:17` — **@telcoinTAO at 4,573 followers**,
+> noting "account remains small, organic reach limited." The figures here are off by roughly
+> **24×**, and the derived 2M/month impressions, 140,000 target and 10M+ campaign OKR inherit
+> that error.
+>
+> Two possible explanations, both requiring resolution before this table is used:
+> either these numbers describe a different account (@telcoin, Holdings-operated) and must be
+> relabelled, or they were assumed rather than measured and the projection model is void.
+>
+> Rebasing is itself on-brand. An institutional governance account with 4,573 engaged followers
+> may be succeeding on its own terms — for a Swiss Verein publishing council notices, 10M
+> impressions is not a stretch goal, it is a category error. Set the real baseline from a fresh
+> analytics.x.com export, then rebuild the targets from it.
+>
+> Until then, no dashboard renders progress against this table.
 
 ```
 TELCOIN ASSOCIATION — TWITTER DASHBOARD
@@ -315,6 +339,10 @@ If negative sentiment increases >20% in any 24-hour period:
 ---
 
 ## 🗺️ Campaign Performance Projection Model
+
+> **⚠️ VOID — built on the unverified 111,000-follower baseline.** Every row below starts from
+> a number ~24× the measured one, so all three scenarios are arithmetic on a wrong premise.
+> Do not present these to the client. Rebuild after the baseline is re-measured.
 
 ### Conservative Scenario (assuming 70% of targets hit)
 | Week | Twitter Followers | Total Impressions | ER |
