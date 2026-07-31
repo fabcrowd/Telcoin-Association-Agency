@@ -1,0 +1,212 @@
+{
+  "name": "PROD-RESTREAM-CouncilStream-Pull-v1.0",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "19 9 * * *" }
+          ]
+        }
+      },
+      "id": "trigger-daily",
+      "name": "Daily Trigger 09:19 UTC",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-680, 300],
+      "notes": "Stage 1 — Trigger. Offset from the sentiment scrape (09:07) and YouTube pull (09:13)."
+    },
+    {
+      "parameters": {
+        "url": "https://api.restream.io/v2/channels/channels",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": { "timeout": 30000 }
+      },
+      "id": "fetch-channels",
+      "name": "Fetch Destinations",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-460, 300],
+      "credentials": { "oAuth2Api": { "id": "REPLACE_ME", "name": "Restream OAuth2" } },
+      "onError": "continueErrorOutput",
+      "notes": "Stage 2 — Destination inventory. Answers factually which platforms council streams actually reach, which settles the LinkedIn scope question."
+    },
+    {
+      "parameters": {
+        "url": "https://api.restream.io/v2/events/events-history",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": { "timeout": 30000 }
+      },
+      "id": "fetch-events",
+      "name": "Fetch Event History",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-240, 300],
+      "credentials": { "oAuth2Api": { "id": "REPLACE_ME", "name": "Restream OAuth2" } },
+      "onError": "continueErrorOutput",
+      "notes": "Stage 2 cont. Past events with titles and times."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stage 3 — Input Validation + Stage 4 — Business Logic.\n// Select recently-finished events worth ingesting. A short lookback keeps the\n// run cheap; idempotent path writes make overlap harmless.\nconst LOOKBACK_DAYS = 7;\n\nconst destPayload = $('Fetch Destinations').first().json;\nconst destinations = (destPayload.items || destPayload || [])\n  .filter(c => c && (c.streamingPlatformId || c.platformId || c.platform))\n  .map(c => ({\n    platform: c.platform || c.streamingPlatformId || c.platformId || null,\n    display_name: c.displayName || c.name || null,\n    enabled: c.enabled !== false\n  }));\n\nconst body = $input.first().json;\nconst events = body.items || body || [];\nif (!Array.isArray(events)) {\n  throw new Error('events-history did not return a list. Check API base URL and OAuth scopes.');\n}\n\nconst cutoff = Date.now() - LOOKBACK_DAYS * 86400000;\nconst toIso = (v) => {\n  if (v === undefined || v === null) return null;\n  const d = typeof v === 'number' ? new Date(v * (v < 1e12 ? 1000 : 1)) : new Date(v);\n  return isNaN(d.getTime()) ? null : d.toISOString().replace(/\\.\\d{3}Z$/, 'Z');\n};\n\nconst selected = [];\nfor (const e of events) {\n  const id = e.id || e.eventIdentifier || null;\n  if (!id) continue;\n  const started = toIso(e.scheduledFor ?? e.startedAt ?? e.createdAt);\n  if (started && new Date(started).getTime() < cutoff) continue;\n  selected.push({ json: {\n    event_id: id,\n    title: e.title || e.name || null,\n    started_at: started,\n    destinations\n  }});\n}\n\nif (!selected.length) {\n  // Not an error. No council streams in the window is a normal quiet week.\n  return [{ json: { _noop: true, reason: `no events in last ${LOOKBACK_DAYS} days`, destinations } }];\n}\nreturn selected;"
+      },
+      "id": "select-events",
+      "name": "Select Recent Events",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-20, 300],
+      "notes": "Stages 3 & 4. Emits a _noop marker rather than failing when there is nothing to ingest."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "version": 2 },
+          "conditions": [
+            {
+              "leftValue": "={{ $json._noop }}",
+              "rightValue": "",
+              "operator": { "type": "boolean", "operation": "notExists", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "gate-noop",
+      "name": "Has Events?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [200, 300],
+      "notes": "Quiet-week short circuit. No events is a normal outcome, not a failure."
+    },
+    {
+      "parameters": {
+        "url": "https://api.restream.io/v2/events/event-chat-history",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [{ "name": "eventId", "value": "={{ $json.event_id }}" }]
+        },
+        "options": { "timeout": 60000 }
+      },
+      "id": "fetch-chat",
+      "name": "Fetch Chat History",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [420, 200],
+      "credentials": { "oAuth2Api": { "id": "REPLACE_ME", "name": "Restream OAuth2" } },
+      "onError": "continueErrorOutput",
+      "notes": "Stage 2 cont. The high-value call: community questions asked during a governance event, aggregated across every destination."
+    },
+    {
+      "parameters": {
+        "url": "https://api.restream.io/v2/analytics/event-analytics-viewers",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [{ "name": "eventId", "value": "={{ $('Select Recent Events').item.json.event_id }}" }]
+        },
+        "options": { "timeout": 30000 }
+      },
+      "id": "fetch-viewers",
+      "name": "Fetch Viewer Analytics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [640, 200],
+      "credentials": { "oAuth2Api": { "id": "REPLACE_ME", "name": "Restream OAuth2" } },
+      "onError": "continueErrorOutput",
+      "notes": "Stage 2 cont. Point-in-time live viewership per event. NOT comparable to YouTube lifetime view counts - do not sum them."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stages 5 & 6 — Normalization and Result Validation.\nconst meta = $('Select Recent Events').item.json;\nconst chatRaw = $('Fetch Chat History').item.json;\nconst viewRaw = $input.first().json;\n\nconst num = (v) => (v === undefined || v === null ? null : Number(v));\nconst toIso = (v) => {\n  if (v === undefined || v === null) return null;\n  const d = typeof v === 'number' ? new Date(v * (v < 1e12 ? 1000 : 1)) : new Date(v);\n  return isNaN(d.getTime()) ? null : d.toISOString().replace(/\\.\\d{3}Z$/, 'Z');\n};\n\nconst rawMsgs = chatRaw.items || chatRaw.messages || chatRaw || [];\nif (!Array.isArray(rawMsgs)) throw new Error('Chat history did not return a list.');\n\nconst messages = rawMsgs.map((m, i) => {\n  const text = m.text || m.message || m.content || null;\n  return {\n    id: m.id || `${meta.event_id}:${i}`,\n    platform: m.platform || m.streamingPlatformId || null,\n    author: m.author || m.username || m.displayName || null,\n    text,\n    posted_at: toIso(m.timestamp ?? m.createdAt ?? m.sentAt),\n    // Question detection is deliberately conservative here; canonicalisation\n    // and recurrence counting happen downstream against questions[].\n    is_question: !!(text && /\\?/.test(text)),\n    tier: 'measured'\n  };\n}).filter(m => m.text);\n\n// Reconciliation: every message either normalized or explicitly dropped.\nconst dropped = rawMsgs.length - messages.length;\nif (dropped < 0) throw new Error('Reconciliation failed: more messages out than in.');\n\nconst viewers = {\n  peak_viewers: num(viewRaw.peakViewers ?? viewRaw.peak ?? null),\n  total_views: num(viewRaw.totalViews ?? viewRaw.views ?? null),\n  by_platform: viewRaw.byPlatform || viewRaw.platforms || null,\n  tier: 'measured'\n};\n\nconst now = new Date().toISOString().replace(/\\.\\d{3}Z$/, 'Z');\nconst date = (meta.started_at || now).slice(0, 10);\nconst slug = String(meta.title || meta.event_id)\n  .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48) || 'event';\n\nconst doc = {\n  schema_version: 2,\n  date,\n  scraped_at: now,\n  data_status: 'measured',\n  collection: {\n    method: 'restream_api_v2',\n    workflow: 'PROD-RESTREAM-CouncilStream-Pull-v1.0',\n    event_id: meta.event_id,\n    coverage: 'census',\n    messages_returned: rawMsgs.length,\n    messages_normalized: messages.length,\n    messages_dropped_no_text: dropped,\n    notes: 'Chat aggregated across all stream destinations. Viewer figures are point-in-time for this live event and are NOT comparable to YouTube lifetime view counts.'\n  },\n  event: {\n    event_id: meta.event_id,\n    title: meta.title,\n    started_at: meta.started_at,\n    layer: 'governance',\n    narratives: []\n  },\n  destinations: meta.destinations,\n  viewers,\n  messages,\n  question_count: messages.filter(m => m.is_question).length,\n  _ingested_at: now,\n  _source_system: 'restream_api_v2'\n};\n\nreturn [{ json: { doc, path: `campaign/analytics/streams/${date}-${slug}.json`,\n  summary: `${messages.length} chat messages, ${doc.question_count} questions` } }];"
+      },
+      "id": "normalize",
+      "name": "Normalize + Validate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [860, 200],
+      "notes": "Stages 5 & 6. Records how many messages came in vs were kept, so a silent drop is impossible."
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "create",
+        "owner": { "__rl": true, "value": "fabcrowd", "mode": "name" },
+        "repository": { "__rl": true, "value": "Telcoin-Association-Agency", "mode": "name" },
+        "filePath": "={{ $json.path }}",
+        "fileContent": "={{ JSON.stringify($json.doc, null, 2) }}",
+        "commitMessage": "=Restream council stream {{ $json.doc.date }}: {{ $json.summary }}",
+        "additionalParameters": { "branch": { "branch": "claude/campaign-iLgt5" } }
+      },
+      "id": "commit",
+      "name": "Commit to GitHub",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [1080, 200],
+      "credentials": { "githubApi": { "id": "REPLACE_ME", "name": "GitHub API" } },
+      "onError": "continueErrorOutput",
+      "notes": "Stages 7 & 10. Deterministic path per event makes re-runs idempotent."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Stages 8 & 9 — Error Branch and Manual Recovery. Writes NOTHING.\nconst e = $input.first().json;\nconst msg = e.error?.message || e.message || JSON.stringify(e).slice(0, 400);\nlet cause = 'unknown';\nif (/401|unauthor/i.test(msg)) cause = 'AUTH - Restream OAuth token expired or scope missing; reauthorize in n8n';\nelse if (/403/.test(msg)) cause = 'FORBIDDEN - API access may be gated behind a paid Restream tier';\nelse if (/429/.test(msg)) cause = 'RATE_LIMITED';\nelse if (/404/.test(msg)) cause = 'NOT_FOUND - check API base URL is https://api.restream.io/v2';\nelse if (/Reconciliation/i.test(msg)) cause = 'RECONCILIATION_FAILED';\nelse if (/timeout|ETIMEDOUT|ENOTFOUND/i.test(msg)) cause = 'NETWORK';\nreturn [{ json: {\n  workflow: 'PROD-RESTREAM-CouncilStream-Pull-v1.0',\n  executed_at: new Date().toISOString(),\n  source_system: 'restream_api_v2',\n  status: 'FAILED',\n  error_class: cause,\n  cause_note: msg,\n  wrote_data: false,\n  manual_recovery: 'Reauthorize the Restream OAuth2 credential in n8n, then re-run. Chat history retention is unconfirmed - if a council stream ages out before ingest, that data is unrecoverable.'\n}}];"
+      },
+      "id": "error-branch",
+      "name": "Error Branch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [860, 460],
+      "notes": "Stages 8 & 9."
+    }
+  ],
+  "connections": {
+    "Daily Trigger 09:19 UTC": { "main": [[{ "node": "Fetch Destinations", "type": "main", "index": 0 }]] },
+    "Fetch Destinations": { "main": [
+      [{ "node": "Fetch Event History", "type": "main", "index": 0 }],
+      [{ "node": "Error Branch", "type": "main", "index": 0 }]
+    ] },
+    "Fetch Event History": { "main": [
+      [{ "node": "Select Recent Events", "type": "main", "index": 0 }],
+      [{ "node": "Error Branch", "type": "main", "index": 0 }]
+    ] },
+    "Select Recent Events": { "main": [[{ "node": "Has Events?", "type": "main", "index": 0 }]] },
+    "Has Events?": { "main": [
+      [{ "node": "Fetch Chat History", "type": "main", "index": 0 }],
+      []
+    ] },
+    "Fetch Chat History": { "main": [
+      [{ "node": "Fetch Viewer Analytics", "type": "main", "index": 0 }],
+      [{ "node": "Error Branch", "type": "main", "index": 0 }]
+    ] },
+    "Fetch Viewer Analytics": { "main": [
+      [{ "node": "Normalize + Validate", "type": "main", "index": 0 }],
+      [{ "node": "Error Branch", "type": "main", "index": 0 }]
+    ] },
+    "Normalize + Validate": { "main": [[{ "node": "Commit to GitHub", "type": "main", "index": 0 }]] },
+    "Commit to GitHub": { "main": [
+      [],
+      [{ "node": "Error Branch", "type": "main", "index": 0 }]
+    ] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "meta": { "instanceId": "telcoin-agency" },
+  "_notes": {
+    "purpose": "Council streams fan out across YouTube, X and Discord. Restream aggregates chat from all of them, so this is the community asking governance questions at the moment of governance - the highest-signal input available to the questions[] ledger.",
+    "standard": "Ten-stage layout per agency-agents/automation-governance-architect.md.",
+    "credentials": "Restream OAuth2 (create an app at developers.restream.io, set the n8n callback as redirect URI) and the existing repo-scoped GitHub API credential. Both are placeholders; reconnect after import.",
+    "VERIFY_BEFORE_ACTIVATING": [
+      "API base URL - endpoints are documented as paths; https://api.restream.io/v2 is assumed and must be confirmed against developers.restream.io.",
+      "Response field names - items/messages/timestamp shapes are defensive guesses. Run once with the Commit node disabled and inspect the real payload before trusting the mapping.",
+      "Whether API access requires a paid Restream tier.",
+      "Chat history retention window - this determines whether backfill is possible and how quickly a stream must be ingested."
+    ],
+    "boundaries": "Restream viewer counts are point-in-time for a live event. YouTube Data API stays authoritative for lifetime per-video statistics. Never sum the two.",
+    "owner": "YouTube Analyst owns stream content intelligence; Automation Governance Architect owns this workflow's standard."
+  }
+}

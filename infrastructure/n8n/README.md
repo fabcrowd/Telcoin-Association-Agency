@@ -8,6 +8,40 @@ store, never in the repo.
 |---|---|---|
 | Fellow transcripts | `workflow-fellow-to-github.json` | Council meeting notes → `campaign/research/transcripts/` |
 | YouTube stats | `workflow-youtube-to-github.json` | Daily channel statistics → `campaign/analytics/youtube/` |
+| Restream council streams | `workflow-restream-to-github.json` | Per-event chat + viewership → `campaign/analytics/streams/` |
+
+---
+
+## Restream Council Streams (`PROD-RESTREAM-CouncilStream-Pull-v1.0`)
+
+Council streams fan out to several destinations — the standing notice tells people to *"Observe
+via @TelcoinTAO on X or Google Meet"* with YouTube as the footer link. Restream aggregates chat
+from all of them, which makes this **the community asking governance questions at the moment of
+governance**, tied to a specific council session. That is a far stronger input to the
+`questions[]` ledger than a search snippet with no context, and chat arriving from the X
+destination is X community engagement captured without paying for the X API.
+
+**Setup:** create an app at `developers.restream.io`, set the n8n callback as the redirect URI,
+add it in n8n as an **OAuth2** credential named `Restream OAuth2`, reuse the existing GitHub
+credential, import, reconnect both, save.
+
+**⚠️ Run once with the Commit node disabled before activating.** Three things are unconfirmed and
+must be checked against a real payload:
+
+1. **API base URL** — the docs list endpoint *paths*; `https://api.restream.io/v2` is assumed.
+2. **Response field names** — `items`/`messages`/`timestamp` mappings are defensive guesses.
+3. **Whether API access needs a paid tier**, and the **chat-history retention window** — that
+   window decides whether backfill is possible at all. If a council stream ages out before ingest,
+   that chat is gone permanently.
+
+**Guarantees.** Deterministic per-event paths make re-runs idempotent. A quiet week with no events
+short-circuits cleanly rather than erroring. Every message is either normalized or counted in
+`messages_dropped_no_text`, so nothing vanishes silently. Absent viewer figures stay `null`, never
+`0`. Any failure writes nothing and names its recovery path.
+
+**Boundary that matters.** Restream viewer counts are point-in-time for a live event. The YouTube
+Data API stays authoritative for lifetime per-video statistics. **Never sum the two** — they
+measure different things.
 
 ---
 
