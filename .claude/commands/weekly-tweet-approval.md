@@ -14,19 +14,24 @@ Generate the upcoming week's full tweet schedule as a single approval document.
 
 Launch all three simultaneously:
 
-**Agent A — Analytics Reporter**
-> Read `campaign/execution/` for all posts published in the prior 7 days. Identify: (1) best-performing post by engagement signals or explicit metrics if available, (2) worst performer, (3) any format that underperformed its tier expectation. Return a 4-line summary: top post, bottom post, format insight, one recommendation for next week. If no analytics data exists yet, return "No prior data — defaulting to Content OS baseline."
+**Agent A — Data Analytics Reporter** (the Telcoin-tuned one at `agency-agents/data-analytics-reporter.md`, not the generic `support-analytics-reporter.md`)
+> Read `campaign/execution/` for all posts published in the prior 7 days, AND the most recent 1-2 `campaign/analytics/sentiment/*.json` files (ignore `_seed-synthetic/` and any file whose `data_status` is not `"measured"`).
+>
+> Identify: (1) best-performing post by engagement signals or explicit metrics if available, (2) worst performer, (3) any format that underperformed its tier expectation, (4) **from the sentiment JSON**: the current sentiment direction (up/down/flat vs. the prior file, with `n_classified` so a small sample is not over-read) and the top 3 open community questions from the `questions[]` ledger with their `times_observed` counts.
+>
+> Return a 5-line summary: top post, bottom post, format insight, sentiment direction, top open question. If no analytics data exists yet, return "No prior data — defaulting to Content OS baseline." If sentiment JSON exists but post-performance data does not, still report the sentiment and questions — they are the more actionable signal.
 
 **Agent B — Sprint Prioritizer**
-> Read `campaign/research/TELCOIN-RESEARCH.md`, `campaign/execution/LEARNING-PATH-TRACKER.md`, `campaign/AGENCY-MEMORY.md`, and `strategy/CONTENT-OS.md`.
+> Read `campaign/research/TELCOIN-RESEARCH.md`, `campaign/execution/LEARNING-PATH-TRACKER.md`, `campaign/AGENCY-MEMORY.md`, `strategy/CONTENT-OS.md`, and the current week's `campaign/research/intel-week-[MONDAY].md` (compute the current week's Monday; if the file is missing, note it and proceed on the static research).
 >
 > Determine:
 > (1) **Learning path status** — check LEARNING-PATH-TRACKER.md for which LP post is next across all active paths (LP1 through LP4). Do not infer from CLAUDE.md — read the tracker directly.
 > (2) **Governance events this week** — council cadences: Platform & Treasury and TAN alternate Thursdays 4-5PM EST (fortnightly); TELx alternates Wednesdays 3PM EST (fortnightly). Calculate from today's date to identify which councils meet this week.
 > (3) **Embargoes and blockers** — read AGENCY-MEMORY.md Standing Decisions section for any content on hold (e.g., content awaiting confirmation, embargoed topics). Do not schedule embargoed content.
-> (4) **Active angles** — check AGENCY-MEMORY.md Angle Bank for `[ ]` items ready to execute.
+> (4) **Active angles** — check AGENCY-MEMORY.md Angle Bank for `[ ]` items ready to execute. Angle Bank items promoted from the community-question ledger (tagged with a `times_observed` count) get priority — they are what the community is actually asking.
+> (5) **Live community signal** — from `intel-week-[MONDAY].md` and Agent A's open-question summary: identify the single highest-recurrence open community question. **The proposed mix MUST include at least one slot that answers it**, unless it maps to a `publishable: false` narrative in `campaign/analytics/NARRATIVE-TAXONOMY.json` (`price`, `banking` — listen-only, never scheduled). If the top question is listen-only, use the next publishable one.
 >
-> Output a proposed 7-post content mix with day/time (EST), type (Governance/Education/Milestone/Community), topic, and one-line structural rationale for each slot. Apply Content OS volume rules for the week type (Standard/Event/Quiet).
+> Output a proposed 7-post content mix with day/time (EST), type (Governance/Education/Milestone/Community), topic, and one-line structural rationale for each slot. For any slot answering a community question, say so in its rationale ("answers recurring question, asked Nx"). Apply Content OS volume rules for the week type (Standard/Event/Quiet).
 
 **Agent C — Twitter Engager**
 > Read `campaign/research/TELCOIN-RESEARCH.md`, `tasks/lessons.md`, and `strategy/CONTENT-OS.md`. Draft the actual tweet text for each post in the week's proposed mix (use the mix from Agent B).

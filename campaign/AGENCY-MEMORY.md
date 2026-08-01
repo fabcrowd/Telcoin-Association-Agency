@@ -78,6 +78,16 @@ Never assume. Ask every time unless context makes it unambiguous (e.g. user says
 
 ---
 
+## The Standing Loop
+
+The full automated system — COLLECT → CLASSIFY → DIGEST → DREAM → CAMPAIGN → feedback — is
+documented as one picture in `campaign/WORKFLOW.md` ("The Automated Intelligence & Campaign
+Loop"). Read that for the map and the trigger schedule. Cadence summary: YouTube + Restream daily
+via n8n (zero Claude tokens); **$TEL sentiment classification twice weekly, Monday + Thursday**
+(the one token-heavy step — was daily, halved 2026-08-01); weekly intel digest Monday; dreaming
+nightly; tweet approval Wednesday. Price/market context comes from the `coingecko` MCP, not
+WebSearch.
+
 ## Standing Intelligence Sources (weekly sweep, organized by day)
 
 **Changed 2026-08-01.** These used to be documented as "monitored daily, Phase 0" — but nothing
@@ -94,7 +104,7 @@ across the 7 most recent active sessions. Replaced with `scripts/weekly-intel-sw
 ### X/Twitter — $TEL Social Listening
 - **Search terms**: `$TEL`, `Telcoin`, `@telcoinTAO`, `Telcoin Network`, `eUSD Telcoin`
 - **Purpose**: Community sentiment, unanswered questions, narratives forming, content gaps
-- **Source of truth**: `campaign/analytics/sentiment/YYYY-MM-DD.json` (daily, from
+- **Source of truth**: `campaign/analytics/sentiment/YYYY-MM-DD.json` (twice weekly Mon+Thu, from
   `scripts/sentiment-scraper.md`) — the weekly sweep synthesizes this rather than re-searching.
   Falls back to a fresh WebSearch, clearly labeled as a snapshot, only if no JSON exists for the
   week yet.

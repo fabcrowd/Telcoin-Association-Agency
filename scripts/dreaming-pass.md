@@ -40,10 +40,12 @@ For each date folder `campaign/execution/YYYY-MM-DD/`:
 - `twitter-*.md`, `community-qa-*.md`, `positioning-*.md` — content produced
 - `brand-qc.md` — QC findings
 
-Intel files in `campaign/research/`:
-- `intel-x-YYYY-MM-DD.md` — X/Twitter community sentiment
-- `intel-youtube-YYYY-MM-DD.md` — YouTube content intel
-- `intel-market-YYYY-MM-DD.md` — market/competitor intel
+Intel and scrape outputs in `campaign/`:
+- `research/intel-week-[MONDAY].md` — the weekly intel digest (X sentiment + YouTube + market, organized by day). Replaced the old per-day `intel-x/youtube/market-*.md` files as of 2026-08-01.
+- `analytics/sentiment/YYYY-MM-DD.json` — structured daily sentiment (schema v2). The `questions[]` ledger inside these is the key promotion source (see Step 3).
+- `analytics/youtube/YYYY-MM-DD.json` — structured YouTube stats (real view/like/comment counts).
+
+**Never read the `_seed-synthetic/` folder** under `analytics/sentiment/` — it is quarantined fabricated data. Only process files with `data_status: "measured"`.
 
 ---
 
@@ -87,24 +89,28 @@ For each session folder identified in Step 0, launch ONE subagent simultaneously
 
 > "You are a memory extraction agent for the Telcoin Association Marketing Agency.
 >
-> Read all files in `campaign/execution/[YYYY-MM-DD]/` and the corresponding intel files
-> for the same date:
-> - `campaign/research/intel-x-[YYYY-MM-DD].md`
-> - `campaign/research/intel-youtube-[YYYY-MM-DD].md`
-> - `campaign/research/intel-market-[YYYY-MM-DD].md`
+> Read all files in `campaign/execution/[YYYY-MM-DD]/`. Also read, for the week that contains
+> this date:
+> - `campaign/research/intel-week-[MONDAY-of-that-week].md` — the weekly intel digest
+> - `campaign/analytics/sentiment/[YYYY-MM-DD].json` if it exists — structured sentiment,
+>   including the `questions[]` community-question ledger and per-narrative sentiment
+> - `campaign/analytics/youtube/[YYYY-MM-DD].json` if it exists — real YouTube stats
 >
-> Skip any file that doesn't exist.
+> Skip any file that doesn't exist. Ignore anything under `analytics/sentiment/_seed-synthetic/`
+> and any JSON whose `data_status` is not `"measured"`.
 >
 > Extract ONLY information that is factual and specific — not general observations:
 >
-> **1. New client facts** — announcements, decisions, milestones, numbers from intel files.
+> **1. New client facts** — announcements, decisions, milestones, numbers from the intel digest.
 >    Include the source file and date for each fact.
 >
 > **2. Content status** — for each piece of content found: topic, type (thread/tweet/qa/etc),
 >    whether it was drafted or published, any QC flags from brand-qc.md.
 >
-> **3. Community intel** — specific questions being asked by the @telcoinTAO community,
->    sentiment signals, recurring narratives from X intel.
+> **3. Community intel** — from the sentiment JSON `questions[]` ledger and the intel digest:
+>    list each open community question with its `times_observed` count and `narratives`, plus any
+>    sentiment shift or recurring narrative. This is the most important section — quote the
+>    canonical question text and the count verbatim.
 >
 > **4. Lessons and corrections** — any operational pattern or correction documented in
 >    standup.md or visible from session behavior.
@@ -136,6 +142,22 @@ After all subagents complete:
 - Lessons → tasks/lessons.md update
 - Angles + open questions → AGENCY-MEMORY.md update
 - Performance data → PERFORMANCE-LOG.md update
+
+**Community-question promotion (the loop's key link):** for every open `questions[]` entry
+surfaced in section 3 of the extraction:
+- If it maps to a `publishable: false` narrative in `campaign/analytics/NARRATIVE-TAXONOMY.json`
+  (currently `price`, `banking`), do NOT promote it to content — those are listen-only. Note it
+  in the report as a tracked-but-not-publishable signal and move on.
+- Otherwise, add it as an Angle Bank `[ ]` item in `AGENCY-MEMORY.md`, phrased as the content that
+  would answer it, tagged with its narrative and its `times_observed` count — e.g.
+  `[ ] Answer recurring community question (mainnet, asked 12x): "When is mainnet?" — thread linking roadmap.telcoin.network milestones`.
+- If the same question is already an Angle Bank item, update its count rather than duplicating.
+- If a published post this cycle answered a previously-open question, note it so the next
+  sentiment scrape can flip that ledger entry to `status: answered`.
+
+This is what makes "a question the community keeps asking becomes content" actually happen —
+the sentiment scrape records the question, dreaming promotes it to the angle bank, and
+`/weekly-tweet-approval` (which reads the angle bank) schedules a post that answers it.
 
 ### Step 4 — Update Memory Files ($MEM_OUT)
 

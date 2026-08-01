@@ -1,7 +1,20 @@
-# TEL Sentiment Scraper — Daily Social Intelligence
+# TEL Sentiment Scraper — Social Intelligence
 
-Runs daily as a scheduled trigger. Scrapes social sentiment for $TEL / Telcoin across
-X/Twitter, Reddit, and crypto news. Outputs structured JSON and regenerates the heat map artifact.
+**Cadence: twice weekly — Monday and Thursday** (changed from daily 2026-08-01 for token cost).
+Per-post LLM sentiment classification is the one genuinely token-heavy step in the whole agency
+pipeline; twice weekly captures sentiment *movement* and catches the fortnightly council cycle
+(Thursday) without paying for it every day. Everything downstream degrades gracefully on the
+days between: the dashboard plots only `measured` files, and the weekly digest labels gaps rather
+than inventing them (never fabricate a missing day — see `tasks/lessons.md` Lesson 11).
+
+Scrapes social sentiment for $TEL / Telcoin across X/Twitter, Reddit, and crypto news. Outputs
+structured JSON and regenerates the heat map artifact.
+
+**Price/market context comes from the CoinGecko MCP, not WebSearch.** The `coingecko` server in
+`.mcp.json` (free, no key) returns TEL price, market cap, and volume as a structured call — use it
+for any price figure this run needs instead of spending WebSearch tokens on it. Note the standing
+rule still applies: this data is for *listening context only*; @telcoinTAO never publishes price
+commentary (`price` is a `publishable: false` narrative).
 
 This is not a content production session. The sole purpose is data collection, sentiment
 classification, and artifact refresh.

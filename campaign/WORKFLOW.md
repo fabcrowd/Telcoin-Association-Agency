@@ -23,6 +23,61 @@ Claude Code reads `CLAUDE.md` automatically. Every session starts with full agen
 
 ---
 
+## The Automated Intelligence & Campaign Loop
+
+This is the standing system that runs the agency. It turns what the community is doing into what
+we publish, and closes the feedback loop from performance back into planning. Read this before
+touching any of the scripts below — it is the map; they are the parts.
+
+```
+  COLLECT (near-zero Claude tokens)              CLASSIFY (LLM — judgment only)
+  ├─ youtube-pull.py / n8n   → daily             └─ sentiment-scraper.md → Mon + Thu
+  ├─ restream / n8n          → daily (councils)      writes analytics/sentiment/*.json
+  ├─ CoinGecko MCP           → price/market          incl. questions[] community ledger
+  └─ (feed MCP, when added)  → market news
+                    │
+                    ▼
+  DIGEST  weekly-intel-sweep.md → research/intel-week-[MONDAY].md   (weekly, Mon)
+                    │
+                    ▼
+  DREAM   dreaming-pass.md → nightly (cheap no-op when nothing new)
+          reads intel-week + sentiment JSON + youtube JSON
+          promotes recurring community questions → Angle Bank in AGENCY-MEMORY.md
+                    │
+                    ▼
+  CAMPAIGN  /weekly-tweet-approval → Wednesday
+            reads all repo research + the Angle Bank + live open questions
+            drafts the week's X tweets (+ image prompts) that answer what the
+            community is actually asking
+                    │
+                    ▼
+  PUBLISH → performance + next sentiment scrape → back into DREAM and CAMPAIGN
+```
+
+**Design rules that keep it cheap and honest:**
+- Collection runs in n8n (outside the Claude token budget) or via MCP (structured, cheap). The
+  LLM is spent only on sentiment classification and campaign drafting — the two steps where
+  judgment is irreplaceable.
+- Sentiment scrape is **twice weekly (Mon + Thu)**, not daily — it is the one token-heavy step.
+- Never fabricate a missing day of data (`tasks/lessons.md` Lesson 11). Gaps are labeled, not filled.
+- `publishable: false` narratives in `NARRATIVE-TAXONOMY.json` (`price`, `banking`) are listen-only —
+  tracked for sentiment, never turned into posts.
+
+**Scheduled triggers** (create manually at code.claude.com → Settings → Triggers; there is no API
+to create them from a session):
+
+| Trigger prompt | Schedule (cron) |
+|---|---|
+| `Follow the instructions in scripts/sentiment-scraper.md` | `7 9 * * 1,4` (Mon + Thu) |
+| `Follow the instructions in scripts/weekly-intel-sweep.md` | `23 8 * * 1` (Mon) |
+| `Read and execute scripts/dreaming-pass.md in full, exactly as written.` | `3 3 * * *` (nightly) |
+| `Follow the instructions in .claude/commands/weekly-tweet-approval.md` | `17 14 * * 3` (Wed) |
+
+YouTube and Restream run as n8n workflows on their own schedules (see `infrastructure/n8n/`), not
+as Claude triggers.
+
+---
+
 ## Routine Triggers & What to Do
 
 ### New Council Call Recap Received
