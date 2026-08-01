@@ -105,14 +105,24 @@ are reachable without a paid API.
 
 ## Step 3 — Scrape News
 
-Run WebSearch (substitute the current year for `$YEAR` — do not hardcode it):
-- `Telcoin news $YEAR`
-- `"TEL token" news`
-- `Telcoin blockchain`
+**Changed 2026-08-01** (user feedback, confirmed empirically the same day): the original
+outlet-targeted queries (`Telcoin news $YEAR`, `"TEL token" news`, `Telcoin blockchain`) mostly
+surface evergreen explainer pages, not dated news — measuring "news" by hitting named outlets
+doesn't work well via WebSearch. Replaced with plain broad searches:
 
-Collect article titles and snippets from: CoinDesk, CoinTelegraph, Decrypt, The Block, Benzinga, Business Wire, PRNewswire, crypto news outlets.
+- `Telcoin`
+- `$TEL` — **use with caution**: this bare ticker collides heavily with TE Connectivity (NYSE:
+  TEL), an unrelated stock, and returns mostly noise. Prefer `Telcoin` alone; only add `$TEL` if
+  `Telcoin` alone returns too little to assess, and filter out anything obviously about the
+  NYSE-listed company.
 
-Exclude: results older than 7 days. Classify sentiment of headline + snippet.
+Collect whatever surfaces — news articles, press releases, blog posts. Exclude results older than
+7 days (this is a genuine exclusion, not a formality: reference pages like CoinMarketCap/CoinGecko
+price trackers, the official site, and Medium's blog homepage are NOT dated news and don't count
+even though they'll appear in every run). Classify sentiment of headline + snippet.
+
+**A `news.article_count: 0` is a legitimate, honest result**, not a failed search — Telcoin does
+not generate fresh news every single run, and reporting 0 is correct on days it doesn't.
 
 ---
 
