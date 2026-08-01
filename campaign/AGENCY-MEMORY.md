@@ -160,6 +160,7 @@ Ideas generated but not yet executed. Pull from here when planning daily output.
 - [ ] Thread: TEL vs. XRP vs. XLM differentiation (preempt the comparison narrative)
 - [ ] Post: DC Blockchain Summit rapid response (hold for Jeff Quigley signal)
 - [ ] Post: "Coinmetro cancellation" transparency note (low priority, addresses lingering skepticism)
+- [ ] Performance-numbers credibility framing (from Build Series Part 4 draft, 2026-07-24): state plainly that any throughput/latency/cost figures are simulated load-test results, not live mainnet data, rather than implying otherwise — "a network that hasn't proven itself under simulated load has no business claiming it'll hold up under real load." Positioned as a trust-building move, not a hedge. Apply this framing before publishing any performance-numbers content.
 
 ---
 
@@ -220,6 +221,10 @@ Ideas generated but not yet executed. Pull from here when planning daily output.
 - [ ] GSMA whitepaper URL — confirm for first-reply placement on GSMA thread
 - [ ] LP2 Post 4 — next post is TAN / Telcoin Wallet (eUSD/TDAB retired). Confirm before drafting.
 - [ ] Jeff Quigley — next public appearance? Flag when known so rapid-response monitoring window opens.
+- [ ] **@telcoinTAO follower baseline is unverified.** `campaign/04-ANALYTICS-FRAMEWORK.md` carries a 111,000-follower baseline (and every target/projection derived from it — the 10M+ impressions OKR, +29,000 follower target) with no source. The only measured figure on record is 4,573 (`intel-x-2026-03-30.md:17`), ~24x lower. Either the 111,000 figure describes a different, Holdings-operated account and must be relabeled, or it was assumed and the projection model needs rebuilding from a fresh `analytics.x.com` export. Flagged void as of 2026-07-30; not yet resolved.
+- [ ] YouTube stats pipeline (`scripts/youtube-pull.py`, `infrastructure/n8n/workflow-youtube-to-github.json`) needs `YOUTUBE_API_KEY` set as an environment secret before it can run. Built and tested against fixtures 2026-07-31; not yet live.
+- [ ] TELpets.xyz testnet-stress tweet (`campaign/execution/2026-04-03/twitter-telpets-testnet-stress.md`) is drafted but blocked: needs a `/tweet-card-brief` image spec, and confirmation of whether a TELpets X account exists to tag. The "120,000+ transactions" stat in the draft has no cited source — do not treat it as verified until sourced; it was not added to TELCOIN-RESEARCH.md for this reason.
+- [ ] "Telcoin Network Build Series" Part 4 (`campaign/execution/2026-07-24/tel-network-build-series/`) is a skeleton only — contains `[PLACEHOLDER]` markers for throughput, latency, cost-per-tx, validator count, and comparison-chain numbers. Do not publish until real load-test figures replace the placeholders. Parts 1, 2, 3, 5 of the series are drafted and clean.
 
 ---
 
@@ -237,7 +242,7 @@ When Quigley is at a conference or event, user should flag: "Jeff is at [event] 
 
 *(Overwritten each session by Agents Orchestrator)*
 
-**Date**: 2026-03-29
-**What was produced**: Debugged Phase 0D and transcript pipeline. Fixed 3 bugs: (1) Phase 0D section was ordered after 0A/0B in daily-agency-run.md — moved to first position. (2) Phase 0D used `ls` which missed Zapier files in subdirectories — replaced with `find`. (3) Two empty Zapier-committed transcript files at wrong paths deleted. Zapier path fix documented in infrastructure/n8n/README.md.
-**Key intel**: Zapier/Fellow Slack integration pending admin approval — on hold. Transcript automation pipeline is paused until Slack admin approves the integration. n8n remains Option B (requires Fellow paid plan).
-**Blocked**: Zapier transcript pipeline (Slack admin approval pending); Adiri public tweet (hold for official launch); GENIUS Act/eUSD angle (Ryan Neuner entity QA); TELx reward distribution (embargoed 3-6 months)
+**Date range processed by this dreaming pass**: 2026-04-03 through 2026-08-01 (7 session folders — first-run guard applied, since `.last-dream` had never been written despite 26 execution folders existing and two prior rounds of dreaming-pass bug fixes)
+**What was produced**: Mostly infrastructure, not content, in this window. TELpets stress-test tweet drafted (2026-04-03, blocked on image spec). 5-part "Telcoin Network Build Series" drafted (2026-07-24; Part 4 is placeholder-only, not publishable). 2026-07-25/26/08-01 produced no content — execution folders contain only auto-generated SESSION-CONTEXT.md. 2026-07-30/31 rebuilt the sentiment analytics pipeline: found and quarantined 14 fabricated data files (see Lesson 11 in tasks/lessons.md), fixed an agent-roster routing bug (Analytics Reporter was pointed at the generic upstream file instead of the Telcoin-tuned one), corrected a wrong "YouTube blocks scraping" diagnosis from seven prior intel files, and built a YouTube stats + Restream council-chat pipeline via n8n.
+**Key intel**: No new client/governance facts surfaced in this window — no intel files exist for any of the 7 dates processed (the standing Phase 0 intel sweep did not run on any of these days). This is itself a gap: `campaign/AGENCY-MEMORY.md`'s Standing Intelligence Sources section calls for a daily X/YouTube/market sweep, and none of the 7 processed sessions produced one.
+**Blocked**: @telcoinTAO follower baseline unverified (111,000 vs. measured 4,573 — see Open Questions); YouTube pipeline needs `YOUTUBE_API_KEY`; TELpets tweet needs image spec + account confirmation; Build Series Part 4 needs real load-test numbers; Adiri public tweet (hold for official launch); GENIUS Act/eUSD angle (Ryan Neuner entity QA); TELx reward distribution (embargoed 3-6 months)

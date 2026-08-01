@@ -13,6 +13,29 @@
 
 ---
 
+### Lesson 11 — Never manufacture data to fill a schema gap
+
+**Date**: 2026-07-30
+**Session**: claude/campaign-iLgt5
+
+**What was produced**:
+14 daily sentiment JSON files (`campaign/analytics/sentiment/2026-07-17` through `2026-07-30`) committed as if they were real scraped data. They were generated during development as a schema/dashboard demonstration and never came from an actual collection run.
+
+**What triggered the correction** (self-detected during this session, not a user correction):
+Three forensic signatures proved fabrication on inspection: `hour_distribution` sums exceeded `total_mentions` by 24-51% in every file — a file cannot be a census of posts by hour and disagree with its own post count; `total_mentions` and `sentiment_score` correlated at r=0.966, a coupling real community sentiment does not show; all 14 files carried an identical `scraped_at` timestamp. The root cause was one instruction in `scripts/sentiment-scraper.md:104` — "if hour not visible, distribute evenly" — which manufactured the hour grid on nearly every run.
+
+**What was changed**:
+- Quarantined all 14 files to `campaign/analytics/sentiment/_seed-synthetic/` with `PROVENANCE.md` recording the forensic proof and a reproduction script — moved, not deleted, so the record stays auditable
+- Deleted the "distribute evenly" rule; replaced with an explicit `unknown` hour bucket and a hard invariant: all buckets including `unknown` must sum to `total_mentions` exactly, or the file is invalid and must not be written
+- Removed `activity_score` (normalized against an invented historical max of 120 — unitless, uninterpretable) and the old `topic_scores` formula (its "+0.5 per high-engagement post" term always evaluated to zero because engagement was never captured)
+- Added `data_status` to the schema; the dashboard loader now refuses to plot anything not marked `measured`
+- Republished the dashboard in an honest "Collecting — day 0" state rather than showing a full but fabricated trend
+
+**Rule derived**:
+An explicit `null`/`unknown` value is always preferable to an interpolated or manufactured one. Every derived field must satisfy its own internal arithmetic invariant (e.g., sub-counts summing to a stated total) before being written, and that invariant should be checked by code, not by eye — this is what would have caught the problem on day one instead of after 14 days of silent drift. This applies to every data pipeline in the agency, not only sentiment: a full dashboard built on invented numbers is a worse deliverable than an honest empty one, especially for a client whose brand rule is "earns credibility, does not chase engagement."
+
+---
+
 ### Lesson 10 — Content format: clean prose, no markdown headers inside post bodies
 
 **Date**: 2026-07-25
@@ -286,6 +309,7 @@ Before drafting any post for @telcoinTAO, run the entity check: "Is every claim 
 | 8 | Fact verification ownership | Agents verify technical claims via web search before flagging as [CONFIRM]. [CONFIRM] is only for information that cannot be found publicly. Never push verifiable facts back to the user. |
 | 9 | Council meeting reminder format | Use the canonical format: council name + date/times, agenda bullets (no presenters), listen-in links (X + YouTube), next meetings. No deviations. |
 | 10 | Content format — no headers in posts | Never use markdown headers inside a tweet or post body. Clean prose paragraphs only. Headers are for long-form articles (1,600+ words). See `content/newsletter-format.md` for newsletter format. |
+| 11 | Data integrity — no manufactured values | Never interpolate or manufacture a value to fill a schema gap. Use an explicit null/unknown. Every derived field must satisfy its own arithmetic invariant, checked by code before the file is written. |
 
 ---
 
