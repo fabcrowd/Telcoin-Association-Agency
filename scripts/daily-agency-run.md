@@ -1,8 +1,14 @@
 # Daily Agency Run — Master Orchestration Prompt
 ## Telcoin Association Marketing Agency
 
-This is the prompt that runs automatically on session start via the SessionStart hook.
-The `Agents Orchestrator` executes this sequence every day without waiting for user input.
+**Correction, 2026-08-01**: this file previously claimed to run automatically on session start.
+It does not — `.claude/hooks/session-start.sh` only writes `SESSION-CONTEXT.md`; it never invokes
+this spec. In practice this run only happened when a human typed "run standup." That gap is why
+the 2026-08-01 dreaming pass found zero intel files across the 7 most recent active sessions. If
+you want this to run automatically, it needs its own scheduled trigger, the same way
+`scripts/dreaming-pass.md` and `scripts/sentiment-scraper.md` do.
+
+The `Agents Orchestrator` executes this sequence when invoked, without waiting for user input.
 If any step requires a user decision, it flags it and continues with everything else.
 
 ---
@@ -16,16 +22,24 @@ multiple Agent tool calls.
 
 ---
 
-## PHASE 0 — INTELLIGENCE SWEEP (always runs first)
+## PHASE 0 — INTELLIGENCE SWEEP
 
-**Rate limit rule**: Do NOT spawn subagents for X or YouTube intel. Run those as direct searches in main context (see 0A and 0B below). Only 0C (market intel) uses a subagent — it does deeper multi-source research that justifies the overhead.
+**0A/0B/0C (X sentiment, YouTube, market intel) moved out of this file as of 2026-08-01.**
+They now run on their own **weekly** schedule via `scripts/weekly-intel-sweep.md`, which produces
+one file per week organized by day: `campaign/research/intel-week-[MONDAY].md`. This fixes two
+problems the daily version had: it was never actually triggered (see the correction at the top of
+this file), and running a full market/ecosystem sweep every single day was overhead its subject
+matter didn't need. Phase 1 below reads the current week's file instead of three separate
+per-day files.
 
-**Stale file rule**: Before running 0A, 0B, or 0C — check if the intel file for today already exists. If `intel-x-[today].md`, `intel-youtube-[today].md`, or `intel-market-[today].md` exists and is less than 12 hours old, skip that sweep and read the existing file instead.
+Only 0D (transcript ingestion) stays in this file — a council transcript sitting unprocessed for
+days defeats the point of the fast Fellow pipeline, so that stays event-driven rather than moving
+to a weekly cadence.
 
 ---
 
 ### 0D — New Meeting Transcripts (Fellow AI → GitHub pipeline)
-**Run this first — before 0A, 0B, or 0C. Never skip.**
+**Run this first. Never skip.**
 
 Check for unprocessed transcript files dropped by the Zapier/Fellow pipeline:
 
@@ -44,82 +58,13 @@ For each unprocessed file:
 4. Note content opportunities unlocked by this transcript (threads, recap tweets, forum posts)
 5. Move the file to `campaign/research/transcripts/processed/[filename]` to mark as done
 
-After processing all new transcripts, continue to 0A. The briefing in Phase 1 should include a "Transcripts processed" section listing what was ingested and what content it unlocks.
+After processing all new transcripts, continue to Phase 1. The briefing should include a "Transcripts processed" section listing what was ingested and what content it unlocks.
 
 **Rule**: If a transcript contains an unannounced public milestone (mainnet launch, named MNO validator, exchange listing), stop and flag to user before continuing. Do not draft content from embargoed intel without confirmation.
 
 ---
 
-### 0A — $TEL Community Sentiment (X/Twitter)
-**Run directly in main context — do NOT spawn a subagent.**
-
-Execute these 3 WebSearch calls:
-1. `"$TEL" OR "Telcoin" site:twitter.com OR x.com` — last 24h
-2. `"@telcoinTAO"` — last 24h, captures mentions and replies
-3. One topical search based on what's active (e.g., `"Telcoin testnet"`, `"Adiri"`, `"TEL token"`)
-
-Synthesize into 5-8 bullet points covering:
-- Sentiment score (1-10)
-- Top 2-3 questions being asked
-- Any narratives forming (criticism, praise, comparisons)
-- Content gaps (what's being asked that hasn't been answered)
-
-Save to `campaign/research/intel-x-[YYYY-MM-DD].md`. Total tool calls: 3.
-
----
-
-### 0B — YouTube Stream & Video Monitor
-**Run directly in main context — do NOT spawn a subagent.**
-
-Run the API pull, not a WebFetch:
-
-```bash
-python3 scripts/youtube-pull.py
-```
-
-This writes `campaign/analytics/youtube/[YYYY-MM-DD].json` with exact view, like and comment
-counts. If `YOUTUBE_API_KEY` is unset the script exits 1 with instructions and writes nothing —
-that is correct behaviour. Note it in the briefing and continue; do not fall back to scraping.
-
-Read the resulting JSON for:
-- Any new videos or streams in the last 7 days (title, date, format)
-- View/like/comment counts per video — real numbers, not estimates
-- If a new council recording is up: flag it as repurpose priority
-
-**Why this replaced the old WebFetch.** This step previously ran
-`WebFetch https://www.youtube.com/@TelcoinTAO/videos` and logged a 403 every day from March
-onward — seven `intel-youtube-*` files record "channel unreachable." That diagnosis was wrong: the
-403 was a user-agent artifact, and the channel returns 200 to a normal browser UA. The deeper
-reason not to go back to fetching the page is that YouTube now renders statistics through a
-client-side `lockupViewModel`; video IDs still parse, but view counts do not, and the parse fails
-*silently* when the markup shifts. Silent failure is what produced the data quarantined in
-`campaign/analytics/sentiment/_seed-synthetic/`.
-
-Cross-reference `campaign/AGENCY-MEMORY.md` YouTube Content Log — skip anything already logged as repurposed.
-
-Save findings to `campaign/research/intel-youtube-[YYYY-MM-DD].md`. Total tool calls: 1.
-
----
-
-### 0C — Market & Ecosystem Intel
-**Launch ONE `Trend Researcher` agent in background** (this is the only subagent in Phase 0):
-
-> "Search for the latest news on:
-> - Telcoin and TEL token (any press, listings, partnerships, announcements)
-> - Stablecoin regulation news (especially bank-issued or CBDC adjacent)
-> - Mobile money / remittance market (M-Pesa, Wave, Western Union, Wise)
-> - GSMA and telecom blockchain initiatives
-> - Competing L1/L2 projects positioning in financial inclusion space (Celo, Stellar, XRP)
->
-> Output: 5-8 bullet intelligence items. For each: headline, what it means for Telcoin's
-> positioning, and whether it's a content opportunity or a threat to address.
-> Save to `campaign/research/intel-market-[YYYY-MM-DD].md`."
-
-While 0C runs in the background, proceed immediately to Phase 1 using the results of 0A and 0B.
-
----
-
-## PHASE 1 — MORNING BRIEFING (read after intel sweep completes)
+## PHASE 1 — MORNING BRIEFING
 
 Read these files in parallel:
 
@@ -127,19 +72,21 @@ Read these files in parallel:
 2. `campaign/AGENCY-MEMORY.md` — standing decisions, open questions, angle bank
 3. `campaign/research/TELCOIN-RESEARCH.md` — current client intel
 4. `campaign/analytics/PERFORMANCE-LOG.md` — post performance data; use to shape format and topic decisions
-5. `campaign/research/intel-x-[today].md` — X/$TEL community sentiment (from Phase 0A)
-6. `campaign/research/intel-youtube-[today].md` — YouTube content intel (from Phase 0B)
-7. `campaign/research/intel-market-[today].md` — market intelligence (from Phase 0C, may still be running)
-8. Run: `git log --oneline -10` — what shipped recently
-9. Check: `ls campaign/execution/[today]/` and `ls campaign/execution/[yesterday]/`
+5. **This week's intel file** — compute the current week's Monday and read
+   `campaign/research/intel-week-[MONDAY].md` (see `scripts/weekly-intel-sweep.md` Step 0 for the
+   date math). This replaces the old per-day `intel-x`/`intel-youtube`/`intel-market` reads. If
+   today's day-section within it is missing or stale (see that spec's staleness check), run
+   `scripts/weekly-intel-sweep.md` now rather than proceeding on stale intel.
+6. Run: `git log --oneline -10` — what shipped recently
+7. Check: `ls campaign/execution/[today]/` and `ls campaign/execution/[yesterday]/`
 
 **Performance log check**: If PERFORMANCE-LOG.md has no data yet, note it in the briefing and flag to user that weekly X Analytics export is needed. If last update was >7 days ago, flag it.
 
 Synthesize into a **Daily Briefing** (`campaign/execution/[YYYY-MM-DD]/briefing.md`):
 - Performance insight: what's working based on PERFORMANCE-LOG data (or flag if no data)
-- X sentiment: community mood, top questions, narratives (from 0A)
-- YouTube: any new content to repurpose (from 0B)
-- Market intel summary (from 0C, use prior day's file if today's not ready yet)
+- X sentiment: community mood, top questions, narratives (from this week's intel file)
+- YouTube: any new content to repurpose (from this week's intel file)
+- Market intel summary (from this week's intel file — one snapshot per week, not per day)
 - What shipped yesterday (git log)
 - Angle bank items overdue
 - Upcoming triggers (council meetings, launches)
@@ -325,9 +272,7 @@ design/output/
 
 campaign/research/
   TELCOIN-RESEARCH.md                 ← Master client intel (always update when new info arrives)
-  intel-x-YYYY-MM-DD.md              ← Phase 0A: daily X/$TEL listening
-  intel-youtube-YYYY-MM-DD.md        ← Phase 0B: YouTube stream/video intel
-  intel-market-YYYY-MM-DD.md         ← Phase 0C: market/competitor intel
+  intel-week-[MONDAY].md              ← scripts/weekly-intel-sweep.md: X/YouTube/market, organized by day
   AGENCY-MEMORY.md                   ← Cross-session learning log
   transcripts/                        ← Phase 0D: Fellow AI transcripts (n8n auto-commits here)
     [YYYY-MM-DD]-[meeting-name].md   ← Unprocessed — ingested on next session start

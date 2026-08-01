@@ -78,21 +78,36 @@ Never assume. Ask every time unless context makes it unambiguous (e.g. user says
 
 ---
 
-## Standing Intelligence Sources (sweep every session, Phase 0)
+## Standing Intelligence Sources (weekly sweep, organized by day)
 
-These are monitored daily. Output files saved to `campaign/research/intel-*.md`.
+**Changed 2026-08-01.** These used to be documented as "monitored daily, Phase 0" — but nothing
+actually triggered that daily run (the session-start hook never invoked it, and it depended on a
+human typing "run standup"). The 2026-08-01 dreaming pass confirmed zero intel files existed
+across the 7 most recent active sessions. Replaced with `scripts/weekly-intel-sweep.md`, which:
+
+- Runs on its own **weekly** scheduled trigger (or manually via `/weekly-intel`)
+- Writes **one file per week**: `campaign/research/intel-week-[MONDAY].md`
+- Organizes that file **by day** — but only where genuine per-day data exists (from the daily
+  `sentiment-scraper.md` and `youtube-pull.py` JSON pipelines). A single snapshot never gets
+  faked into day-by-day sections it isn't part of; see Lesson 11 in `tasks/lessons.md`.
 
 ### X/Twitter — $TEL Social Listening
 - **Search terms**: `$TEL`, `Telcoin`, `@telcoinTAO`, `Telcoin Network`, `eUSD Telcoin`
 - **Purpose**: Community sentiment, unanswered questions, narratives forming, content gaps
-- **Output**: `campaign/research/intel-x-YYYY-MM-DD.md`
+- **Source of truth**: `campaign/analytics/sentiment/YYYY-MM-DD.json` (daily, from
+  `scripts/sentiment-scraper.md`) — the weekly sweep synthesizes this rather than re-searching.
+  Falls back to a fresh WebSearch, clearly labeled as a snapshot, only if no JSON exists for the
+  week yet.
+- **Output**: `campaign/research/intel-week-YYYY-MM-DD.md` (day-sectioned)
 - **Rule**: Community questions surfaced here get turned into content the same day when possible
 
 ### YouTube — @TelcoinTAO Streams & Videos
-- **Channel**: https://www.youtube.com/@TelcoinTAO
+- **Channel**: https://www.youtube.com/@TelcoinTAO (`UCs5IFXnrKliqRA6U4o_VD2Q`)
 - **Purpose**: Repurpose streams into threads, forum posts, and social clips. Monitor for
-  new uploads, council recordings, AMAs, and announcements. Extract viewer questions from comments.
-- **Output**: `campaign/research/intel-youtube-YYYY-MM-DD.md`
+  new uploads, council recordings, AMAs, and announcements.
+- **Source of truth**: `campaign/analytics/youtube/YYYY-MM-DD.json` (daily, from
+  `scripts/youtube-pull.py` / the n8n workflow) — real view/like/comment counts, never scraped.
+- **Output**: `campaign/research/intel-week-YYYY-MM-DD.md` (day-sectioned)
 - **Rule**: Every new stream or video must be repurposed into at least 2 content pieces
   (thread + forum post minimum). Council recordings always get a recap thread.
 - **Repurposing formats**:
@@ -103,8 +118,15 @@ These are monitored daily. Output files saved to `campaign/research/intel-*.md`.
 
 ### Market & Ecosystem
 - **Topics**: TEL token news, stablecoin regulation, remittance market, GSMA blockchain, competing L1s
-- **Output**: `campaign/research/intel-market-YYYY-MM-DD.md`
+- **Cadence**: once per week file, not once per day — this subject matter doesn't need daily
+  granularity, and running the full sweep daily was pure overhead
+- **Output**: `campaign/research/intel-week-YYYY-MM-DD.md`, single section near the top
 - **Rule**: Competitor moves get positioning content (no direct attacks, anchor to Telcoin strengths)
+
+### Trigger setup (manual step — no API access to create/edit scheduled triggers from a session)
+At code.claude.com → Settings → Triggers → New trigger: repository
+`fabcrowd/telcoin-association-agency`, branch `claude/campaign-iLgt5`, schedule e.g. `23 8 * * 1`
+(Monday mornings), prompt: `Follow the instructions in scripts/weekly-intel-sweep.md`.
 
 ---
 
