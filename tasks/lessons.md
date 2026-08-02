@@ -13,6 +13,27 @@
 
 ---
 
+### Lesson 12 — Don't measure "news" by targeting named outlets
+
+**Date**: 2026-08-01
+**Session**: claude/campaign-iLgt5
+
+**What was produced**:
+`scripts/sentiment-scraper.md` Step 3 (Scrape News) ran outlet-targeted queries — `Telcoin news $YEAR`, `"TEL token" news`, `Telcoin blockchain` — intended to surface dated coverage from crypto news outlets.
+
+**What the user said**:
+"for news - we shouldnt measure by that. maybe google searches for $TEL or Telcoin" — i.e. don't try to measure news by hitting named outlets; use plain broad searches instead.
+
+**What was changed**:
+- Confirmed empirically the same run: the outlet-targeted queries returned only evergreen explainer pages, never real dated news
+- `scripts/sentiment-scraper.md` Step 3 replaced with plain searches: `Telcoin` and `$TEL` (caution: bare `$TEL` collides heavily with TE Connectivity, NYSE: TEL — prefer `Telcoin` alone, add `$TEL` only if needed, and filter out the unrelated stock)
+- Documented `news.article_count: 0` as a legitimate honest result, not a failed search
+
+**Rule derived**:
+When a search-based collection step is measuring something that mostly doesn't have dedicated coverage (like "Telcoin news"), don't target the outlets you expect to find it on — that biases toward pages those outlets already have indexed (evergreen explainers), not what's live now. Use plain broad searches for the subject itself and let real results surface on their own.
+
+---
+
 ### Lesson 11 — Never manufacture data to fill a schema gap
 
 **Date**: 2026-07-30
@@ -310,6 +331,7 @@ Before drafting any post for @telcoinTAO, run the entity check: "Is every claim 
 | 9 | Council meeting reminder format | Use the canonical format: council name + date/times, agenda bullets (no presenters), listen-in links (X + YouTube), next meetings. No deviations. |
 | 10 | Content format — no headers in posts | Never use markdown headers inside a tweet or post body. Clean prose paragraphs only. Headers are for long-form articles (1,600+ words). See `content/newsletter-format.md` for newsletter format. |
 | 11 | Data integrity — no manufactured values | Never interpolate or manufacture a value to fill a schema gap. Use an explicit null/unknown. Every derived field must satisfy its own arithmetic invariant, checked by code before the file is written. |
+| 12 | Search methodology — don't target outlets | For collection steps measuring low-coverage subjects, use plain broad searches for the subject itself rather than querying named outlets — outlet-targeted queries bias toward indexed evergreen pages, not live results. |
 
 ---
 
