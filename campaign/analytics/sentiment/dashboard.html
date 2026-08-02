@@ -102,7 +102,7 @@ footer{font-size:.74rem;color:var(--muted);font-family:var(--mono);line-height:1
       <h1>TEL Social Intelligence</h1>
       <p class="sub">Telcoin Association &middot; community listening</p>
     </div>
-    <span class="status-chip"><span class="dot"></span>Collecting &middot; day 1</span>
+    <span class="status-chip"><span class="dot"></span>Collecting &middot; day 2</span>
   </header>
 
   <section class="notice">
@@ -126,16 +126,27 @@ footer{font-size:.74rem;color:var(--muted);font-family:var(--mono);line-height:1
       days accumulate, and the loader now refuses any file not marked as measured.
     </p>
     <div class="progress-block">
-      <div class="progress-head"><span>Verified days collected</span><b>1 / 14</b></div>
+      <div class="progress-head"><span>Verified days collected</span><b>2 / 14</b></div>
       <div class="track">
-        <i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i>
         <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
       </div>
     </div>
     <p class="chart-note" style="margin-top:14px">
-      First real reading, 2026-08-01: 19 community mentions (X only &mdash; Reddit and news both
-      returned zero, honestly, not padded), sentiment 0.53 (n=19). One point is a reading, not a
-      trend &mdash; the panels below stay locked until enough days exist to show one.
+      2026-08-01: 19 community mentions (X only &mdash; Reddit and news both returned zero,
+      honestly, not padded), sentiment 0.53 (n=19).<br>
+      2026-08-02: 19 community mentions (X only, Reddit and news both zero again), sentiment 0.53
+      (n=19), top narrative price (5 mentions) &mdash; not reported as a leader since it's one
+      mention ahead of network_tech, governance, and other, within sampling noise for n=19.<br>
+      A one-time historical backfill was attempted this run (Step 1/2 searches re-run looking for
+      posts with a real, visible timestamp). It recovered <strong>zero</strong> qualifying
+      historical days &mdash; no X or Reddit result in the sample exposed a verifiable date, so no
+      backfilled points exist to plot. That is the honest result, not a defect: when a
+      <code>measured_backfill</code> day does land, it will render hollow/lower-opacity with no
+      trend line to its neighbors, marked <span style="opacity:.7">&#9675; backfilled &mdash;
+      sparse sample, not a full-day census</span> in the legend.<br>
+      Two points are readings, not a trend &mdash; the panels below stay locked until enough days
+      exist to show one.
     </p>
   </section>
 
@@ -229,3 +240,50 @@ footer{font-size:.74rem;color:var(--muted);font-family:var(--mono);line-height:1
     Withdrawn data retained under <code>_seed-synthetic/</code> with full provenance.
   </footer>
 </div>
+
+<script>
+/*
+  RAW holds the compiled per-day series extracted from campaign/analytics/sentiment/*.json,
+  per scripts/sentiment-scraper.md Step 5. It is compiled every run so it stays audit-ready, but
+  intentionally NOT rendered into a trend chart yet: fewer than 14 measured/measured_backfill days
+  exist, so this page stays in its "Collecting" state per spec rather than plotting a trend line
+  through a handful of points. When day 14 is reached, this constant is what the chart renders from.
+
+  data_status: "measured" -> solid point, connected by trend line to adjacent measured days.
+  data_status: "measured_backfill" -> hollow/lower-opacity point, NO trend line to neighbors
+  (a line would imply continuity of measurement method that doesn't exist between a sparse
+  backfilled day and a real live-day scrape). Legend note: "○ backfilled — sparse sample, not a
+  full-day census". No measured_backfill days exist yet (2026-08-02 backfill pass recovered zero
+  qualifying historical dates - no real, visible timestamp resolved on any Step 1/2 result).
+*/
+const RAW = [
+  {
+    date: "2026-08-01",
+    data_status: "measured",
+    sentiment_score: 0.53,
+    n_classified: 19,
+    total_mentions: 19,
+    unique_authors: 11,
+    top_narrative: null,
+    hour_distribution: {"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0,"unknown":19},
+    narratives: {"mainnet":2,"governance":4,"validators":1,"telx":3,"tan":2,"network_tech":4,"price":6,"banking":2,"other":2},
+    questions: [],
+    share_of_voice: {"telcoin":100.0,"xrp":36.8,"stellar":52.6,"celo":42.1}
+  },
+  {
+    date: "2026-08-02",
+    data_status: "measured",
+    sentiment_score: 0.53,
+    n_classified: 19,
+    total_mentions: 19,
+    unique_authors: 10,
+    top_narrative: null,
+    hour_distribution: {"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0,"unknown":19},
+    narratives: {"mainnet":2,"governance":4,"validators":1,"telx":3,"tan":1,"network_tech":4,"price":5,"banking":2,"other":4},
+    questions: [],
+    share_of_voice: {"telcoin":100.0,"xrp":47.4,"stellar":52.6,"celo":42.1}
+  }
+];
+window.__TEL_SENTIMENT_RAW__ = RAW; // exposed for the next run to fetch-and-extend, per Step 5
+</script>
+
