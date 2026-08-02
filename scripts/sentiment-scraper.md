@@ -1,11 +1,15 @@
 # TEL Sentiment Scraper — Social Intelligence
 
-**Cadence: twice weekly — Monday and Thursday** (changed from daily 2026-08-01 for token cost).
-Per-post LLM sentiment classification is the one genuinely token-heavy step in the whole agency
-pipeline; twice weekly captures sentiment *movement* and catches the fortnightly council cycle
-(Thursday) without paying for it every day. Everything downstream degrades gracefully on the
-days between: the dashboard plots only `measured` files, and the weekly digest labels gaps rather
-than inventing them (never fabricate a missing day — see `tasks/lessons.md` Lesson 11).
+**Cadence: daily — every 24 hours** (reverted from twice-weekly 2026-08-02; user explicitly wants
+a continuous historical backlog and accepts the ~3x token cost of daily per-post LLM classification
+over the Mon/Thu schedule). Each run collects the trailing 24 hours only — see the Setup section's
+existing-file check, which still skips a run if today's file already exists. Everything downstream
+degrades gracefully on any day a run is missed: the dashboard plots only `measured`/`measured_backfill`
+files, and the weekly digest labels gaps rather than inventing them (never fabricate a missing day —
+see `tasks/lessons.md` Lesson 11).
+
+**Automation**: a daily cron trigger runs this spec automatically. If the trigger ever misfires,
+run it manually via this file — the existing-file check makes re-runs safe.
 
 Scrapes social sentiment for $TEL / Telcoin across X/Twitter, Reddit, and crypto news. Outputs
 structured JSON and regenerates the heat map artifact.
@@ -42,6 +46,48 @@ Check if today's file already exists — if yes, skip scraping and go to Step 5 
 ```bash
 ls campaign/analytics/sentiment/$TODAY.json 2>/dev/null && echo "EXISTS" || echo "MISSING"
 ```
+
+---
+
+## Step 0b — Backfill Mode (one-time)
+
+Run this once to seed a historical backlog, then never again — daily runs from Step 1 onward
+build the archive forward in real time.
+
+**What backfill can and cannot do.** WebSearch only returns what is currently indexed and live.
+There is no way to query "what did sentiment look like on a past date" — that data was never
+captured at the time and cannot be reconstructed after the fact. A backfilled day is therefore
+**not equivalent to a daily `measured` run** and must never be presented as one. This is the same
+failure mode `tasks/lessons.md` Lesson 11 quarantined 14 files for (fabricated-looking completeness)
+— the fix here is honest labeling, not another synthetic dataset.
+
+What backfill *can* honestly do: run the normal Step 1/2/3 searches now, and for any result that
+happens to expose a **real, visible historical timestamp** (Reddit shows post dates; some X/Twitter
+snippets show an absolute or resolvable relative date), file that post under its true historical
+date instead of today's file. This recovers a sparse, survivorship-biased sample of durable/
+high-engagement old content still sitting in the index — real posts, real dates, but a floor on
+that day's actual volume, never a census.
+
+**Procedure:**
+1. Run the Step 1 (X/Twitter) and Step 2 (Reddit) search queries as written. Do not run Step 3
+   (News) for backfill — dated news either has a real publish date already or doesn't qualify;
+   there's nothing backfill-specific to add there.
+2. For each result, check `posted_at`. If there is no real, verifiable date, **discard it from
+   backfill** — do not file it under today either; an undated post backfilled into today would
+   corrupt today's real sample with old content.
+3. If a real date resolves: group results by their UTC date. For each date that gets at least one
+   post, build a JSON file exactly per Step 4's rules (same schema, same invariants — hour buckets
+   still must sum to `total_mentions`), but set:
+   - `data_status: "measured_backfill"` (not `"measured"`)
+   - `collection.method` including the literal string `"backfill"` so it's traceable
+   - `backfill_note`: one sentence stating this is a sparse, timestamp-verified sample, not a full
+     day's volume
+4. If a date file already exists (e.g. today's own file, or a prior backfill run), do not overwrite
+   it — this step runs once. Skip dates that already have a file.
+5. Run the Step 4 validator against every new backfill file. The arithmetic invariants apply
+   unconditionally regardless of `data_status`.
+6. Report which dates were recovered and how many posts landed in each — the gaps are informative,
+   not a defect to hide.
 
 ---
 
@@ -238,8 +284,13 @@ Read all JSON files:
 ls campaign/analytics/sentiment/*.json | sort
 ```
 
-Compile into a single JavaScript constant, **skipping any file whose `data_status` is not
-`"measured"`**. Per file, extract:
+Compile into a single JavaScript constant, **skipping any file whose `data_status` is
+`"seed_synthetic"` or `"partial"`** (fabricated or incomplete — never plotted). Files with
+`data_status: "measured"` and `data_status: "measured_backfill"` are both included, but must be
+visually distinguishable: render `measured_backfill` points hollow/lower-opacity with no
+interpolated trend line connecting them to neighboring points (a line implies continuity of
+measurement method that doesn't exist between a sparse backfilled day and a real live-day scrape),
+plus a legend entry ("○ backfilled — sparse sample, not a full-day census"). Per file, extract:
 - `date`
 - `composite.sentiment_score` and `composite.n_classified` (never one without the other)
 - `composite.total_mentions`, `composite.unique_authors`
@@ -249,8 +300,9 @@ Compile into a single JavaScript constant, **skipping any file whose `data_statu
 - `questions[]`
 - `share_of_voice{}`
 
-While fewer than 14 measured days exist, keep the dashboard in its "Collecting — day N" state
-and update the counter rather than plotting a trend line through a handful of points.
+While fewer than 14 days (counting both `measured` and `measured_backfill`) exist, keep the
+dashboard in its "Collecting — day N" state and update the counter rather than plotting a trend
+line through a handful of points.
 
 Build the complete artifact HTML with all historical data embedded.
 
@@ -260,8 +312,9 @@ republish. The chart code, styling, and panel structure carry forward unchanged.
 fails, the artifact source of record is the last version committed under
 `campaign/analytics/sentiment/dashboard.html`.
 
-**Never plot a file whose `data_status` is not `"measured"`.** Files marked `seed_synthetic` or
-`partial` are excluded from the series and counted only in the "days collected" tally.
+**Never plot a file marked `seed_synthetic` or `partial`.** Those are excluded from the series
+entirely and counted only in the "days collected" tally. `measured` and `measured_backfill` files
+are both plotted, per the distinct rendering rule above.
 
 Call the Artifact tool to update the artifact at ARTIFACT_URL (see top of this file).
 The artifact title is "TEL Social Intelligence" and favicon is "📊".
