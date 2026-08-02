@@ -78,3 +78,7 @@ integrations/qwen/agents/
 !integrations/openclaw/README.md
 .claude/settings.local.json
 infrastructure/n8n/.env
+
+# X API OAuth - local secrets, never committed
+.x_oauth_verifier
+.x_refresh_token
