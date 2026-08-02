@@ -213,6 +213,35 @@ rounding error and tells the reader nothing.
 
 ---
 
+## Step 3d — Own-account performance (X native analytics)
+
+`own_account{}` is the pipeline's only `measured`-tier field — real impressions, engagement, and
+link clicks for our own posts, as opposed to the `observed` samples in the rest of this file. It
+has no automated collection path, and **that's deliberate, not a gap to script around**:
+
+- **No browser automation against a stored login.** X's ToS bans automated access to the
+  analytics dashboard, and this manages a real production account (@telcoinTAO) — an account
+  suspension is not a risk worth trading for one metric. (Researched and confirmed 2026-08-02:
+  there is also no technical bridge from a cloud-hosted session to a locally-authenticated Chrome
+  profile — "Claude in Chrome" is tied to the machine it runs on.)
+- **The X API's `non_public_metrics`/`organic_metrics` fields are genuinely affordable** under
+  2026 pay-per-use pricing (not Enterprise-gated) if this is worth automating properly later, but
+  it requires an OAuth user-context authorization only the account owner can grant.
+- **The sanctioned path today is the manual CSV export.** Log into analytics.x.com under the
+  account's own delegated access (X Premium required for dashboard access), download the "Tweet
+  activity" export (covers roughly the trailing 90 days), then run:
+  ```bash
+  python3 scripts/x-analytics-import.py path/to/tweet_activity_export.csv
+  ```
+  This fills `own_account{}` on every matching day-file (matching narratives against that day's
+  own posts by URL where the community scraper already recorded the same tweet), and creates a
+  new `data_status: "partial"` file for any date the CSV covers that has no host file yet — real,
+  dated performance data with no community layer, never conflated with a full `measured` day. Run
+  it whenever a fresh export is pulled; safe to re-run, later exports overwrite `own_account{}`
+  with `as_of` bumped to the import time.
+
+---
+
 ## Step 4 — Build and Save JSON
 
 Count totals across all collected posts. Compute:
