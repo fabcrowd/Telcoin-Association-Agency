@@ -224,28 +224,31 @@ link clicks for our own posts, as opposed to the `observed` samples in the rest 
   there is also no technical bridge from a cloud-hosted session to a locally-authenticated Chrome
   profile — "Claude in Chrome" is tied to the machine it runs on.)
 
-**Primary path — fully automated, once connected:**
-```bash
-python3 scripts/x_api_fetch.py
-```
-Run this daily, right alongside the rest of this spec (same cron entry). It refreshes its own
-access token from a stored, auto-rotating refresh token and pulls the trailing 24h of
-`organic_metrics`/`non_public_metrics` (impressions, engagement, link clicks) for @telcoinTAO's
-own posts via the X API v2 — genuinely affordable under 2026 pay-per-use pricing, not
-Enterprise-gated. Zero human involvement per run.
+**Standing path — decided 2026-08-10: manual CSV export, by explicit choice.** The X API route
+(`scripts/x_api_fetch.py` + `scripts/x_oauth_setup.py`) was built and works, but costs a small
+per-read fee (roughly $0.15-0.45/month at this posting volume — X removed its free developer
+tier in Feb 2026) and requires a one-time OAuth connection step. Weighed against that: periodic
+CSV export from analytics.x.com is genuinely $0 in API cost and needs no developer app or OAuth
+setup at all — just the X Premium subscription the account already needs for dashboard access
+either way. The user chose this as the one acceptable manual step in the whole pipeline. Do not
+"fix" this by pushing the OAuth path again without being asked; the tradeoff was made knowingly.
 
-**The one-time setup this requires** — run once, ever, not per day: `scripts/x_oauth_setup.py`
-walks through connecting the account (an X Developer App + a single "click Authorize" step,
-identical to what Buffer/Typefully/Hootsuite require during onboarding — a platform-level
-requirement for releasing private analytics data to any third party, not something this pipeline
-can shortcut). After that one grant, `x_api_fetch.py` keeps itself running indefinitely.
+To refresh `own_account{}`:
+1. Log into X as @telcoinTAO (switch accounts first if using delegated/team access).
+2. On analytics.x.com, open the Posts/Tweets tab, set the date range, and use Export Data.
+3. Run:
+   ```bash
+   python3 scripts/x-analytics-import.py path/to/exported.csv
+   ```
+Re-run whenever a fresh export is pulled — safe to re-run, later exports overwrite `own_account{}`
+with `as_of` bumped to the import time. The export covers roughly the trailing 90 days, so an
+occasional pull (not necessarily daily) keeps the record current; a gap between exports just means
+`own_account{}` lags, which is honestly a lesser problem than the community layer's day-to-day
+gaps this file already tolerates.
 
-**Fallback / historical backfill only:** if the API connection isn't set up yet, or to recover
-performance data from before it existed, `scripts/x-analytics-import.py` parses a manually
-exported analytics.x.com "Tweet activity" CSV (X Premium required for dashboard access, covers
-roughly the trailing 90 days) into the same schema. This is a recurring manual action and should
-not be the standing path once `x_api_fetch.py` is connected — use it for one-time backfill, not
-as the ongoing collection method.
+**`x_api_fetch.py` / `x_oauth_setup.py` remain in the repo as a ready, tested-but-unused upgrade
+path** — if the calculus changes (posting volume grows, or the manual export becomes a burden
+after all), connecting them is a one-time step, not a rebuild.
 
 Either path fills `own_account{}` on every matching day-file (matching narratives against that
 day's own posts by URL where the community scraper already recorded the same tweet), and creates
