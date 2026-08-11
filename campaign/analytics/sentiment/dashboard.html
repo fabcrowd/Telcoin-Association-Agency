@@ -175,15 +175,14 @@ footer{font-size:.74rem;color:var(--muted);font-family:var(--mono);line-height:1
       independent measured-tier signal for @telcoinTAO and is safe to act on now.
     </p>
     <div class="progress-block">
-      <div class="progress-head"><span>Verified community days collected</span><b>2 / 14</b></div>
+      <div class="progress-head"><span>Verified community days collected</span><b>3 / 14</b></div>
       <div class="track">
-        <i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i>
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
       </div>
     </div>
-    <p class="chart-note" style="margin-top:14px">
-      2026-08-01: 19 community mentions, sentiment 0.53 (n=19), own-account day rollup 8,606 impressions.<br>
-      2026-08-02: 19 community mentions, sentiment 0.53 (n=19), own-account day rollup 9,753 impressions.
+    P26-08-01: 19 community mentions, sentiment 0.53 (n=19).<br>
+      2026-08-02: 19 community mentions, sentiment 0.53 (n=19).<br>
+      2026-08-11: 20 X posts contextually viewed via fxtwitter (site: search empty + login wall), sentiment 0.75 (n=20), 10 unique authors. Live official signal: TGIP2 vote open through Aug 13 (Stakers+LM quorum reached) — newest TGIP2 status IDs not resolvable without login, recorded in collection notes rather than fabricated.
     </p>
   </section>
 
@@ -726,7 +725,8 @@ const RAW = [
         "tier": "measured",
         "source": "x_native_analytics_account_overview_csv"
       },
-      "posts": []
+      "posts": [],
+      "followers": null
     }
   },
   {
@@ -802,7 +802,97 @@ const RAW = [
         "tier": "measured",
         "source": "x_native_analytics_account_overview_csv"
       },
-      "posts": []
+      "posts": [],
+      "followers": null
+    }
+  },
+  {
+    "date": "2026-08-11",
+    "data_status": "measured",
+    "sentiment_score": 0.75,
+    "n_classified": 20,
+    "total_mentions": 20,
+    "unique_authors": 10,
+    "top_narrative": null,
+    "hour_distribution": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "unknown": 20
+    },
+    "narratives": {
+      "price": 7,
+      "network_tech": 6,
+      "mainnet": 4,
+      "banking": 4,
+      "validators": 2,
+      "tan": 3,
+      "telx": 2,
+      "governance": 4
+    },
+    "questions": [
+      {
+        "id": "74748f00f8b9",
+        "text_canonical": "Will 2026 mainnet reverse TEL's -94% from ATH price trend?",
+        "first_seen": "2026-08-11",
+        "last_seen": "2026-08-11",
+        "times_observed": 1,
+        "narratives": [
+          "price",
+          "mainnet"
+        ],
+        "status": "open",
+        "answered_by_post_url": null,
+        "answered_at": null
+      },
+      {
+        "id": "66b47bf9fd45",
+        "text_canonical": "What is the $TEL contract address on Base?",
+        "first_seen": "2026-08-11",
+        "last_seen": "2026-08-11",
+        "times_observed": 1,
+        "narratives": [
+          "network_tech",
+          "price"
+        ],
+        "status": "open",
+        "answered_by_post_url": null,
+        "answered_at": null
+      }
+    ],
+    "share_of_voice": {
+      "telcoin": 100.0,
+      "xrp": 62.5,
+      "stellar": 62.5,
+      "celo": 62.5
+    },
+    "own_account": {
+      "tier": "measured",
+      "source": "fxtwitter_profile+account_overview_csv",
+      "daily": null,
+      "posts": [],
+      "followers": 5687
     }
   }
 ];
