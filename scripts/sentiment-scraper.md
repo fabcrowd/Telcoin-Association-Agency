@@ -233,17 +233,24 @@ setup at all — just the X Premium subscription the account already needs for d
 either way. The user chose this as the one acceptable manual step in the whole pipeline. Do not
 "fix" this by pushing the OAuth path again without being asked; the tradeoff was made knowingly.
 
-To refresh `own_account{}`:
+To refresh measured own-account performance:
 1. Log into X as @telcoinTAO (switch accounts first if using delegated/team access).
-2. On analytics.x.com, open the Posts/Tweets tab, set the date range, and use Export Data.
+2. On analytics.x.com, export **either or both**:
+   - **Account Overview** (by day) — day totals → `campaign/analytics/account-overview/daily.json`
+     and attaches `own_account.daily` onto existing sentiment day files. Also refreshes
+     `campaign/analytics/PERFORMANCE-LOG.md` when the agent recalculates after import.
+   - **Posts / Tweet activity** (Export by Tweet) — per-post rows with permalinks → fills
+     `own_account.posts[]` on matching day files (and creates `data_status: "partial"` files
+     for dates with no community host file yet).
 3. Run:
    ```bash
    python3 scripts/x-analytics-import.py path/to/exported.csv
    ```
-Re-run whenever a fresh export is pulled — safe to re-run, later exports overwrite `own_account{}`
-with `as_of` bumped to the import time. The export covers roughly the trailing 90 days, so an
+   The importer auto-detects which export type it received.
+Re-run whenever a fresh export is pulled — safe to re-run, later exports overwrite measured
+fields with `as_of` bumped to the import time. The export covers roughly the trailing 90 days, so an
 occasional pull (not necessarily daily) keeps the record current; a gap between exports just means
-`own_account{}` lags, which is honestly a lesser problem than the community layer's day-to-day
+own-account data lags, which is honestly a lesser problem than the community layer's day-to-day
 gaps this file already tolerates.
 
 **`x_api_fetch.py` / `x_oauth_setup.py` remain in the repo as a ready, tested-but-unused upgrade
@@ -343,6 +350,11 @@ plus a legend entry ("○ backfilled — sparse sample, not a full-day census").
 - `own_account{}` if present
 - `questions[]`
 - `share_of_voice{}`
+
+Separately, if `campaign/analytics/account-overview/daily.json` exists, embed it as
+`ACCOUNT_RAW` and render the measured @telcoinTAO impression/engagement charts. That series is
+independent of the community 14-day collecting gate — plot it whenever ≥1 measured account day
+exists.
 
 While fewer than 14 days (counting both `measured` and `measured_backfill`) exist, keep the
 dashboard in its "Collecting — day N" state and update the counter rather than plotting a trend

@@ -66,11 +66,20 @@
       "text_excerpt": "The Telcoin Trajectory: Poised for Tier 1 Exchange Listings?",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "low",
-      "narratives": ["price"],
+      "narratives": [
+        "price"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -84,11 +93,20 @@
       "text_excerpt": "$TEL is now live on Kraken! As the native token of Telcoin Network...",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "high",
-      "narratives": ["price"],
+      "narratives": [
+        "price"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -102,11 +120,20 @@
       "text_excerpt": "$TEL is now officially supported on @Base! What's the Contract Address?",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "high",
-      "narratives": ["network_tech"],
+      "narratives": [
+        "network_tech"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": true
@@ -120,11 +147,20 @@
       "text_excerpt": "MARKETS: TELCOIN'S $TEL TOKEN DOWN -94% FROM ALL-TIME HIGHS",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "negative",
       "sentiment_confidence": "high",
-      "narratives": ["price"],
+      "narratives": [
+        "price"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -138,11 +174,20 @@
       "text_excerpt": null,
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "neutral",
       "sentiment_confidence": "low",
-      "narratives": ["other"],
+      "narratives": [
+        "other"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -156,11 +201,20 @@
       "text_excerpt": null,
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "neutral",
       "sentiment_confidence": "low",
-      "narratives": ["other"],
+      "narratives": [
+        "other"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -174,11 +228,20 @@
       "text_excerpt": "Happy holidays! eUSD from Telcoin Digital Asset Bank is now live on Ethereum and Polygon.",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "high",
-      "narratives": ["banking"],
+      "narratives": [
+        "banking"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -192,11 +255,20 @@
       "text_excerpt": null,
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "neutral",
       "sentiment_confidence": "low",
-      "narratives": ["other"],
+      "narratives": [
+        "other"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": true
@@ -210,11 +282,20 @@
       "text_excerpt": "Come help build the #telcoin network!",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "medium",
-      "narratives": ["network_tech"],
+      "narratives": [
+        "network_tech"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -228,11 +309,20 @@
       "text_excerpt": "#Explainer: What is Telcoin ($TEL)? Telcoin is an Ethereum-based altcoin that combines blockchain, telecom, and digital banking...",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "neutral",
       "sentiment_confidence": "medium",
-      "narratives": ["other"],
+      "narratives": [
+        "other"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -246,11 +336,20 @@
       "text_excerpt": "Telcoin Network is build to handle 7,000,000,000+ unique users, talk about history being written in plane sight.",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "medium",
-      "narratives": ["network_tech"],
+      "narratives": [
+        "network_tech"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -264,11 +363,21 @@
       "text_excerpt": "Telcoin Network Roadmap Updated on Feb 19, 2026... P2P streaming, production-grade database infrastructure, Custom RPC endpoints",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "high",
-      "narratives": ["network_tech", "mainnet"],
+      "narratives": [
+        "network_tech",
+        "mainnet"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -282,11 +391,22 @@
       "text_excerpt": "$TEL is hitting a real inflection point. The Telcoin Network is nearing mainnet, with actual Mobile Network Operators coming online as validators... about to open the doors to it's U.S. [bank]",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "high",
-      "narratives": ["validators", "mainnet", "banking"],
+      "narratives": [
+        "validators",
+        "mainnet",
+        "banking"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": false
@@ -300,11 +420,20 @@
       "text_excerpt": "A new era for the Internet of Money. $TEL is now LIVE on @UpholdInc, with exclusive early access for Uphold Rewards members",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "high",
-      "narratives": ["price"],
+      "narratives": [
+        "price"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": true
@@ -318,11 +447,20 @@
       "text_excerpt": "A new exchange, a global step forward. $TEL joins @UpholdInc, strengthening liquidity and expanding access",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "positive",
       "sentiment_confidence": "high",
-      "narratives": ["price"],
+      "narratives": [
+        "price"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": true
@@ -336,11 +474,21 @@
       "text_excerpt": "Telcoin Association TELx Council Meeting",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "neutral",
       "sentiment_confidence": "medium",
-      "narratives": ["governance", "telx"],
+      "narratives": [
+        "governance",
+        "telx"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": true
@@ -354,11 +502,22 @@
       "text_excerpt": "Meeting Reminder: TAN Council April 2nd 2026 - TANIP-1 Fee Rebate Launch, Remitmap Demo, TEL Pets Demo",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "neutral",
       "sentiment_confidence": "high",
-      "narratives": ["governance", "tan", "telx"],
+      "narratives": [
+        "governance",
+        "tan",
+        "telx"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": true
@@ -372,11 +531,20 @@
       "text_excerpt": "Meeting Reminder: Platform & Treasury Council April 9th 2026 - TELpets Introduction, TELIP: Claude AI, TIP: Council Organizational",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "neutral",
       "sentiment_confidence": "high",
-      "narratives": ["governance"],
+      "narratives": [
+        "governance"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": true
@@ -390,11 +558,21 @@
       "text_excerpt": "18th TELx Council Meeting - Liquidity incentives incoming: eMXN/USDC pool on Polygon, 2.4M TEL/month incentive discussion",
       "posted_at": null,
       "posted_hour_known": false,
-      "metrics": { "likes": null, "reposts": null, "replies": null, "score": null, "comments": null, "impressions": null },
+      "metrics": {
+        "likes": null,
+        "reposts": null,
+        "replies": null,
+        "score": null,
+        "comments": null,
+        "impressions": null
+      },
       "metrics_tier": "unavailable",
       "sentiment": "neutral",
       "sentiment_confidence": "medium",
-      "narratives": ["governance", "telx"],
+      "narratives": [
+        "governance",
+        "telx"
+      ],
       "is_question": false,
       "question_text": null,
       "is_own_post": true
@@ -404,65 +582,137 @@
   "narratives": {
     "mainnet": {
       "community_mentions": 2,
-      "sentiment": { "positive": 2, "neutral": 0, "negative": 0 },
+      "sentiment": {
+        "positive": 2,
+        "neutral": 0,
+        "negative": 0
+      },
       "unique_authors": 2,
-      "by_platform": { "twitter": 2, "reddit": 0, "news": 0 },
+      "by_platform": {
+        "twitter": 2,
+        "reddit": 0,
+        "news": 0
+      },
       "tier": "observed"
     },
     "governance": {
       "community_mentions": 4,
-      "sentiment": { "positive": 0, "neutral": 4, "negative": 0 },
+      "sentiment": {
+        "positive": 0,
+        "neutral": 4,
+        "negative": 0
+      },
       "unique_authors": 1,
-      "by_platform": { "twitter": 4, "reddit": 0, "news": 0 },
+      "by_platform": {
+        "twitter": 4,
+        "reddit": 0,
+        "news": 0
+      },
       "tier": "observed"
     },
     "validators": {
       "community_mentions": 1,
-      "sentiment": { "positive": 1, "neutral": 0, "negative": 0 },
+      "sentiment": {
+        "positive": 1,
+        "neutral": 0,
+        "negative": 0
+      },
       "unique_authors": 1,
-      "by_platform": { "twitter": 1, "reddit": 0, "news": 0 },
+      "by_platform": {
+        "twitter": 1,
+        "reddit": 0,
+        "news": 0
+      },
       "tier": "observed"
     },
     "telx": {
       "community_mentions": 3,
-      "sentiment": { "positive": 0, "neutral": 3, "negative": 0 },
+      "sentiment": {
+        "positive": 0,
+        "neutral": 3,
+        "negative": 0
+      },
       "unique_authors": 1,
-      "by_platform": { "twitter": 3, "reddit": 0, "news": 0 },
+      "by_platform": {
+        "twitter": 3,
+        "reddit": 0,
+        "news": 0
+      },
       "tier": "observed"
     },
     "tan": {
       "community_mentions": 1,
-      "sentiment": { "positive": 0, "neutral": 1, "negative": 0 },
+      "sentiment": {
+        "positive": 0,
+        "neutral": 1,
+        "negative": 0
+      },
       "unique_authors": 1,
-      "by_platform": { "twitter": 1, "reddit": 0, "news": 0 },
+      "by_platform": {
+        "twitter": 1,
+        "reddit": 0,
+        "news": 0
+      },
       "tier": "observed"
     },
     "network_tech": {
       "community_mentions": 4,
-      "sentiment": { "positive": 4, "neutral": 0, "negative": 0 },
+      "sentiment": {
+        "positive": 4,
+        "neutral": 0,
+        "negative": 0
+      },
       "unique_authors": 4,
-      "by_platform": { "twitter": 4, "reddit": 0, "news": 0 },
+      "by_platform": {
+        "twitter": 4,
+        "reddit": 0,
+        "news": 0
+      },
       "tier": "observed"
     },
     "price": {
       "community_mentions": 5,
-      "sentiment": { "positive": 4, "neutral": 0, "negative": 1 },
+      "sentiment": {
+        "positive": 4,
+        "neutral": 0,
+        "negative": 1
+      },
       "unique_authors": 4,
-      "by_platform": { "twitter": 5, "reddit": 0, "news": 0 },
+      "by_platform": {
+        "twitter": 5,
+        "reddit": 0,
+        "news": 0
+      },
       "tier": "observed"
     },
     "banking": {
       "community_mentions": 2,
-      "sentiment": { "positive": 2, "neutral": 0, "negative": 0 },
+      "sentiment": {
+        "positive": 2,
+        "neutral": 0,
+        "negative": 0
+      },
       "unique_authors": 2,
-      "by_platform": { "twitter": 2, "reddit": 0, "news": 0 },
+      "by_platform": {
+        "twitter": 2,
+        "reddit": 0,
+        "news": 0
+      },
       "tier": "observed"
     },
     "other": {
       "community_mentions": 4,
-      "sentiment": { "positive": 0, "neutral": 4, "negative": 0 },
+      "sentiment": {
+        "positive": 0,
+        "neutral": 4,
+        "negative": 0
+      },
       "unique_authors": 4,
-      "by_platform": { "twitter": 4, "reddit": 0, "news": 0 },
+      "by_platform": {
+        "twitter": 4,
+        "reddit": 0,
+        "news": 0
+      },
       "tier": "observed"
     }
   },
@@ -489,11 +739,57 @@
     "unique_authors": 10,
     "top_narrative": null,
     "hour_distribution": {
-      "0": 0, "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0,
-      "10": 0, "11": 0, "12": 0, "13": 0, "14": 0, "15": 0, "16": 0, "17": 0, "18": 0,
-      "19": 0, "20": 0, "21": 0, "22": 0, "23": 0, "unknown": 19
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "unknown": 19
     }
   },
   "_ingested_at": "2026-08-02T12:27:06Z",
-  "_source_system": "websearch_sentiment_scraper"
+  "_source_system": "websearch_sentiment_scraper",
+  "own_account": {
+    "followers": null,
+    "as_of": "2026-08-11T17:58:44.557544+00:00",
+    "source": "x_native_analytics_account_overview_csv",
+    "tier": "measured",
+    "daily": {
+      "impressions": 9753,
+      "likes": 111,
+      "engagements": 269,
+      "engagement_rate": 0.027581,
+      "bookmarks": 1,
+      "shares": 4,
+      "new_follows": 2,
+      "replies": 2,
+      "reposts": 24,
+      "profile_visits": 22,
+      "posts_published": 2,
+      "video_views": 4,
+      "media_views": 20,
+      "tier": "measured",
+      "source": "x_native_analytics_account_overview_csv"
+    },
+    "posts": []
+  }
 }
