@@ -1,0 +1,98 @@
+{
+  "name": "Fellow AI Note → GitHub Transcript",
+  "nodes": [
+    {
+      "id": "fellow-trigger",
+      "name": "Fellow Trigger",
+      "type": "@fellow/n8n-nodes-fellow.fellowTrigger",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "parameters": {
+        "event": "aiNoteGenerated"
+      },
+      "credentials": {
+        "fellowApi": {
+          "id": "REPLACE_WITH_CREDENTIAL_ID",
+          "name": "Fellow API"
+        }
+      }
+    },
+    {
+      "id": "format-markdown",
+      "name": "Format as Markdown",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300],
+      "parameters": {
+        "jsCode": "const note = $input.first().json;\n\n// Build a slug from the meeting title for the filename\nconst rawTitle = note.title || note.event_title || note.id || 'meeting-note';\nconst date = new Date().toISOString().split('T')[0];\nconst slug = rawTitle\n  .toLowerCase()\n  .replace(/[^a-z0-9]+/g, '-')\n  .replace(/^-|-$/g, '')\n  .substring(0, 50);\n\n// Build markdown content from the note payload\n// Fellow AI notes contain: title, summary, action_items, transcript, attendees\nconst sections = [];\nsections.push(`# ${rawTitle}`);\nsections.push(`**Date**: ${date}`);\n\nif (note.attendees && note.attendees.length) {\n  const names = note.attendees.map(a => a.name || a.email).join(', ');\n  sections.push(`**Attendees**: ${names}`);\n}\n\nif (note.summary) {\n  sections.push(`\\n## Summary\\n${note.summary}`);\n}\n\nif (note.action_items && note.action_items.length) {\n  const items = note.action_items.map(i => `- ${i.description || i.text || JSON.stringify(i)}`).join('\\n');\n  sections.push(`\\n## Action Items\\n${items}`);\n}\n\nif (note.transcript) {\n  sections.push(`\\n## Full Transcript\\n${note.transcript}`);\n} else {\n  // Fallback: dump the entire raw payload for Phase 0D to parse\n  sections.push(`\\n## Raw Payload\\n\\`\\`\\`json\\n${JSON.stringify(note, null, 2)}\\n\\`\\`\\``);\n}\n\nreturn [{\n  json: {\n    path: `campaign/research/transcripts/${date}-${slug}.md`,\n    content: sections.join('\\n\\n'),\n    commitMessage: `Fellow transcript: ${rawTitle} (${date})`\n  }\n}];"
+      }
+    },
+    {
+      "id": "github-commit",
+      "name": "Commit to GitHub",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1,
+      "position": [720, 300],
+      "parameters": {
+        "resource": "file",
+        "operation": "create",
+        "owner": "fabcrowd",
+        "repository": "Telcoin-Association-Agency",
+        "filePath": "={{ $json.path }}",
+        "fileContent": "={{ $json.content }}",
+        "commitMessage": "={{ $json.commitMessage }}",
+        "branch": "claude/campaign-iLgt5",
+        "additionalParameters": {}
+      },
+      "credentials": {
+        "githubApi": {
+          "id": "REPLACE_WITH_CREDENTIAL_ID",
+          "name": "GitHub API"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Fellow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Format as Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format as Markdown": {
+      "main": [
+        [
+          {
+            "node": "Commit to GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
+  },
+  "_notes": {
+    "import_instructions": [
+      "1. In n8n: Workflows → Import from file → select this JSON",
+      "2. Open the workflow and click 'Fellow Trigger' node",
+      "3. Under Credentials, create a new 'Fellow API' credential (subdomain + API key)",
+      "4. Click 'Commit to GitHub' node",
+      "5. Under Credentials, create a new 'GitHub API' credential (PAT token + username)",
+      "6. Activate the workflow (toggle top-right)",
+      "7. Confirm webhook registered: check Fellow Settings → API, MCP & Webhooks → active webhooks"
+    ]
+  }
+}

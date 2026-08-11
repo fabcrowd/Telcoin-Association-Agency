@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "updated": "2026-07-30",
+  "note": "Two orthogonal axes. `narratives` describes WHAT is being discussed and applies to community posts and our own posts alike - it is the join key between the two. `layers` describes WHY we published and applies only to our own posts. Education is a layer, not a narrative.",
+
+  "narratives": [
+    {
+      "id": "mainnet",
+      "label": "Mainnet & Launch",
+      "aliases": ["mainnet", "launch", "Adiri", "testnet", "hardening", "go live", "when launch"],
+      "publishable": true,
+      "since": "2026-07-30"
+    },
+    {
+      "id": "governance",
+      "label": "Governance",
+      "aliases": ["council", "TELIP", "TANIP", "TELxIP", "proposal", "snapshot", "vote", "ratification", "Verein", "agenda"],
+      "publishable": true,
+      "since": "2026-07-30"
+    },
+    {
+      "id": "staking",
+      "label": "Staking & Rewards",
+      "aliases": ["staking", "stake", "rewards", "reward distribution", "issuance", "yield"],
+      "publishable": true,
+      "since": "2026-07-30"
+    },
+    {
+      "id": "validators",
+      "label": "Validators & MNOs",
+      "aliases": ["validator", "MNO", "GSMA", "ConsensusNFT", "node operator", "onboarding"],
+      "publishable": true,
+      "notes": "Validator NAMES are never published - the Association will not announce them. Listening on this narrative is unrestricted; publishing is constrained.",
+      "since": "2026-07-30"
+    },
+    {
+      "id": "tel_upgrade",
+      "label": "TEL Token Upgrade",
+      "aliases": ["token upgrade", "18 decimals", "2 decimals", "migration", "exchange window", "1:1"],
+      "publishable": true,
+      "since": "2026-07-30"
+    },
+    {
+      "id": "telx",
+      "label": "TELx",
+      "aliases": ["TELx", "liquidity", "liquidity mining", "Merkl", "pool", "LP", "trading fee rebate"],
+      "publishable": true,
+      "since": "2026-07-30"
+    },
+    {
+      "id": "tan",
+      "label": "TAN & Wallet",
+      "aliases": ["TAN", "Telcoin Application Network", "wallet", "app", "remittance", "send money"],
+      "publishable": true,
+      "since": "2026-07-30"
+    },
+    {
+      "id": "network_tech",
+      "label": "Network & Protocol",
+      "aliases": ["consensus", "BLS", "EVM", "audit", "block time", "throughput", "architecture", "node", "RPC", "bridge", "LayerZero", "cross-chain"],
+      "publishable": true,
+      "notes": "Absorbs the former standalone `layerzero` tag. Bridge and cross-chain discussion is protocol discussion; splitting it produced a near-empty series.",
+      "since": "2026-07-30"
+    },
+    {
+      "id": "association",
+      "label": "The Association",
+      "aliases": ["Telcoin Association", "Swiss", "Lugano", "constitution", "membership", "TAO", "structure"],
+      "publishable": true,
+      "notes": "The Association as an institution, distinct from any single governance action.",
+      "since": "2026-07-30"
+    },
+    {
+      "id": "price",
+      "label": "Price & Markets",
+      "aliases": ["price", "$TEL price", "market cap", "listing", "exchange", "pump", "dump", "buy", "sell", "chart", "TA"],
+      "publishable": false,
+      "listen_only_reason": "Standing rule: @telcoinTAO does not comment on price action, market cap, or price vs. fundamentals. Tracked for listening only.",
+      "since": "2026-07-30"
+    },
+    {
+      "id": "banking",
+      "label": "Banking & Stablecoin",
+      "aliases": ["eUSD", "TDAB", "Digital Asset Bank", "Nebraska", "charter", "stablecoin", "bank"],
+      "publishable": false,
+      "listen_only_reason": "Entity boundary: TDAB and eUSD product content is Telcoin Holdings, not Association. No public posts without explicit user instruction.",
+      "since": "2026-07-30"
+    },
+    {
+      "id": "other",
+      "label": "Other",
+      "aliases": [],
+      "publishable": false,
+      "listen_only_reason": "Required catch-all so no observed post is silently dropped. A rising `other` count means the taxonomy needs a new narrative - review it.",
+      "since": "2026-07-30"
+    }
+  ],
+
+  "layers": [
+    { "id": "governance", "label": "Governance", "notes": "Tier 1 council notices, votes, agendas. Reach matters more than engagement; no conversation prompts." },
+    { "id": "education", "label": "Education", "notes": "Learning Path posts and explanatory threads. LP series content lives here, tagged with whatever narrative it explains." },
+    { "id": "milestone", "label": "Milestone", "notes": "Confirmed achievements and completions." },
+    { "id": "community", "label": "Community", "notes": "Replies, support, participation prompts." }
+  ],
+
+  "rules": {
+    "multi_tag": "A post may carry more than one narrative. Count it once per narrative it genuinely discusses; do not spread fractional credit.",
+    "catch_all": "Every observed post must land on at least one narrative. If none fits, use `other` - never drop the post.",
+    "publishable_false": "Narratives with publishable:false render greyed with a listen-only marker and are excluded from every coverage-gap recommendation. Tracking what the community says is legitimate; recommending we publish into it is not.",
+    "layer_scope": "`layer` is set only on our own posts. Community posts carry narratives and no layer.",
+    "adding_a_narrative": "Add here first, then backfill is optional - never invent history. Set `since` to the date the narrative starts being tracked so the dashboard can render an honest start line."
+  }
+}

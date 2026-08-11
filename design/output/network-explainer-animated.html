@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telcoin Network — Architecture Explainer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0E1A;
+    --blue: #0047FF;
+    --white: #FFFFFF;
+    --secondary: #8BA3C9;
+    --gold: #C9A227;
+    --neutral: #1A2744;
+    --green: #00C853;
+    --blue-15: rgba(0,71,255,0.15);
+    --blue-30: rgba(0,71,255,0.30);
+    --blue-40: rgba(0,71,255,0.40);
+    --white-40: rgba(255,255,255,0.40);
+    --white-10: rgba(255,255,255,0.10);
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, 'Inter', sans-serif;
+    color: var(--white);
+  }
+
+  /* 16:9 wrapper that scales to fill the viewport */
+  #stage-outer {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+  }
+
+  #stage {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 */
+    overflow: hidden;
+    max-width: calc(100vh * (16/9));
+    max-height: 100vh;
+  }
+
+  /* When max-height kicks in, shrink width accordingly */
+  @media (max-aspect-ratio: 16/9) {
+    #stage {
+      max-width: 100%;
+      padding-top: 56.25%;
+    }
+  }
+  @media (min-aspect-ratio: 16/9) {
+    #stage {
+      max-width: calc(100vh * 16/9);
+      width: calc(100vh * 16/9);
+      padding-top: min(56.25vw, 100vh);
+    }
+  }
+
+  #stage-inner {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg);
+    display: grid;
+    grid-template-rows: 14% 62% 24%;
+    overflow: hidden;
+  }
+
+  /* ======= FADE-IN OVERLAY ======= */
+  #fade-overlay {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  #fade-overlay.gone { opacity: 0; }
+
+  /* ======= HEADER ======= */
+  #header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5% 0 2.5%;
+    border-bottom: 1px solid var(--blue-30);
+    position: relative;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease;
+  }
+  #header.visible { transform: translateY(0); opacity: 1; }
+
+  .header-left {
+    font-size: clamp(8px, 0.9vw, 13px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--blue);
+  }
+
+  .header-center {
+    text-align: center;
+    flex: 1;
+    padding: 0 2%;
+  }
+
+  .header-center h1 {
+    font-size: clamp(14px, 1.85vw, 36px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .header-center h1 .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    margin-right: 0.25em;
+  }
+  .header-center h1 .word.visible { opacity: 1; transform: translateY(0); }
+
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    align-items: flex-end;
+  }
+
+  .pill-badge {
+    background: var(--blue);
+    color: var(--white);
+    font-size: clamp(7px, 0.7vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.3em 0.9em;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  /* ======= MAIN ZONE ======= */
+  #main {
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+    padding: 1.5% 1.5% 1% 1.5%;
+    gap: 1.2%;
+    overflow: hidden;
+  }
+
+  /* ======= LEFT COLUMN ======= */
+  #left-col {
+    display: flex;
+    flex-direction: column;
+    gap: 3%;
+    overflow: hidden;
+  }
+
+  .arch-panel {
+    flex: 1;
+    border-radius: 10px;
+    padding: 5% 6%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel-consensus {
+    background: var(--blue-15);
+    border: 1.5px solid var(--blue);
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  .panel-consensus.visible { opacity: 1; transform: translateX(0); }
+
+  .panel-execution {
+    background: var(--neutral);
+    border: 1px solid rgba(255,255,255,0.40);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1);
+  }
+  .panel-execution.visible { opacity: 1; transform: translateY(0); }
+
+  .panel-label {
+    font-size: clamp(6px, 0.6vw, 10px);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    font-weight: 700;
+    margin-bottom: 0.5em;
+  }
+
+  .panel-title {
+    font-size: clamp(9px, 1vw, 16px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 0.2em;
+    line-height: 1.2;
+  }
+
+  .panel-sub {
+    font-size: clamp(7px, 0.65vw, 10px);
+    color: var(--secondary);
+    margin-bottom: 0.15em;
+    line-height: 1.4;
+  }
+
+  .panel-sub-gold {
+    font-size: clamp(6px, 0.6vw, 9px);
+    color: var(--gold);
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    margin-top: 0.2em;
+  }
+
+  /* chevron between panels */
+  .chevron-down {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .chevron-down svg {
+    width: clamp(12px, 1.4vw, 22px);
+    height: clamp(12px, 1.4vw, 22px);
+    opacity: 0;
+    transition: opacity 0.4s ease 0.1s;
+  }
+  .chevron-down.visible svg { opacity: 1; }
+
+  /* DAG nodes canvas area */
+  .dag-area {
+    width: 100%;
+    height: clamp(50px, 7vw, 110px);
+    margin-top: 0.8em;
+    position: relative;
+  }
+
+  .dag-area svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* ETH hex area */
+  .eth-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.6em;
+    height: clamp(32px, 4.5vw, 70px);
+  }
+
+  .eth-hex {
+    opacity: 0;
+    transform: rotate(-30deg);
+    transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .eth-hex.visible { opacity: 1; transform: rotate(0deg); }
+  .eth-hex.spin { animation: hexSpin 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+  @keyframes hexSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* ======= CENTER COLUMN ======= */
+  #center-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  .flow-label {
+    font-size: clamp(6px, 0.6vw, 10px);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    font-weight: 700;
+    margin-bottom: 0.7em;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .flow-label.visible { opacity: 1; }
+
+  /* Flow nodes */
+  .flow-track {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 0 0 auto;
+    margin-bottom: 0.6em;
+    position: relative;
+  }
+
+  .flow-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4em;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    z-index: 2;
+  }
+  .flow-node.visible { opacity: 1; transform: scale(1); }
+
+  .flow-node-box {
+    background: var(--neutral);
+    border: 1.5px solid var(--blue-40);
+    border-radius: 8px;
+    padding: 0.5em 0.8em;
+    min-width: clamp(50px, 7vw, 110px);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .flow-node-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--blue-15);
+    opacity: 0;
+  }
+
+  .flow-node-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.2em;
+  }
+
+  .flow-node-title {
+    font-size: clamp(7px, 0.75vw, 12px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+  }
+
+  /* finalized block glow */
+  .flow-node.finalized .flow-node-box {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .flow-node.finalized.glow .flow-node-box {
+    border-color: var(--green);
+    box-shadow: 0 0 16px rgba(0,200,83,0.5), 0 0 4px rgba(0,200,83,0.3) inset;
+  }
+  .flow-node.finalized.glow .flow-node-title { color: var(--green); }
+
+  /* arrows between flow nodes */
+  .flow-arrows-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible;
+  }
+
+  /* protocol pills row */
+  .proto-row {
+    display: flex;
+    gap: 0.5em;
+    flex-wrap: wrap;
+    margin-top: 0.4em;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .proto-row.visible { opacity: 1; }
+
+  .proto-pill {
+    font-family: 'IBM Plex Mono', 'Courier New', monospace;
+    font-size: clamp(6px, 0.6vw, 9px);
+    color: var(--secondary);
+    background: rgba(139,163,201,0.08);
+    border: 1px solid rgba(139,163,201,0.2);
+    border-radius: 4px;
+    padding: 0.25em 0.6em;
+    letter-spacing: 0.05em;
+  }
+
+  /* branch connector line from center flow node 2 to left panels */
+  .branch-line-svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: visible;
+  }
+
+  /* ======= RIGHT COLUMN ======= */
+  #right-col {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .validator-header {
+    font-size: clamp(6px, 0.6vw, 10px);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    font-weight: 700;
+    margin-bottom: 0.7em;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .validator-header.visible { opacity: 1; }
+
+  .validator-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    flex: 1;
+  }
+
+  .validator-node {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    background: var(--neutral);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 0.5em 0.8em;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1),
+                border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  }
+  .validator-node.visible { opacity: 1; transform: translateX(0); }
+  .validator-node.active {
+    border-color: var(--blue);
+    background: rgba(0,71,255,0.12);
+    box-shadow: 0 0 12px rgba(0,71,255,0.3);
+  }
+
+  .validator-icon { flex-shrink: 0; }
+
+  .validator-info { flex: 1; min-width: 0; }
+
+  .validator-name {
+    font-size: clamp(7px, 0.72vw, 11px);
+    font-weight: 700;
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .validator-status {
+    font-size: clamp(6px, 0.58vw, 9px);
+    color: var(--secondary);
+  }
+
+  .validator-dot {
+    width: clamp(5px, 0.5vw, 8px);
+    height: clamp(5px, 0.5vw, 8px);
+    border-radius: 50%;
+    background: var(--secondary);
+    flex-shrink: 0;
+    transition: background 0.3s ease;
+  }
+  .validator-node.active .validator-dot { background: var(--blue); }
+
+  /* GSMA badge */
+  .gsma-badge {
+    background: var(--blue);
+    color: var(--white);
+    font-size: clamp(6px, 0.65vw, 10px);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 0.4em 1em;
+    border-radius: 999px;
+    text-align: center;
+    margin-top: 0.7em;
+    opacity: 0;
+    transition: opacity 0.5s ease, box-shadow 0.5s ease;
+  }
+  .gsma-badge.visible { opacity: 1; }
+  .gsma-badge.glow-pulse { animation: gsmaPulse 2s ease-in-out infinite; }
+
+  @keyframes gsmaPulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(0,71,255,0.4); }
+    50% { box-shadow: 0 0 18px rgba(0,71,255,0.8), 0 0 6px rgba(0,71,255,0.4); }
+  }
+
+  .stake-note {
+    font-size: clamp(6px, 0.58vw, 9px);
+    color: var(--white);
+    text-align: center;
+    margin-top: 0.3em;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .stake-note.visible { opacity: 1; }
+
+  .flywheel {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-top: 0.5em;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .flywheel.visible { opacity: 1; }
+
+  .flywheel-text {
+    font-size: clamp(6px, 0.6vw, 9px);
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  /* ======= FOOTER ======= */
+  #footer {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    padding: 0 2.5%;
+    gap: 2%;
+    align-items: center;
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.5s ease;
+  }
+  #footer.visible { transform: translateY(0); opacity: 1; }
+
+  .footer-left { }
+
+  .footer-label {
+    font-size: clamp(6px, 0.55vw, 9px);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    font-weight: 700;
+    margin-bottom: 0.3em;
+  }
+
+  .footer-status {
+    font-size: clamp(8px, 0.8vw, 13px);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.15em;
+  }
+
+  .footer-detail {
+    font-size: clamp(6px, 0.6vw, 9px);
+    color: var(--secondary);
+    line-height: 1.5;
+  }
+
+  /* Center stats */
+  .footer-center {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .stat-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 clamp(8px, 1.2vw, 20px);
+    border-right: 1px solid var(--blue);
+  }
+  .stat-block:first-child { border-left: 1px solid var(--blue); }
+
+  .stat-value {
+    font-size: clamp(10px, 1.1vw, 18px);
+    font-weight: 800;
+    color: var(--white);
+    white-space: nowrap;
+  }
+
+  .stat-label {
+    font-size: clamp(5px, 0.5vw, 8px);
+    color: var(--secondary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.15em;
+    white-space: nowrap;
+  }
+
+  /* footer right */
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0.2em;
+    position: relative;
+  }
+
+  .footer-url {
+    font-size: clamp(8px, 0.85vw, 14px);
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .footer-handle {
+    font-size: clamp(8px, 0.85vw, 14px);
+    font-weight: 700;
+    color: var(--blue);
+  }
+
+  /* Telcoin logomark watermark */
+  .logomark {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    opacity: 0.05;
+    width: clamp(40px, 5vw, 80px);
+    pointer-events: none;
+  }
+
+  /* ======= PARTICLE SYSTEM ======= */
+  #particle-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  /* ======= DAG ANIMATIONS ======= */
+  .dag-node {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .dag-node.visible { opacity: 1; }
+
+  .dag-edge {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 60;
+    transition: stroke-dashoffset 0.4s ease;
+  }
+  .dag-edge.drawn { stroke-dashoffset: 0; }
+
+  @keyframes dagPulse {
+    0%, 100% { r: 5; opacity: 0.7; }
+    50% { r: 7; opacity: 1; }
+  }
+
+  .dag-node-circle {
+    animation: dagPulse 2s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* ======= FLOW ARROW ANIMATIONS ======= */
+  .flow-arrow-path {
+    stroke-dasharray: 8 6;
+    stroke-dashoffset: 0;
+    animation: dashFlow 1.2s linear infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .flow-arrow-path.visible { opacity: 1; }
+
+  @keyframes dashFlow {
+    from { stroke-dashoffset: 28; }
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Static arrow (pre-animation, just shown) */
+  .flow-arrow-static {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .flow-arrow-static.visible { opacity: 1; }
+
+  /* ======= IDLE GLOW ON CONSENSUS PANEL ======= */
+  @keyframes panelGlow {
+    0%, 100% { box-shadow: 0 0 8px rgba(0,71,255,0.15) inset; }
+    50% { box-shadow: 0 0 20px rgba(0,71,255,0.3) inset; }
+  }
+  .panel-consensus.visible { animation: panelGlow 3s ease-in-out infinite; }
+
+  /* Count-up numbers */
+  .stat-value[data-countup] { }
+</style>
+</head>
+<body>
+
+<div id="stage-outer">
+  <div id="stage">
+    <div id="stage-inner">
+
+      <!-- Fade overlay -->
+      <div id="fade-overlay"></div>
+
+      <!-- Particle canvas -->
+      <canvas id="particle-canvas"></canvas>
+
+      <!-- ====== ZONE 1: HEADER ====== -->
+      <header id="header">
+        <div class="header-left">Telcoin Association</div>
+
+        <div class="header-center">
+          <h1 id="headline">
+            <span class="word">How</span><span class="word">the</span><span class="word">Telcoin</span><span class="word">Network</span><span class="word">Actually</span><span class="word">Works</span>
+          </h1>
+        </div>
+
+        <div class="header-right">
+          <div class="pill-badge">Chain ID: 2017</div>
+          <div class="pill-badge">TEL Gas Token</div>
+        </div>
+      </header>
+
+      <!-- ====== ZONE 2: MAIN ====== -->
+      <main id="main">
+
+        <!-- LEFT COLUMN -->
+        <div id="left-col">
+          <!-- Consensus Panel -->
+          <div class="arch-panel panel-consensus" id="panel-consensus">
+            <div class="panel-label">Consensus Layer</div>
+            <div class="panel-title">Narwhal + Bullshark</div>
+            <div class="panel-sub">DAG-based consensus protocol</div>
+            <div class="panel-sub">Adapted from Mysten Labs / Sui</div>
+
+            <div class="dag-area" id="dag-area">
+              <svg id="dag-svg" viewBox="0 0 200 80" preserveAspectRatio="xMidYMid meet">
+                <!-- Edges drawn first (behind nodes) -->
+                <g id="dag-edges">
+                  <!-- edge n0→n1 -->
+                  <line class="dag-edge" id="e01" x1="22" y1="30" x2="72" y2="15" stroke="#0047FF" stroke-width="1.2" opacity="0.6"/>
+                  <!-- edge n0→n2 -->
+                  <line class="dag-edge" id="e02" x1="22" y1="30" x2="72" y2="45" stroke="#0047FF" stroke-width="1.2" opacity="0.6"/>
+                  <!-- edge n1→n3 -->
+                  <line class="dag-edge" id="e13" x1="80" y1="15" x2="125" y2="30" stroke="#0047FF" stroke-width="1.2" opacity="0.6"/>
+                  <!-- edge n2→n3 -->
+                  <line class="dag-edge" id="e23" x1="80" y1="45" x2="125" y2="30" stroke="#0047FF" stroke-width="1.2" opacity="0.6"/>
+                  <!-- edge n3→n4 -->
+                  <line class="dag-edge" id="e34" x1="133" y1="30" x2="178" y2="30" stroke="#0047FF" stroke-width="1.2" opacity="0.6"/>
+                  <!-- cross edge n1→n4 -->
+                  <line class="dag-edge" id="e14" x1="80" y1="15" x2="178" y2="55" stroke="#0047FF" stroke-width="0.7" opacity="0.3"/>
+                </g>
+                <!-- Nodes -->
+                <g id="dag-nodes">
+                  <!-- n0 -->
+                  <g class="dag-node" id="dn0">
+                    <circle class="dag-node-circle" cx="18" cy="30" r="6" fill="#0047FF" opacity="0.9"/>
+                    <circle cx="18" cy="30" r="9" fill="none" stroke="#0047FF" stroke-width="0.8" opacity="0.3"/>
+                  </g>
+                  <!-- n1 -->
+                  <g class="dag-node" id="dn1">
+                    <circle class="dag-node-circle" cx="76" cy="14" r="5" fill="#0047FF" opacity="0.8" style="animation-delay:0.3s"/>
+                    <circle cx="76" cy="14" r="8" fill="none" stroke="#0047FF" stroke-width="0.8" opacity="0.3"/>
+                  </g>
+                  <!-- n2 -->
+                  <g class="dag-node" id="dn2">
+                    <circle class="dag-node-circle" cx="76" cy="46" r="5" fill="#0047FF" opacity="0.8" style="animation-delay:0.6s"/>
+                    <circle cx="76" cy="46" r="8" fill="none" stroke="#0047FF" stroke-width="0.8" opacity="0.3"/>
+                  </g>
+                  <!-- n3 -->
+                  <g class="dag-node" id="dn3">
+                    <circle class="dag-node-circle" cx="129" cy="30" r="6" fill="#0047FF" opacity="0.9" style="animation-delay:0.9s"/>
+                    <circle cx="129" cy="30" r="9" fill="none" stroke="#0047FF" stroke-width="0.8" opacity="0.3"/>
+                  </g>
+                  <!-- n4 -->
+                  <g class="dag-node" id="dn4">
+                    <circle class="dag-node-circle" cx="182" cy="30" r="5" fill="#C9A227" opacity="0.9" style="animation-delay:1.2s"/>
+                    <circle cx="182" cy="30" r="8" fill="none" stroke="#C9A227" stroke-width="0.8" opacity="0.3"/>
+                  </g>
+                  <!-- n5 extra lower -->
+                  <g class="dag-node" id="dn5">
+                    <circle class="dag-node-circle" cx="182" cy="57" r="4" fill="#0047FF" opacity="0.6" style="animation-delay:1.4s"/>
+                  </g>
+                </g>
+                <!-- DAG label -->
+                <text x="100" y="76" fill="#8BA3C9" font-size="7" text-anchor="middle" font-family="IBM Plex Mono, Courier New, monospace" letter-spacing="1">DAG · ROUND-BASED</text>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Chevron -->
+          <div class="chevron-down" id="chevron-down">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 9l6 6 6-6" stroke="#0047FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 14l6 6 6-6" stroke="#0047FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+            </svg>
+          </div>
+
+          <!-- Execution Panel -->
+          <div class="arch-panel panel-execution" id="panel-execution">
+            <div class="panel-label">Execution Layer</div>
+            <div class="panel-title">EVM-Compatible</div>
+            <div class="panel-sub">Ethereum-standard blocks</div>
+            <div class="panel-sub-gold">Rust codebase — 99.4%</div>
+
+            <div class="eth-area">
+              <svg id="eth-hex" class="eth-hex" viewBox="0 0 60 70" width="60" height="70">
+                <!-- Ethereum hexagon -->
+                <polygon points="30,2 56,17 56,53 30,68 4,53 4,17"
+                  fill="none" stroke="white" stroke-width="1.5" opacity="0.9"/>
+                <polygon points="30,12 48,22 48,48 30,58 12,48 12,22"
+                  fill="none" stroke="white" stroke-width="0.6" opacity="0.35"/>
+                <!-- ETH diamond -->
+                <polygon points="30,16 41,30 30,37 19,30" fill="white" opacity="0.9"/>
+                <polygon points="30,37 41,30 30,54" fill="white" opacity="0.4"/>
+                <polygon points="30,37 19,30 30,54" fill="white" opacity="0.6"/>
+                <polygon points="30,16 41,30 30,37" fill="white" opacity="0.7"/>
+                <polygon points="30,16 19,30 30,37" fill="white" opacity="0.5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- CENTER COLUMN -->
+        <div id="center-col">
+          <div class="flow-label" id="flow-label">Transaction Flow</div>
+
+          <!-- Flow nodes + arrows container -->
+          <div style="position:relative; flex: 0 0 auto;">
+            <div class="flow-track" id="flow-track">
+
+              <!-- Node 1: Transaction -->
+              <div class="flow-node" id="fn1" data-index="0">
+                <div class="flow-node-box">
+                  <div class="flow-node-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <rect x="3" y="6" width="18" height="13" rx="2" stroke="#0047FF" stroke-width="1.5"/>
+                      <path d="M7 10h10M7 14h6" stroke="#0047FF" stroke-width="1.5" stroke-linecap="round"/>
+                      <circle cx="17" cy="4" r="3" fill="#C9A227"/>
+                    </svg>
+                  </div>
+                  <div class="flow-node-title">Transaction</div>
+                </div>
+              </div>
+
+              <!-- Node 2: Consensus -->
+              <div class="flow-node" id="fn2" data-index="1">
+                <div class="flow-node-box" id="fn2-box">
+                  <div class="flow-node-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <!-- DAG mini icon -->
+                      <circle cx="5" cy="12" r="2.5" fill="#0047FF" opacity="0.9"/>
+                      <circle cx="12" cy="7" r="2" fill="#0047FF" opacity="0.7"/>
+                      <circle cx="12" cy="17" r="2" fill="#0047FF" opacity="0.7"/>
+                      <circle cx="19" cy="12" r="2.5" fill="#0047FF" opacity="0.9"/>
+                      <line x1="7" y1="11" x2="10" y2="8" stroke="#0047FF" stroke-width="1"/>
+                      <line x1="7" y1="13" x2="10" y2="16" stroke="#0047FF" stroke-width="1"/>
+                      <line x1="14" y1="8" x2="17" y2="11" stroke="#0047FF" stroke-width="1"/>
+                      <line x1="14" y1="16" x2="17" y2="13" stroke="#0047FF" stroke-width="1"/>
+                    </svg>
+                  </div>
+                  <div class="flow-node-title">Consensus</div>
+                </div>
+              </div>
+
+              <!-- Node 3: Execution -->
+              <div class="flow-node" id="fn3" data-index="2">
+                <div class="flow-node-box">
+                  <div class="flow-node-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <rect x="3" y="3" width="18" height="18" rx="3" stroke="#0047FF" stroke-width="1.5"/>
+                      <path d="M8 12l3 3 5-5" stroke="#0047FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="flow-node-title">Execution</div>
+                </div>
+              </div>
+
+              <!-- Node 4: Finalized Block -->
+              <div class="flow-node finalized" id="fn4" data-index="3">
+                <div class="flow-node-box">
+                  <div class="flow-node-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <rect x="3" y="3" width="18" height="18" rx="3" fill="rgba(0,200,83,0.12)" stroke="#00C853" stroke-width="1.5"/>
+                      <path d="M7 12l4 4 6-7" stroke="#00C853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <div class="flow-node-title">Finalized Block</div>
+                </div>
+              </div>
+
+            </div><!-- /flow-track -->
+
+            <!-- SVG overlay for arrows between flow nodes -->
+            <svg class="flow-arrows-svg" id="flow-arrows-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <!-- arrows drawn dynamically in JS -->
+            </svg>
+
+          </div><!-- /flow track container -->
+
+          <!-- Protocol pills -->
+          <div class="proto-row" id="proto-row">
+            <span class="proto-pill">libp2p</span>
+            <span class="proto-pill">QUIC-v1</span>
+            <span class="proto-pill">UDP</span>
+            <span class="proto-pill">BLS Keys</span>
+            <span class="proto-pill">Proof-of-Stake</span>
+          </div>
+
+          <!-- Spacer + supplementary info -->
+          <div style="margin-top: 0.8em; opacity: 0; transition: opacity 0.5s ease 0.5s;" id="center-info">
+            <div style="font-size: clamp(6px, 0.62vw, 10px); color: var(--secondary); line-height: 1.7;">
+              <span style="color: var(--white); font-weight: 700;">EVM-native execution</span> — Ethereum tooling works natively.<br>
+              <span style="color: var(--white); font-weight: 700;">LayerZero bridge</span> — cross-chain integration (scoping complete).<br>
+              <span style="color: var(--white); font-weight: 700;">Chain ID 2017</span> · RPC: rpc.telcoin.network
+            </div>
+          </div>
+
+        </div><!-- /center-col -->
+
+        <!-- RIGHT COLUMN -->
+        <div id="right-col">
+          <div class="validator-header" id="validator-header">Validators</div>
+
+          <div class="validator-list" id="validator-list">
+            <!-- Validator nodes injected by JS -->
+          </div>
+
+          <div class="gsma-badge" id="gsma-badge">GSMA Full-Member MNOs Only</div>
+          <div class="stake-note" id="stake-note">Must stake TEL to participate</div>
+
+          <div class="flywheel" id="flywheel">
+            <!-- circular arrow icon -->
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
+              <path d="M12 4a8 8 0 1 1-5.66 2.34" stroke="#C9A227" stroke-width="2" stroke-linecap="round"/>
+              <polyline points="3 8 7 4 11 8" fill="none" stroke="#C9A227" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="flywheel-text">Usage → Fees → MNO Promotion</div>
+          </div>
+
+        </div><!-- /right-col -->
+
+      </main><!-- /main -->
+
+      <!-- ====== ZONE 3: FOOTER ====== -->
+      <footer id="footer">
+
+        <div class="footer-left">
+          <div class="footer-label">Network Status</div>
+          <div class="footer-status">Adiri Testnet — Active</div>
+          <div class="footer-detail">Mainnet: pending security audits + MNO onboarding<br>Milestone-based launch · roadmap.telcoin.network</div>
+        </div>
+
+        <div class="footer-center">
+          <div class="stat-block">
+            <div class="stat-value" id="stat-l1">L1</div>
+            <div class="stat-label">EVM-Compatible Layer 1</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-value" id="stat-rust"><span id="rust-counter">0</span>%</div>
+            <div class="stat-label">Rust Codebase</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-value" id="stat-mno">GSMA MNOs</div>
+            <div class="stat-label">Exclusive Validator Class</div>
+          </div>
+        </div>
+
+        <div class="footer-right">
+          <div class="footer-url">telcoin.network</div>
+          <div class="footer-handle">@telcoinTAO</div>
+          <!-- Logomark watermark -->
+          <svg class="logomark" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="3"/>
+            <text x="50" y="62" text-anchor="middle" fill="white" font-size="36" font-weight="900" font-family="system-ui">T</text>
+          </svg>
+        </div>
+
+      </footer>
+
+    </div><!-- /stage-inner -->
+  </div><!-- /stage -->
+</div><!-- /stage-outer -->
+
+<script>
+(function() {
+  'use strict';
+
+  // ─── Helpers ─────────────────────────────────────────────────────────────
+  function q(sel) { return document.querySelector(sel); }
+  function qa(sel) { return Array.from(document.querySelectorAll(sel)); }
+
+  function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  function showEl(el, ...classes) {
+    if (!el) return;
+    const adds = classes.length ? classes : ['visible'];
+    adds.forEach(c => el.classList.add(c));
+  }
+
+  // ─── Build validator list ─────────────────────────────────────────────────
+  const validators = [
+    { name: 'MNO Validator Alpha', region: 'Americas' },
+    { name: 'MNO Validator Beta',  region: 'EMEA' },
+    { name: 'MNO Validator Gamma', region: 'Asia-Pacific' },
+    { name: 'MNO Validator Delta', region: 'South Asia' },
+    { name: 'MNO Validator Epsilon', region: 'Africa' },
+  ];
+
+  const list = q('#validator-list');
+  validators.forEach((v, i) => {
+    const el = document.createElement('div');
+    el.className = 'validator-node';
+    el.id = 'vn' + i;
+    el.innerHTML = `
+      <div class="validator-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <!-- Signal tower -->
+          <line x1="12" y1="14" x2="12" y2="22" stroke="#8BA3C9" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="9" y1="22" x2="15" y2="22" stroke="#8BA3C9" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M8 12a5 5 0 0 1 8 0" stroke="#8BA3C9" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M5 9a9 9 0 0 1 14 0" stroke="#8BA3C9" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <circle cx="12" cy="14" r="1.5" fill="#8BA3C9"/>
+        </svg>
+      </div>
+      <div class="validator-info">
+        <div class="validator-name">${v.name}</div>
+        <div class="validator-status">${v.region}</div>
+      </div>
+      <div class="validator-dot"></div>
+    `;
+    list.appendChild(el);
+  });
+
+  // ─── Flow arrows drawn as SVG overlays ───────────────────────────────────
+  // We'll position them based on element positions after they're visible
+  // Using percentages relative to flow-track container
+
+  // We'll draw arrows in CSS/SVG directly:
+  // positions are approximate based on the 4-node equally spaced layout
+  // Arrows at: ~13%→~33%, ~33%→~56%, ~56%→~79% of track width
+
+  const arrowsSvg = q('#flow-arrows-svg');
+  // Create 3 animated dash arrows + arrowheads
+  function buildArrows() {
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const defs = document.createElementNS(svgNS, 'defs');
+    const marker = document.createElementNS(svgNS, 'marker');
+    marker.setAttribute('id', 'arrowhead');
+    marker.setAttribute('markerWidth', '6');
+    marker.setAttribute('markerHeight', '6');
+    marker.setAttribute('refX', '5');
+    marker.setAttribute('refY', '3');
+    marker.setAttribute('orient', 'auto');
+    const poly = document.createElementNS(svgNS, 'polygon');
+    poly.setAttribute('points', '0 0, 6 3, 0 6');
+    poly.setAttribute('fill', '#0047FF');
+    marker.appendChild(poly);
+    defs.appendChild(marker);
+    arrowsSvg.appendChild(defs);
+
+    // Use fixed % positions: nodes at roughly 12%, 37%, 62%, 87% of width
+    const positions = [
+      { x1: 14, x2: 35 },
+      { x1: 37, x2: 60 },
+      { x1: 62, x2: 83 },
+    ];
+    const y = 50; // vertically centered in 100-unit viewBox
+
+    positions.forEach((p, i) => {
+      // Dashed traveling line
+      const line = document.createElementNS(svgNS, 'line');
+      line.setAttribute('x1', p.x1 + '%');
+      line.setAttribute('y1', y + '%');
+      line.setAttribute('x2', p.x2 + '%');
+      line.setAttribute('y2', y + '%');
+      line.setAttribute('stroke', '#0047FF');
+      line.setAttribute('stroke-width', '0.5');
+      line.setAttribute('marker-end', 'url(#arrowhead)');
+      line.setAttribute('stroke-dasharray', '3 2.5');
+      line.setAttribute('stroke-dashoffset', '14');
+      line.classList.add('flow-arrow-path');
+      line.id = 'farrow' + i;
+      line.style.animationDelay = (i * 0.15) + 's';
+      arrowsSvg.appendChild(line);
+    });
+  }
+  buildArrows();
+
+  // ─── Count-up for Rust % ──────────────────────────────────────────────────
+  function countUp(el, target, duration) {
+    const start = performance.now();
+    function step(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = (eased * target).toFixed(1);
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = target.toFixed(1);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ─── Particle system ─────────────────────────────────────────────────────
+  const pCanvas = q('#particle-canvas');
+  const pCtx = pCanvas.getContext('2d');
+  let particles = [];
+  let particlesActive = false;
+
+  function resizeParticleCanvas() {
+    const inner = q('#stage-inner');
+    const rect = inner.getBoundingClientRect();
+    pCanvas.width = rect.width;
+    pCanvas.height = rect.height;
+  }
+
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      const inner = q('#stage-inner');
+      const h = inner ? inner.getBoundingClientRect().height : 600;
+      const w = inner ? inner.getBoundingClientRect().width : 1000;
+      // Particles travel roughly along the flow path (vertically centered, left to right)
+      this.x = Math.random() * w * 0.3; // start in left 30%
+      this.y = h * (0.2 + Math.random() * 0.55); // vertical band
+      this.vx = 0.8 + Math.random() * 1.4;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.alpha = 0;
+      this.maxAlpha = 0.15 + Math.random() * 0.35;
+      this.r = 1.2 + Math.random() * 1.8;
+      this.life = 0;
+      this.maxLife = 120 + Math.random() * 80;
+    }
+    update() {
+      this.life++;
+      const t = this.life / this.maxLife;
+      this.alpha = t < 0.15 ? (t / 0.15) * this.maxAlpha
+                 : t > 0.75 ? ((1 - t) / 0.25) * this.maxAlpha
+                 : this.maxAlpha;
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.life > this.maxLife) this.reset();
+    }
+    draw(ctx) {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,71,255,${this.alpha})`;
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    resizeParticleCanvas();
+    particles = Array.from({ length: 55 }, () => {
+      const p = new Particle();
+      p.life = Math.floor(Math.random() * p.maxLife); // stagger
+      return p;
+    });
+  }
+
+  function animateParticles() {
+    if (!particlesActive) return;
+    pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+    particles.forEach(p => { p.update(); p.draw(pCtx); });
+    requestAnimationFrame(animateParticles);
+  }
+
+  // ─── Validator rotating highlight ─────────────────────────────────────────
+  let activeValidator = 0;
+  let validatorTimer = null;
+
+  function cycleValidators() {
+    const vNodes = qa('.validator-node');
+    if (!vNodes.length) return;
+    vNodes.forEach(v => v.classList.remove('active'));
+    vNodes[activeValidator % vNodes.length].classList.add('active');
+    activeValidator++;
+    validatorTimer = setTimeout(cycleValidators, 1800);
+  }
+
+  // ─── Finalized block glow cycle ────────────────────────────────────────────
+  let finalizedGlowTimer = null;
+  function cycleFinalizedGlow() {
+    const fn4 = q('#fn4');
+    fn4.classList.add('glow');
+    setTimeout(() => fn4.classList.remove('glow'), 800);
+    finalizedGlowTimer = setTimeout(cycleFinalizedGlow, 3200);
+  }
+
+  // ─── MAIN ANIMATION SEQUENCE ─────────────────────────────────────────────
+  async function runSequence() {
+
+    // Phase 0: fade in (0–500ms)
+    await delay(100);
+    q('#fade-overlay').classList.add('gone');
+    await delay(400);
+
+    // Phase 1: header slides down (500–1500ms)
+    showEl(q('#header'));
+    await delay(150);
+    // Headline words fade in one by one
+    const words = qa('.word');
+    for (let i = 0; i < words.length; i++) {
+      await delay(110);
+      showEl(words[i]);
+    }
+    await delay(300);
+
+    // Phase 2: Consensus panel + DAG (1500–2500ms)
+    showEl(q('#panel-consensus'));
+    await delay(200);
+
+    // DAG nodes and edges appear sequentially
+    const dagNodeIds = ['dn0','dn1','dn2','dn3','dn4','dn5'];
+    const dagEdgeIds = ['e01','e02','e13','e23','e34','e14'];
+    showEl(q('#' + dagNodeIds[0]));
+    await delay(180);
+    showEl(q('#e01')); showEl(q('#e02')); q('#e01').classList.add('drawn'); q('#e02').classList.add('drawn');
+    showEl(q('#' + dagNodeIds[1])); showEl(q('#' + dagNodeIds[2]));
+    await delay(200);
+    showEl(q('#e13')); showEl(q('#e23')); q('#e13').classList.add('drawn'); q('#e23').classList.add('drawn');
+    showEl(q('#' + dagNodeIds[3]));
+    await delay(180);
+    showEl(q('#e34')); q('#e34').classList.add('drawn');
+    showEl(q('#' + dagNodeIds[4]));
+    await delay(150);
+    showEl(q('#e14')); q('#e14').classList.add('drawn');
+    showEl(q('#' + dagNodeIds[5]));
+
+    showEl(q('#chevron-down'));
+    await delay(300);
+
+    // Phase 3: Execution panel (2500–3500ms)
+    showEl(q('#panel-execution'));
+    await delay(200);
+    const ethHex = q('#eth-hex');
+    showEl(ethHex);
+    await delay(50);
+    ethHex.classList.add('spin');
+    await delay(700);
+
+    // Phase 4: Center flow nodes + arrows (3500–5000ms)
+    showEl(q('#flow-label'));
+    await delay(100);
+
+    const flowNodes = ['fn1','fn2','fn3','fn4'];
+    const arrows = ['farrow0','farrow1','farrow2'];
+
+    for (let i = 0; i < flowNodes.length; i++) {
+      showEl(q('#' + flowNodes[i]));
+      await delay(280);
+      if (i < arrows.length) {
+        showEl(q('#' + arrows[i]));
+        await delay(80);
+      }
+    }
+
+    // Finalized block green glow on arrival
+    q('#fn4').classList.add('glow');
+    await delay(800);
+    q('#fn4').classList.remove('glow');
+
+    showEl(q('#proto-row'));
+    await delay(200);
+    showEl(q('#center-info'));
+    await delay(300);
+
+    // Phase 5: Validators (5000–6000ms)
+    showEl(q('#validator-header'));
+    await delay(100);
+
+    const vNodes = qa('.validator-node');
+    for (let i = 0; i < vNodes.length; i++) {
+      showEl(vNodes[i]);
+      vNodes[i].classList.add('active');
+      await delay(200);
+      vNodes[i].classList.remove('active');
+    }
+
+    await delay(100);
+    showEl(q('#gsma-badge'));
+    q('#gsma-badge').classList.add('glow-pulse');
+    await delay(300);
+    showEl(q('#stake-note'));
+    await delay(150);
+    showEl(q('#flywheel'));
+    await delay(200);
+
+    // Phase 6: Footer (6000–7000ms)
+    showEl(q('#footer'));
+    await delay(300);
+    countUp(q('#rust-counter'), 99.4, 1200);
+    await delay(1200);
+
+    // Phase 7: Idle continuous animations
+    particlesActive = true;
+    initParticles();
+    animateParticles();
+
+    // Start rotating validator highlight
+    cycleValidators();
+
+    // Start finalized block glow cycle
+    finalizedGlowTimer = setTimeout(cycleFinalizedGlow, 2000);
+  }
+
+  // ─── Start ────────────────────────────────────────────────────────────────
+  window.addEventListener('load', () => {
+    runSequence();
+  });
+
+  // ─── Handle resize ────────────────────────────────────────────────────────
+  window.addEventListener('resize', () => {
+    if (particlesActive) {
+      resizeParticleCanvas();
+    }
+  });
+
+})();
+</script>
+
+</body>
+</html>

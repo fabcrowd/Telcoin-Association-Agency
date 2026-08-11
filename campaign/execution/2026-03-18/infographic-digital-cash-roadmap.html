@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1920" />
+  <title>Digital Cash Roadmap — Telcoin Association</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg:           #090920;
+      --bg-card:      #0d0d2a;
+      --bg-card-mid:  #111135;
+      --border:       rgba(54, 66, 178, 0.35);
+      --border-light: rgba(20, 200, 255, 0.2);
+      --royal-blue:   #3642B2;
+      --tel-blue:     #14C8FF;
+      --tel-blue-dim: rgba(20, 200, 255, 0.10);
+      --tel-blue-glow:rgba(20, 200, 255, 0.25);
+      --green:        #10B981;
+      --green-dim:    rgba(16, 185, 129, 0.12);
+      --green-glow:   rgba(16, 185, 129, 0.35);
+      --white:        #FFFFFF;
+      --gray-1:       #C9CFED;
+      --gray-2:       #7393EA;
+      --font:         'Inter', 'Montserrat', sans-serif;
+    }
+
+    @keyframes greenGlow {
+      0%, 100% { box-shadow: 0 0 24px var(--green-glow), 0 0 60px rgba(16, 185, 129, 0.15); }
+      50%       { box-shadow: 0 0 48px var(--green-glow), 0 0 120px rgba(16, 185, 129, 0.25); }
+    }
+
+    @keyframes blueGlow {
+      0%, 100% { box-shadow: 0 0 16px var(--tel-blue-glow); }
+      50%       { box-shadow: 0 0 32px var(--tel-blue-glow), 0 0 80px rgba(20, 200, 255, 0.12); }
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: var(--font);
+      color: var(--white);
+    }
+
+    /* ── CANVAS ─────────────────────────────────── */
+    .canvas {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      background: var(--bg);
+      /* subtle radial glow behind center column */
+      background-image:
+        radial-gradient(ellipse 700px 600px at 50% 55%, rgba(16, 185, 129, 0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 1200px 400px at 50% 20%, rgba(54, 66, 178, 0.08) 0%, transparent 70%);
+    }
+
+    /* ── HEADER BAR ─────────────────────────────── */
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(9, 9, 32, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Hexagon mark (CSS-drawn) */
+    .hex-mark {
+      width: 40px;
+      height: 46px;
+      background: var(--royal-blue);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .hex-mark span {
+      color: var(--white);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .wordmark {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .wordmark-primary {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      text-transform: uppercase;
+    }
+
+    .wordmark-secondary {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--gray-2);
+      text-transform: uppercase;
+    }
+
+    .header-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .header-title span {
+      color: var(--tel-blue);
+    }
+
+    .header-date {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--gray-2);
+      text-transform: uppercase;
+      text-align: right;
+    }
+
+    /* ── TIMELINE RAIL ──────────────────────────── */
+    .timeline-rail {
+      position: absolute;
+      top: 122px;
+      left: 60px;
+      right: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(54,66,178,0.4) 0%, var(--tel-blue) 50%, rgba(54,66,178,0.4) 100%);
+      animation: blueGlow 3s ease-in-out infinite;
+    }
+
+    /* Timeline nodes */
+    .timeline-node {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--tel-blue);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 12px var(--tel-blue-glow);
+    }
+
+    .timeline-node.node-1 { left: 16.5%; }
+    .timeline-node.node-2 { left: 50%; background: var(--green); box-shadow: 0 0 18px var(--green-glow); }
+    .timeline-node.node-3 { left: 83.5%; }
+
+    /* ── COLUMNS ────────────────────────────────── */
+    .columns {
+      position: absolute;
+      top: 100px;
+      left: 0;
+      right: 0;
+      bottom: 44px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      padding: 0 40px;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+      animation: fadeSlideUp 0.5s ease both;
+    }
+
+    .col:nth-child(1) { animation-delay: 0.0s; }
+    .col:nth-child(2) { animation-delay: 0.15s; }
+    .col:nth-child(3) { animation-delay: 0.3s; }
+
+    /* ── COLUMN HEADER ──────────────────────────── */
+    .col-header {
+      margin-top: 42px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .col-phase {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--tel-blue);
+      background: var(--tel-blue-dim);
+      border: 1px solid var(--border-light);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .col-phase.phase-launched {
+      color: var(--tel-blue);
+      background: var(--tel-blue-dim);
+      border-color: rgba(20, 200, 255, 0.3);
+    }
+
+    .col-phase.phase-expected {
+      color: var(--gray-2);
+      background: rgba(115, 147, 234, 0.08);
+      border-color: rgba(115, 147, 234, 0.25);
+    }
+
+    .col-phase.phase-expanding {
+      color: var(--gray-2);
+      background: rgba(115, 147, 234, 0.06);
+      border-color: rgba(115, 147, 234, 0.2);
+    }
+
+    .col-period {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.01em;
+      line-height: 1.15;
+    }
+
+    .col-period.period-future {
+      color: var(--gray-1);
+    }
+
+    /* ── CURRENCY GRID ──────────────────────────── */
+    .currency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 10px;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .currency-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 10px;
+      transition: border-color 0.2s;
+    }
+
+    .currency-item:hover {
+      border-color: rgba(20, 200, 255, 0.25);
+    }
+
+    .currency-flag {
+      font-size: 16px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .currency-code {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--tel-blue);
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .currency-name {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--gray-1);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Dim future currencies slightly */
+    .col-3 .currency-item {
+      opacity: 0.75;
+      background: rgba(13, 13, 42, 0.7);
+    }
+
+    /* ── eUSD FOCAL NODE ────────────────────────── */
+    .eusd-focal {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 8px 0 18px;
+      animation: fadeSlideUp 0.5s 0.15s ease both;
+    }
+
+    /* Large hexagon for eUSD */
+    .eusd-hex-outer {
+      width: 120px;
+      height: 138px;
+      background: linear-gradient(135deg, rgba(16,185,129,0.25) 0%, rgba(16,185,129,0.10) 100%);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: greenGlow 2.5s ease-in-out infinite;
+      position: relative;
+    }
+
+    .eusd-hex-inner {
+      width: 96px;
+      height: 110px;
+      background: linear-gradient(135deg, rgba(16,185,129,0.4) 0%, rgba(10,150,100,0.6) 100%);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .eusd-symbol {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .eusd-code-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+
+    .eusd-meta {
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .eusd-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .eusd-sub {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--green);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .eusd-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid rgba(16,185,129,0.35);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    /* ── COLUMN 2 DIVIDER ───────────────────────── */
+    .col-2-divider {
+      width: 100%;
+      max-width: 560px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16,185,129,0.3), transparent);
+      margin-bottom: 14px;
+    }
+
+    /* ── COL 3 EXPANSION BLOCK ──────────────────── */
+    .expansion-block {
+      width: 100%;
+      max-width: 540px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      text-align: center;
+    }
+
+    .expansion-flags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+
+    .expansion-flag-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(54, 66, 178, 0.12);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 10px;
+      font-size: 12px;
+      color: var(--gray-1);
+    }
+
+    .expansion-flag-item span:first-child {
+      font-size: 15px;
+    }
+
+    .expansion-more {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gray-2);
+      letter-spacing: 0.08em;
+      margin-left: 4px;
+    }
+
+    .expansion-text {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--gray-2);
+      line-height: 1.65;
+      font-style: italic;
+    }
+
+    /* ── FOOTER ─────────────────────────────────── */
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      border-top: 1px solid var(--border);
+      background: rgba(9, 9, 32, 0.9);
+    }
+
+    .footer-note {
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--gray-2);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-note em {
+      color: rgba(115,147,234,0.7);
+    }
+
+    .footer-brand {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--royal-blue);
+    }
+
+    /* ── VERTICAL COLUMN SEPARATORS ─────────────── */
+    .col-sep {
+      position: absolute;
+      top: 100px;
+      bottom: 44px;
+      width: 1px;
+      background: linear-gradient(180deg, transparent 0%, var(--border) 20%, var(--border) 80%, transparent 100%);
+    }
+
+    .col-sep-1 { left: 33.33%; }
+    .col-sep-2 { left: 66.66%; }
+
+    /* ── CONNECTOR DOTS (timeline to column) ─────── */
+    .connector-line {
+      position: absolute;
+      top: 122px;
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(180deg, var(--tel-blue) 0%, rgba(20,200,255,0.2) 100%);
+    }
+
+    .connector-line.conn-1 { left: calc(16.5% + 39px); }
+    .connector-line.conn-2 { left: calc(50% + 39px); background: linear-gradient(180deg, var(--green) 0%, rgba(16,185,129,0.2) 100%); }
+    .connector-line.conn-3 { left: calc(83.5% + 39px); }
+
+  </style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- COLUMN SEPARATORS -->
+  <div class="col-sep col-sep-1"></div>
+  <div class="col-sep col-sep-2"></div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-logo">
+      <div class="hex-mark"><span>t</span></div>
+      <div class="wordmark">
+        <div class="wordmark-primary">Telcoin</div>
+        <div class="wordmark-secondary">Association</div>
+      </div>
+    </div>
+    <div class="header-title">Digital Cash <span>Roadmap</span></div>
+    <div class="header-date">Telcoin Digital Asset Bank &nbsp;·&nbsp; 2025 – 2026+</div>
+  </header>
+
+  <!-- TIMELINE RAIL -->
+  <div class="timeline-rail">
+    <div class="timeline-node node-1"></div>
+    <div class="timeline-node node-2"></div>
+    <div class="timeline-node node-3"></div>
+  </div>
+
+  <!-- THREE COLUMNS -->
+  <div class="columns">
+
+    <!-- ── COLUMN 1: Q1 2025 ─────────────────── -->
+    <div class="col col-1">
+      <div class="col-header">
+        <div class="col-phase phase-launched">Actual Release</div>
+        <div class="col-period">Q1 2025</div>
+      </div>
+
+      <div class="currency-grid">
+        <div class="currency-item">
+          <span class="currency-flag">🇦🇺</span>
+          <span class="currency-code">eAUD</span>
+          <span class="currency-name">Australian Dollar</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇲🇽</span>
+          <span class="currency-code">eMXN</span>
+          <span class="currency-name">Mexican Peso</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇬🇧</span>
+          <span class="currency-code">eGBP</span>
+          <span class="currency-name">Pound Sterling</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇳🇿</span>
+          <span class="currency-code">eNZD</span>
+          <span class="currency-name">New Zealand Dollar</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇸🇬</span>
+          <span class="currency-code">eSGD</span>
+          <span class="currency-name">Singapore Dollar</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🌍</span>
+          <span class="currency-code">eCFA</span>
+          <span class="currency-name">African Franc</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇨🇦</span>
+          <span class="currency-code">eCAD</span>
+          <span class="currency-name">Canadian Dollar</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇯🇵</span>
+          <span class="currency-code">eJPY</span>
+          <span class="currency-name">Japanese Yen</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇭🇰</span>
+          <span class="currency-code">eHKD</span>
+          <span class="currency-name">Hong Kong Dollar</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇿🇦</span>
+          <span class="currency-code">eZAR</span>
+          <span class="currency-name">South African Rand</span>
+        </div>
+        <div class="currency-item" style="grid-column: span 2; justify-content: center; gap: 10px; background: rgba(54,66,178,0.1); border-color: rgba(54,66,178,0.4);">
+          <span class="currency-flag">🌐</span>
+          <span class="currency-code">eSDR</span>
+          <span class="currency-name">Special Drawing Right</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COLUMN 2: eUSD + Q4 2025/Q1 2026 ─── -->
+    <div class="col col-2">
+      <div class="col-header">
+        <div class="col-phase phase-expected">Expected Release</div>
+        <div class="col-period">Q4 2025 / Q1 2026</div>
+      </div>
+
+      <!-- eUSD FOCAL NODE -->
+      <div class="eusd-focal">
+        <div class="eusd-hex-outer">
+          <div class="eusd-hex-inner">
+            <span class="eusd-symbol">$</span>
+            <span class="eusd-code-label">eUSD</span>
+          </div>
+        </div>
+        <div class="eusd-meta">
+          <div class="eusd-name">Telcoin Digital Asset Bank<br>U.S. Dollar</div>
+          <div class="eusd-sub">Telcoin Digital Asset Bank</div>
+          <div class="eusd-badge">Launched Dec 2025</div>
+        </div>
+      </div>
+
+      <div class="col-2-divider"></div>
+
+      <div class="currency-grid">
+        <div class="currency-item">
+          <span class="currency-flag">🇪🇺</span>
+          <span class="currency-code">eEUR</span>
+          <span class="currency-name">Euro</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇨🇭</span>
+          <span class="currency-code">eCHF</span>
+          <span class="currency-name">Swiss Franc</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇩🇰</span>
+          <span class="currency-code">eDKK</span>
+          <span class="currency-name">Danish Krone</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇮🇳</span>
+          <span class="currency-code">eINR</span>
+          <span class="currency-name">Indian Rupee</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇰🇪</span>
+          <span class="currency-code">eKES</span>
+          <span class="currency-name">Kenyan Shilling</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇸🇪</span>
+          <span class="currency-code">eSEK</span>
+          <span class="currency-name">Swedish Krona</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇨🇿</span>
+          <span class="currency-code">eCZK</span>
+          <span class="currency-name">Czech Koruna</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇭🇺</span>
+          <span class="currency-code">eHUF</span>
+          <span class="currency-name">Hungarian Forint</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇮🇸</span>
+          <span class="currency-code">eISK</span>
+          <span class="currency-name">Icelandic Krone</span>
+        </div>
+        <div class="currency-item">
+          <span class="currency-flag">🇳🇴</span>
+          <span class="currency-code">eNOK</span>
+          <span class="currency-name">Norwegian Krone</span>
+        </div>
+        <div class="currency-item" style="grid-column: span 2; justify-content: center; gap: 10px;">
+          <span class="currency-flag">🇹🇷</span>
+          <span class="currency-code">eTRY</span>
+          <span class="currency-name">Turkish Lira</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COLUMN 3: Q1 2026+ ────────────────── -->
+    <div class="col col-3">
+      <div class="col-header">
+        <div class="col-phase phase-expanding">Expected Release</div>
+        <div class="col-period period-future">Q1 2026 +</div>
+      </div>
+
+      <div class="expansion-block">
+        <div class="expansion-flags">
+          <div class="expansion-flag-item">
+            <span>🇺🇦</span><span>Ukraine</span>
+          </div>
+          <div class="expansion-flag-item">
+            <span>🇵🇭</span><span>Philippines</span>
+          </div>
+          <div class="expansion-flag-item">
+            <span>🇧🇷</span><span>Brazil</span>
+          </div>
+          <div class="expansion-flag-item">
+            <span>🇪🇬</span><span>Egypt / MENA</span>
+          </div>
+          <div class="expansion-flag-item">
+            <span>🇮🇩</span><span>Indonesia</span>
+          </div>
+          <div class="expansion-flag-item">
+            <span>🇹🇿</span><span>Tanzania</span>
+          </div>
+          <div class="expansion-flag-item">
+            <span>🇨🇴</span><span>Colombia</span>
+          </div>
+          <div class="expansion-flag-item">
+            <span>🇵🇰</span><span>Pakistan</span>
+          </div>
+          <div class="expansion-flag-item" style="background: rgba(20,200,255,0.06); border-color: rgba(20,200,255,0.2); color: var(--tel-blue);">
+            <span class="expansion-more">+ More</span>
+          </div>
+        </div>
+
+        <p class="expansion-text">
+          Active discussions with central banks and law firms globally to expand the Digital Cash currency footprint.
+        </p>
+      </div>
+
+      <!-- Scale indicator -->
+      <div style="margin-top: 24px; text-align: center;">
+        <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-2); margin-bottom: 16px;">Currency Coverage to Date</div>
+        <div style="display: flex; justify-content: center; gap: 40px;">
+          <div style="text-align: center;">
+            <div style="font-size: 36px; font-weight: 700; color: var(--tel-blue); line-height: 1;">11</div>
+            <div style="font-size: 10px; color: var(--gray-2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px;">Launched<br>Q1 2025</div>
+          </div>
+          <div style="width: 1px; background: var(--border); align-self: stretch;"></div>
+          <div style="text-align: center;">
+            <div style="font-size: 36px; font-weight: 700; color: var(--green); line-height: 1;">12</div>
+            <div style="font-size: 10px; color: var(--gray-2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px;">Pending<br>Q4 2025–Q1 2026</div>
+          </div>
+          <div style="width: 1px; background: var(--border); align-self: stretch;"></div>
+          <div style="text-align: center;">
+            <div style="font-size: 36px; font-weight: 700; color: var(--gray-2); line-height: 1;">8+</div>
+            <div style="font-size: 10px; color: var(--gray-2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px;">In Discussion<br>Q1 2026+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-note">
+      * Applications in preparation or processing and expected within the next year. &nbsp;<em>Subject to regulatory approval.</em>
+    </div>
+    <div class="footer-brand">Telcoin Association &nbsp;·&nbsp; telcoin.org</div>
+  </footer>
+
+</div>
+</body>
+</html>

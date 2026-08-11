@@ -1,0 +1,1081 @@
+# Telcoin Association & Network — Campaign Research
+## Last updated: July 24, 2026
+## Sources: telcoin.org, telcoin.network, forum.telcoin.org, CoinMarketCap, Business Wire, Governor of Nebraska, GitHub, web search, council call recap (week of Mar 10), telcoinwiki.com (full site crawl March 15, 2026), TELx Council #19 stream (March 18, 2026) https://www.youtube.com/watch?v=QsDDDLFPr8c, github.com/Telcoin-Association (full repo crawl July 24, 2026), docs.telcoin.network
+
+> Roadmap data sourced directly from roadmap.telcoin.network (screenshots, March 10, 2026).
+> Developer Notes last updated: **February 19, 2026** per roadmap page.
+
+---
+
+## 1. TELCOIN ASSOCIATION
+
+### Legal Structure
+- **Type**: Swiss Verein (non-profit association)
+- **Domicile**: Canton Ticino, City of Lugano, Switzerland
+- **Swiss Verein notes**: No capital contribution required; members don't share profits/liabilities; governance defined by internal statutes; tax-exempt under certain conditions
+- **Website**: telcoin.org
+- **X/Twitter**: @telcoinTAO
+- **Forum**: forum.telcoin.org
+- **GitHub**: github.com/telcoin-association (23 repositories)
+
+### Mission & Vision
+- **Mission**: Represent interests of GSMA Mobile Networks and other stakeholders; use blockchain technology to globally support financial inclusion and prosperity
+- **Vision**: Decentralized platform bringing blockchain-powered mobile financial services to telecoms and subscribers globally — designed to reach every mobile phone user in the world
+
+### Leadership (Publicly Known)
+| Name | Title |
+|---|---|
+| Paul Neuner | Co-Founder and CEO |
+| Parker Spann | EVP Business Development & Strategy; Founder of Telcoin Association; Executive Director of TAO |
+| Jeff Quigley | EVP, Business Development & Communications (also cited as EVP, Commercial); founding member of Telcoin (2017); based in Tokyo; leads global telecom, fintech, mobile money, and government partnerships. Background: journalism + venture capital (The Diplomat, Tech in Asia, Fenox Venture Capital). CEO Neuner's characterization of his approach: "fiat first" — connecting crypto to real banking and mobile money infrastructure rather than operating standalone. Prior conferences: Consensus Hong Kong, InnoVEX at Computex Taiwan. **DC Blockchain Summit 2026 representative.** |
+| Tim Mahota | General Counsel and Chief Compliance Officer |
+| Richard Schendel | VP Banking Operations |
+| Rajesh Sabari | Chief Commercial Officer, CFA |
+
+**Advisory Members:**
+- Michimasa Naka — 28 years banking experience, CEO Boardwalk Capital
+- Toby Hoenisch — Co-founder & CEO TenX
+- Matthew McGuire — Former COO Bank of America Merrill Lynch Japan & RBS Japan
+
+### Governance Structure
+- **Model**: Polycentric, democratic self-governance (based on Elinor Ostrom's 8 Design Principles for common-pool resources)
+- **Four Miner Groups** (equal authority): Validators, Liquidity Miners, Developers, Stakers
+- **Miner Assembly**: Collective body with ultimate power over platform governance
+- **Council structure**: Constitutional-level governance with specialized councils
+- **TELIPs**: Telcoin Improvement Proposals — community-submitted governance proposals
+- **Forum**: forum.telcoin.org — active governance discussions, elections, TGIPs
+
+### Recent Governance Activity
+- **Y3 TEL Allocation (TELIP)**: 900 million TEL proposed for Year 3 (January 2026) — purpose: platform development, miner incentives, mainnet launch support
+- Miner Council elections underway as of Q1 2026
+
+---
+
+## 2. TELCOIN NETWORK
+
+### Architecture
+- **Type**: EVM-compatible Layer 1 public blockchain
+- **Consensus**: Proof-of-Stake using Narwhal and Bullshark consensus protocol (local DAG-based)
+- **Validators**: ONLY GSMA full-member MNOs can validate blocks and earn rewards
+- **Native gas token**: TEL
+- **Chain ID**: 2017
+- **RPC**: https://rpc.telcoin.network
+- **Block explorer (testnet)**: scan.telcoin.network
+- **Block explorer (alt)**: telscan.io
+- **Main site**: telcoin.network
+
+### GSMA Validator Model
+- Exclusive right for GSMA Operator Member MNOs to run transaction nodes and earn network fees
+- MNOs must meet basic criteria set by Telcoin Association AND stake TEL
+- Each new MNO validator = new distribution channel to that telecom's subscriber base
+- Creates direct economic alignment: more usage → more fees → MNOs promote Telcoin services
+
+### Adiri Testnet — Status: SOFT LAUNCH (limited audience)
+Source: P&T Council #34 transcript, March 26, 2026
+
+> CRITICAL: Adiri is in **soft launch** — live to a limited cohort of advanced MNO partners only. NOT publicly accessible yet. Full official testnet launch expected "in the coming weeks." Do NOT publish content saying Adiri is publicly accessible until the official launch is announced.
+
+**Soft launch definition (per council)**: Network is live, announced to limited audience before full official launch. Allows observation of real-world behavior and targeted improvements before broader rollout.
+
+**Real MNOs ARE validators** during the soft launch phase — confirmed on the March 26 call. This is significant. More than 5 MNO partners involved; limited to advanced partners comfortable with bug-finding.
+
+#### Phase 1 — ALL COMPLETED ✓
+- Pre Cantina competition
+- Initial spin up of TAO controlled validator nodes
+- Launch block explorer
+- Demo PoC
+- Feature complete
+- 4-week security assessment
+
+#### Phase 2 — SUBSTANTIALLY COMPLETE (as of March 26, 2026)
+Source: P&T Council #34
+
+**Completed ✓**
+- Patch security findings
+- Enhance test coverage
+- Production harden database read/write strategy — **complete database layer overhaul delivered** (described as "huge foundational improvement"; makes network more reliable under high volume)
+- Improve documentation — new entries at docs.telcoin.network covering base fees, gas limit penalties, EVM compatibility, epoch boundaries, chain growth concepts
+- MiCA whitepaper
+- Improve async logging for all nodes in the network
+- Updates to support open-source contributions
+- Parallelize testing infrastructure for faster, more reliable testing
+- Production harden p2p networking ✓
+- Stress test deployed network ✓ (large burst handling: batches of 100+ transactions)
+- CLI tooling for validator onboarding and staking transactions ✓
+- Relaunch network ✓ (soft launch live)
+
+**New capabilities added (from Phase 2 work):**
+- DApp developers can connect directly to observer nodes for real-time blockchain data — no third-party RPC subscription needed; lowers builder barrier, improves DApp performance
+- Decentralized testnet faucet — MNO partners and DApp developers can run independent faucets; step toward network partner autonomy
+- Attestation service: submits transaction to testnet verifying hash of committed code — part of PR feedback loop
+
+**In Progress ⚡**
+- Harden epoch boundary records for secure syncing (ongoing)
+- Improve syncing times for new nodes
+- Block explorer (Telscan/Dex Guru partnership): not yet updated for soft launch network; coordination in progress; will be updated before official launch
+
+**Queued ⏳**
+- Support multiple workers for parallel fee markets (parallel fee lanes — separate transaction lanes so real-world payments don't compete with arbitrage bots for block space)
+- Deploy new faucet service (decentralized faucet page being built)
+
+#### Phase 3
+- **In Progress ⚡**: Integrate with LayerZero — onboarding process started; Parker met LayerZero leadership at DOS conference in New York (March 25-26, 2026); mutual alignment reaffirmed. Critical path: TEL exists on other chains but not yet on Telcoin Network — LayerZero bridge is required for mainnet
+- **Queued ⏳**: Decentralize network (onboard MNO Validators)
+
+---
+
+### Mainnet Release — Status: UPCOMING
+Source: roadmap.telcoin.network + P&T Council #34 (March 26, 2026)
+
+> "Mainnet launch once Adiri is stable and the final audits and security competition are complete."
+
+**No calendar date given — milestone-based launch.**
+**Grant's personal goal: end of Q2 2026.** This is a goal, not a commitment. Do not publish as a date.
+
+**Three mainnet dependencies (as stated March 26):**
+1. MNO onboarding — in progress, going well
+2. LayerZero bridge — in progress; TEL must be bridgeable to Telcoin Network for mainnet
+3. Third-party security assessments — Spiritbit and Cantina as partners; current approach uses AI penetration testing stack first (finding value, still getting results); will move to human researchers when AI scans are exhausted. Budget: hundreds of thousands of dollars committed.
+
+**TAO administrative authority**: TAO holds full administrative authority over Telcoin Network until 10 validators are operating mainnet nodes on live mainnet. By design — for operational efficiency, not power concentration.
+
+#### Mainnet Milestones — All Queued ⏳
+- Launch Mainnet
+- Cryptography security assessment
+- P2P Network security assessment
+- Smart contract security assessments
+- Execution layer security assessment
+- State synchronization security assessment
+- Patch security findings
+
+---
+
+### Developer Notes — Updated February 19, 2026
+Source: roadmap.telcoin.network "Latest Updates" section
+
+- **Support P2P Streaming for Bulk Data Transfer** — Implement peer-to-peer streaming mechanisms to enable efficient bulk data transfer between nodes, improving sync performance and reducing reliance on centralized distribution.
+- **Streamline Database Infrastructure for Production** — Refactor and optimise database architecture to ensure production-grade performance, reliability, and scalability across validators and observers.
+- **Custom TN RPC Endpoints** — Develop dedicated Telcoin Network RPC endpoints tailored to ecosystem use cases, improving performance, flexibility, and infrastructure control.
+- **Harden Epoch Boundary Records for Secure Syncing** — Improve validation and integrity checks around epoch boundaries for secure syncing. *(description truncated in screenshot)*
+
+### Testnet → Mainnet Infrastructure Sequencing
+Source: Platform & Treasury Council recap (week of Mar 10, 2026)
+
+- **Testnet deployment**: Distributed cloud data centers (US east + west coasts) + volunteer nodes globally — tests wide area network latency at geographic scale
+- **Mainnet validators**: Private MNO-owned bare-metal data centers running alongside existing telecom packet-switching infrastructure — fiber-optic interconnects capable of streaming tens of gigabits/second; performance characteristics not available in standard cloud
+- **Transition requirements**: Validate tooling, latency configs, dynamic firewalls, access controls before deploying into secured MNO data centers
+- **Why the sequencing matters**: Getting into MNO data centers requires extensive permissions given their highly secured nature — protocol must reach sufficient maturity first
+
+### Security Assessment Status
+Source: Platform & Treasury Council recap (week of Mar 10, 2026)
+
+- All internal BLS cryptographic library findings: **resolved**
+- Next external assessments: being scheduled with top EVM security researchers (many identified/approached at ETH Denver)
+- Order: BLS library assessment first → comprehensive protocol audits
+- Timeline: flexible to match right researcher expertise — "securing the right minds, not rushing checklists" (Grant)
+- ~12 PRs closed in this cycle: production hardening, bug patches, security improvements — no feature additions
+
+### MWC Barcelona 2026
+Source: P&T Council #34 recap (March 26, 2026)
+
+- **Telcoin was the only blockchain network at MWC Barcelona** — 100,000+ attendees
+- Clear shift in telecom sentiment: from past indifference to active interest in tokenizing currencies, deploying on-chain apps, joining the network
+- **Vitel** (200+ million subscribers) publicly engaging on blockchain use cases
+- Dozens of long-cycle deals now in motion post-MWC
+- Near-final Strategic Telecom and GSMA advisory alignment — positioning for accelerated validator onboarding
+- MNO subscriber scale context (shared on call): small/regional MNO = 1-10M subs; mid-tier national = 10-50M; large national/multinational = 50-150M; global tier-1 = 200-700M+
+
+### Unified Web Presence
+Source: P&T Council #34 (March 26, 2026)
+
+- **Goal**: Consolidate fractured websites (telcoin.org, telex.network, telcoin.network) into a single unified hub
+- **Status**: Completing 4-5 week UX research phase. Building phase begins March 27, 2026.
+- **User journeys**: "Choose your track" — separate paths for retail users, MNO validators, developers
+- **Pages in development**: Mobile homepage, MNO page, developer page (with links to docs.telcoin.network)
+- **Demo site timeline**: ~4 weeks from council (early-mid April 2026)
+- **Launch target**: Before mainnet, or by mainnet at latest
+- SEO and GEO (AI content indexing) being addressed
+- Analytics monitoring planned for visitor tracking
+- Council preview held; positive feedback internally
+
+### TELx / Calix Updates
+Source: P&T Council #34 (March 26, 2026)
+
+- Evaluating new way of distributing rewards (cannot share details yet)
+- In direct communication with Holdings about new pools
+- Won't be visible publicly for approximately 3-6 months
+- Expanding and working on better distribution and pool rewards
+- TELx Council next meeting: Wednesday (3PM EST) — teased announcement
+
+### Team Expansion Plans (Mar 12 Council)
+Source: Platform & Treasury Council #26 (March 12, 2026)
+- 2 additional Rust protocol engineers (to be onboarded sequentially)
+- Additional smart contract engineering capacity
+- Dedicated security engineer
+- Stress testing now expanded to community-run nodes
+
+### Active Governance Proposals (updated March 26, 2026)
+- **TIP 11 — Development Process Standardization**: Advancing toward snapshot vote
+- **Unified Web Architecture TIP**: In progress — see Unified Web Presence section
+- **Miner Council elections**: Validator compliance seat election ends March 27, 2026. Already reached 100% snapshot. Compliance approval required within 30 days of vote end.
+- **Claude AI TELIP**: Proposed by community member (Hayden). Provides Telcoin Association access to Claude AI (team plan + some enterprise users). Use cases: compliance, research, code, marketing, forecasting, dashboards. Nonprofit pricing qualifies. Compatible with Slack, Trello, GitHub. Admin controls on usage. Proposal on forum.telcoin.org.
+
+### TAN Council Budget (Mar 12 Council)
+Source: TAN Council recap (March 12, 2026)
+- TAN Council carryforward from Y1+Y2 prudent management: **164–165 million TEL**
+- Total TEL issued across both prior years (Y1+Y2 combined): approximately **60 million TEL**
+- No additional Y3 allocation requested from the Y3 TELIP — carryforward is sufficient to fund TANIP-1
+- Developer pitch decks in development for outreach: highlighting Telcoin Network's MNO-validated infrastructure, defined earning mechanisms, and regulatory positioning
+- EVM compatibility pitch: build on Base now → redeploy to Telcoin Network at mainnet with minimal friction
+
+### TAN Application Layer — Trading Fee Rebate Program (Passed ~Mar 12, 2026)
+Source: forum.telcoin.org/t/tanip-trading-fee-rebate-program/824 — submitted Dec 8, 2025 by TAN Council; snapshot vote passed ~Mar 12, 2026
+
+**What it is**: A replacement of the original TANIP-1 issuance-based reward model with a capped rebate model. Preserves all TANIP-1 infrastructure and mechanics; the ONLY change is a rebate cap.
+
+**Why the change — TANIP-1 findings**:
+- Weekly distributions of 3.2M TEL worked reliably; computation framework performed as intended
+- But: fee activity during TANIP-1 converged around the issuance amount (fee cycling / "mercenary capital")
+- Fees dropped immediately when the program paused → organic demand was not the driver
+- Weekly active wallet counts remained flat; new wallets churned rather than accumulated
+- Referral flows often became circular (self-referential)
+
+**Rebate Formula**:
+- R = calculated issuance from own + referee fees (same as original TANIP-1 formula)
+- F = total TEL fees paid by the wallet during the period
+- **Final rebate = min(R, F)**
+- Result: a wallet cannot earn more TEL than it actually paid in fees → removes the core mercenary incentive
+
+**What stays the same**:
+- Stake requirement via StakingModule
+- Referral tree logic
+- On-chain fee verification (aggregator-to-AmirX transfers)
+- Deterministic off-chain calculation
+- Weekly batched uploads to TANIssuanceHistory
+- Network-agnostic design (future developers can adopt)
+- Eligibility rules
+
+**Funding & governance**:
+- Funded by existing TAN Council Safe (164–165M TEL carryforward from Y1+Y2)
+- Distributed weekly through a **newly deployed** TANIssuanceHistory contract
+- TANIssuanceHistory redeployment: **Current cap levels will be retained** — no lifetime issuance reset (decision confirmed Mar 16, 2026; earlier proposal language flagging a reset does not reflect final implementation)
+- No new app integrations required for stakers
+
+**Implementation path**:
+- TAN Council engages TAO to update the off-chain rewards calculation script
+- Redeploy TANIssuanceHistory contract
+- Activate rebate program; maintain weekly uploads
+- Track participation under new model; evaluate return to full issuance model as network matures
+
+**What this is NOT**:
+- Not a developer incentive program (that is a future TANIP)
+- Does not change referral logic, staking logic, reward computation methods, or eligibility rules
+
+### Open Source Contributions
+- **TanguyDeTaxis (Tan Guide)**: Streamlined execution environment, supporting multiple execution environments (avoids writing empty data when no transactions exist, improves performance), future-proofing protocol components
+
+---
+
+## 3. PRODUCTS
+
+### Telcoin Wallet
+- **Domain**: telco.in (wallet app) — distinct from telcoin.org (association) and telcoin.network (blockchain)
+- **Version**: V5 expected early 2026 (not V4)
+- **Platforms**: iOS and Android
+- **Networks supported**: Polygon, Base (migrating to Telcoin Network at mainnet)
+- **Features**: Hold Digital Cash stablecoins, swap tokens, send remittances to mobile money platforms
+
+**Active Remittance Corridors (16 countries, 23+ platforms):**
+| Country | Platform(s) |
+|---|---|
+| Bangladesh | BKash |
+| Ethiopia | HelloCash |
+| Fiji | Digicel |
+| Ghana | MTN Money |
+| Guatemala | Tigo Money |
+| Indonesia | Dana, GoPay, LinkAja, OVO |
+| Kenya | Equitel Money |
+| Sri Lanka | Ez Cash, mCash |
+| Malawi | Airtel Money |
+| Nepal | eSewa |
+| Pakistan | Easy Paisa, Jazz Cash |
+| Philippines | Coins |
+| El Salvador | Tigo Money |
+| Tonga | Digicel |
+| Uganda | Airtel Money, MTN Money |
+| Samoa | Digicel |
+
+- **Fee target**: 2% or less total (vs. 6–10% Western Union/MoneyGram)
+
+### TELx — DeFi Platform
+- **Networks**: Polygon PoS and Base
+- **Pools**: Balancer V2 (6 active markets), Uniswap V4 (migrated Nov 5, 2025)
+- **Yield**: Liquidity miners earn exchange fees + TEL rewards + governance rights
+- **Analytics**: telx.network/pools
+- **Staking**: Weekly rewards every Wednesday 00:00 UTC; 3.2 million TEL distributed weekly based on activity
+- **TAN Council Safe**: 194.44 million TEL held
+- **eXYZ stablecoin pools**: USDC/eUSD pools live on Base (Uniswap) and Solana (Raydium)
+
+#### Merkl Integration Trial — APPROVED
+Source: TELx Council recap (week of Mar 10, 2026); TELx Council #19 (March 18, 2026)
+
+- **Snapshot vote**: Passed unanimously 6/6, closed March 10, 2026 — first successful proposal from council member Tai
+- **Model selected**: Per-position gating ($6,000 integration cost vs. $3,000 per-wallet; granularity maintained to match current hook-based structure)
+- **Cost**: ~2.175 million TEL over 6 months (~363,000 TEL/month) from TX operational wallet (10M TEL held — untouched; does not reduce existing pool incentives); payment schedule: 6 equal monthly installments
+- **Timeline**: ~4 weeks from snapshot → live ~April 2026; full analysis targeted mid-May
+- **Test setup**: Running in parallel on Base V4 pool (TEL/ETH) — Merkl vs. current hook system, no double rewards
+- **Why Merkl**: Dynamic/flexible incentive structures; target active tick liquidity; bounded price ranges; adjust per-pool without hook modifications + security audits; scales for future pool additions
+- **Strategic goal**: Shift from fixed equal allocation (6 pools) to formula-based distribution that can rapidly onboard new pools (especially eXYZ stablecoins and Telcoin Holdings corridors)
+- **Merkl contact**: Baptiste — meeting with TELx Council scheduled March 19, 2026 (1:30–2pm Eastern); Leo (technical lead) required to attend for contract-level discussion
+- **Scoping document**: Leo drawing up success criteria document prior to Merkl meeting — defines how to evaluate whether Merkl is a success
+- **Key technical requirement**: Merkl must track rewards at position level (not wallet address level) — to match current hook-based granularity
+- **NDA/services agreement**: Tim Mahota (General Counsel) confirmed formal NDA + services agreement required before sharing confidential information or initiating paid services; standard TAO NDA template available; Tim must receive copies of all signed agreements; TELx Council first external vendor engagement
+
+#### V4 Pool Aggregator Routing Issue
+Source: TELx Council #19 (March 18, 2026)
+
+- **Problem**: Major aggregators route very little volume to V4 pools with custom hooks — because hooks make swap rate prediction difficult/unpredictable
+- **Data finding**: Most aggregators route <10% of volume through V4 custom-hook pools; V3 pools dominate aggregator routing
+- **OX Protocol impact**: OX Protocol (one of two aggregators used by Telcoin Wallet) routes ~<10% of swaps through V4 pools — meaning ~90% of wallet-routed volume goes elsewhere
+- **Root cause**: Advanced aggregators (e.g. Kyberswap) can handle hook-based pools; most cannot predict rates and avoid them; hooks also add perceived smart contract risk for aggregators
+- **V4 is still new**: Aggregator trust for V4 expected to improve over time as track record builds
+- **Hook purpose clarification** (from council): The V4 hook's PRIMARY purpose is JIT (just-in-time liquidity) attack prevention via 24-hour position lock — NOT governance/voting rights. Voting was a secondary integration goal.
+- **Merkl's implication**: Merkl handles eligibility/subscription on their side — potentially eliminating the need for the NFT-based hook system; could enable migration back to V3 pools for better aggregator routing without losing reward targeting capability
+- **Action item**: Ty to reach out to Chase (smart contract engineer, Telcoin Holdings) to align on wallet + V4 pool integration going forward; to be discussed at March 23 Holdings meeting
+
+#### Pool Strategy Notes
+- Uniswap V4: Better for volatile pairs (TEL/ETH); recent data shows closer to 1:1 liquidity-to-reward ratio
+- Stable pairs: V4 concentrated liquidity creates constant rebalancing burden; most LPs stay in simpler V2/V3 "set and forget" pools
+- Balancer V3 Reclaim Pools: Still under evaluation for stable pair infrastructure
+- **Base potentially leaving OP Stack**: Monitoring; Uniswap applications not expected to be impacted but backend changes may require retesting (council member Cody has Base/The Block contacts for intel)
+
+#### TELx Council / Holdings Strategic Meeting — March 23
+Source: TELx Council #19 (March 18, 2026)
+
+- **Date**: Monday, March 23, 2026, 2pm Eastern
+- **Attendees**: Paul (CEO), Parker (Executive Director), TELx Council members
+- **Purpose**: Post-bank-launch V5 roadmap; eXYZ stablecoin liquidity strategy; define TELx Council's mission and priorities for H2 2026
+- **Context**: Council sentiment — currently in a "holding position" pending clarity from Holdings on strategic direction; V5 launch and Telcoin Network mainnet expected to drive major clarity in coming months
+- **Action**: Council to bring outcomes of this meeting back to next full council session
+- **Next council meeting**: ~April 1, 2026 (two weeks from March 18)
+
+#### Operational
+- Reward script issues from prior weeks: fully resolved with redundancy in place
+- Period 29 distribution: completed quickly after epoch close
+- Website fee graph bug: fixed, deploys in next general update
+- New manual liquidity withdrawal guide (direct contract access if UI unavailable): in preparation
+- TX University: handover to Leo and Storm underway; final licensing + content polish before launch
+- **V4 staked amount showing N/A**: UI bug on telx.network — all three networks (Polygon, Base) showing N/A for staked amount in V4 pools; believed to be subgraph issue; Ty following up with Khalil; added to Trello
+- **Admin rewards dashboard** (Derek): Position-level breakdown tool in development — allows council members to answer LP questions ("why did I earn less?") by wallet address lookup; shows out-of-range %, position moves, liquidity share; PR pending, Leo to review; future integration target: unified web project
+
+### eUSD Stablecoin
+- **Launch date**: December 26, 2025
+- **Issuer**: Telcoin Digital Asset Bank (state-chartered U.S. bank)
+- **Backing**: 1:1 backed by USD + short-term U.S. Treasury assets
+- **Audits**: Monthly attestations from external auditor
+- **Initial mint**: $10 million eUSD
+- **Networks**: Ethereum and Polygon (Telcoin Network at mainnet)
+- **Access**: Telcoin Wallet V5 (early 2026 onboarding)
+- **Distinction**: FIRST bank-issued on-chain stablecoin — issued under U.S. banking law, not by a private company
+
+### Digital Cash Stablecoin Suite
+| Token | Currency | Status |
+|---|---|---|
+| eUSD | US Dollar | Live — Ethereum + Polygon |
+| eGBP | British Pound | Live — Polygon |
+| eJPY | Japanese Yen | Live — Polygon |
+| eSGD | Singapore Dollar | Live — Polygon |
+| eZAR | South African Rand | Live — Polygon |
+| eEUR | Euro | Planned — MiCA compliant (e-Money Institution) |
+
+- **Mercado Bitcoin**: Listed eUSD and eGBP
+
+### Telcoin Digital Asset Bank
+- **Charter type**: Digital Asset Depository Institution (DADI)
+- **Charter date**: November 12, 2025
+- **Signed by**: Nebraska Governor Jim Pillen
+- **Regulator**: Nebraska Department of Banking and Finance
+- **Legal framework**: Nebraska Financial Innovation Act + GENIUS Act guidelines
+- **Authorized to**: Accept crypto deposits, provide crypto loans, connect to Federal Reserve payment rails, connect customers to DeFi
+- **Capitalization**: $25 million secured
+- **Operations began**: December 26, 2025 (eUSD launch)
+- **Personal/business accounts**: Launch Q1 2026
+- **Historic significance**: First-in-nation U.S. digital asset bank charter
+
+---
+
+## 4. TEL TOKEN
+
+### Contract Addresses
+| Network | Address |
+|---|---|
+| Ethereum | `0x467bccd9d29f223bce8043b84e8c8b282827790f` |
+| Polygon (Proxy) | `0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32` |
+| Polygon (Implementation) | `0x805b70339183f9a98cc7fcb35fcbeb5ac10713ea` |
+| Telcoin Network | Native gas token (address TBD — mainnet not live) |
+
+### Tokenomics
+- **Max supply**: 100 billion TEL (hard cap)
+- **Circulating supply**: ~96.074 billion TEL (96% of max)
+- **Issued**: 2017
+
+### Market Data (March 2026)
+- **Price**: ~$0.002642 USD
+- **24h volume**: ~$1.35M USD
+- **Market cap**: ~$253.8M USD
+- **CMC rank**: ~#122
+
+### Exchange Listings
+- Kraken (listed January 26, 2026 — 13M+ users, 190+ countries)
+- Bybit (primary volume, TEL/USDT)
+- MEXC
+- Coinbase
+- Binance
+- Balancer V2 (Polygon — DEX)
+
+### Staking
+- Deposit TEL via TAN staking contracts in Telcoin Wallet
+- Weekly reward distribution: every Wednesday 00:00 UTC
+- Weekly pool: **3.2 million TEL** distributed to all stakers based on activity (confirmed — TANIP findings report)
+- Reward types: Under active Trading Fee Rebate Program: capped rebate = min(calculated issuance, actual TEL fees paid)
+
+---
+
+## 5. COMMUNITY & SOCIAL
+
+### @telcoinTAO (X/Twitter)
+- Primary official account for Telcoin Association
+- Bronze Sponsor of DC Blockchain Summit 2026 (March 17–18, Washington DC) — confirmed via summit sponsor page Mar 11, 2026 (Silver in 2025, Bronze in 2026)
+- **DC Summit representative**: Jeff Quigley (EVP, Business Development & Communications) is the Telcoin keynote speaker / floor representative at DC Blockchain Summit 2026
+- Content: Roadmap updates, governance announcements, network milestones
+
+### Reddit: r/telcoin
+- Community exists; historically positive sentiment
+- Activity: Variable — not high-volume
+- Topics: Technology, partnerships, roadmap, competition
+
+### Forum: forum.telcoin.org
+- Active governance discussions (TELIPs, council elections, TGIPs)
+- Key recent threads: Y3 TEL allocation TELIP, Miner Council elections
+
+### Council Members & Key Figures (from recap)
+- **Grant**: Platform & Treasury Council — leads security strategy, MNO relations, testnet/mainnet sequencing
+- **Steve**: Lead on database layer scaling refactor
+- **Leo**: TAN Council + TELx Council; TANIP-1 implementation; TX University handover; reward script ops
+- **Storm**: TX University handover co-lead
+- **Tai**: TELx Council — authored Merkl trial proposal (passed Mar 10)
+- **Mike**: TELx Council — Telcoin Holdings coordination on eXYZ pool strategy
+- **Cody**: TAN Council member; builder (random square guessing game on Base); Base/The Block ecosystem contacts
+- **TanguyDeTaxis (Tan Guide)**: Open-source contributor — execution environment improvements
+- **Hodler Vaughn**: Telcoin Magazine contributor, governance analysis
+- **Parker Spann**: Executive Director, governance innovation
+- **TelcoinFan** (@TelcoinFan): Active community voice on X
+- **Telcoin_Juggler** (@Telcoin_Juggler): Active community voice on X
+
+### YouTube
+- **Channel**: youtube.com/@TelcoinTAO — full council meeting recordings available
+
+### Builder Ecosystem (TAN Council)
+Source: TAN Council recap (week of Mar 10, 2026)
+
+- **Random square guessing game** (Cody): No-loss lottery micro-app; live on Base; ~$1 entry, 10% to TAN treasury, 90% to prize pot; 1-in-10,000 chance; Chainlink VRF integration planned; will migrate to Telcoin Network at mainnet
+- **Telcoin Name Service**: .tel human-readable on-chain addresses (e.g. Cody.tel, Dolly.tel) — ENS equivalent native to Telcoin ecosystem; integrates into wallet UX
+- **Charity NFT Subscription** (Leo): Revokable NFTs tied to streamed donations; hold NFT while streaming funds to charity wallet; NFT revoked when stream stops; fully on-chain transparency; long-term goal: accumulate substantial TEL in charity wallets → onboard orgs like UNICEF on-chain
+- **Strategic philosophy**: Fun, low-friction apps/games/art = fastest path to mass adoption (mirrors Solana playbook); shift away from pure speculation toward genuine utility and public goods
+
+### Developer Onboarding
+- Telcoin Network is EVM-compatible — developers can build on Base now, then redeploy to Telcoin Network at mainnet
+- Codebase: github.com/Telcoin-Association (fully open-source)
+- Contact: Discord, X, or directly to council members for support
+- Developer portal + unified web presence: in development (company conducting internal audits + system mapping; targeting single entry point from solo devs → enterprise partnership onboarding)
+
+---
+
+## 6. COMPETITIVE LANDSCAPE
+
+### Direct Remittance Crypto Competitors
+| Project | Model | Telcoin Differentiator |
+|---|---|---|
+| XRP/Ripple | Bank-to-bank B2B, 300+ institution partners | Mobile-first, retail/consumer, MNO validators |
+| Stellar (XLM) | Non-profit, emerging markets, anchor model | MNO validators = real infrastructure, not just anchors |
+| Celo | Ethereum L2, phone number identity, mobile-first | L1 with bank charter, GSMA-native, regulated |
+| Traditional SWIFT | Correspondent banking, 3–5 day settlement | Near-instant, near-zero fees |
+
+### Traditional Remittance Fees (Benchmark)
+- Western Union: 3–8% typical
+- MoneyGram: 4–6%
+- Bank wire: flat $25–$45
+- World Bank global average: ~6.3%
+- **Telcoin target**: ≤2%
+
+### Telcoin's Moat
+1. Only blockchain with GSMA MNO validators (licensed, accountable, globally distributed)
+2. Only regulated U.S. digital asset bank with DeFi connection authority
+3. Only bank-issued on-chain stablecoin (eUSD)
+4. 16-country live remittance network with 23+ mobile money integrations
+
+---
+
+## 7. RECENT NEWS TIMELINE
+
+| Date | Event |
+|---|---|
+| Nov 12, 2025 | Nebraska Governor signs first-in-nation Digital Asset Depository Institution charter |
+| Dec 2025 | Adiri Testnet launches |
+| Dec 26, 2025 | Telcoin Digital Asset Bank operations begin; eUSD minted ($10M initial) |
+| Jan 26, 2026 | TEL listed on Kraken |
+| Mar 2-5, 2026 | Mobile World Congress Barcelona — full team attended; private MNO partner meetings; no public mainnet reveal (intentional); focus on demonstrating new MNO revenue streams |
+| Mar 10, 2026 | Merkl trial snapshot vote closes — unanimous 6/6 approval |
+| Mar 12, 2026 | Platform & Treasury Council #26 — BLS fully resolved; external audits being scheduled; TIP 11 + unified web arch TIP presented; team expansion announced; Miner Council elections live |
+| Mar 12, 2026 | TAN Council — **Trading Fee Rebate Program** (TANIP successor) passed snapshot vote (implementation target late March); 164-165M TEL carryforward confirmed; builder demos: .tel name service, lottery game, charity NFT |
+| Mar 18, 2026 | TELx Council #19 — Merkl scoping & Baptiste meeting prep; V4 aggregator routing issue identified; Holdings strategy meeting scheduled for March 23; NDA/services agreement process initiated for Merkl vendor relationship |
+| Mar 19, 2026 | TELx Council technical workshop with Baptiste (Merkl) — March 19, 2pm Eastern; Leo (technical lead) required |
+| Mar 23, 2026 | TELx Council / Holdings strategic meeting — 2pm Eastern; Paul (CEO) + Parker; eXYZ stablecoin roadmap + council mission definition |
+| ~April 2026 | Merkl trial goes live on Base V4 TEL/ETH pool |
+| ~Late March 2026 | TANIP-1 deployment (target, flexible) |
+| Mid-May 2026 | Merkl trial analysis + review |
+| Q1 2026 | Telcoin Wallet V5 launch (per research) |
+| Q1 2026 | Personal/business bank accounts open |
+| Q1 2026 | Miner Council elections ongoing |
+| TBD | Mainnet launch — see roadmap.telcoin.network |
+
+---
+
+## 8. TELCOIN WIKI INTELLIGENCE (telcoinwiki.com — crawled March 15, 2026)
+
+> Source: telcoinwiki.com — unofficial community guide authored by community member @BZ_crypto1.
+> Site launched recently (per X post from BZ_crypto1 referencing the new site going live).
+> Pages: home (/), deep-dive.html, about.html, telx.html, links.html, pools.html, portfolio.html
+
+### Site Overview
+TelcoinWiki is an unofficial community guide designed to demystify Telcoin for everyday users. It combines coverage of the RegFi model, carrier-secured blockchain, digital asset bank, and TEL token into one accessible resource. Community-maintained; not affiliated with Telcoin Association officially.
+
+### Key Framing / Narrative Language from the Wiki
+
+**"RegFi" model**: The wiki popularizes this term — Regulated DeFi. Telcoin owns the full stack: U.S.-chartered digital-asset bank + carrier-secured L1 blockchain validated by GSMA-member MNOs + regenerative TEL token that powers transactions and rewards user-generated liquidity. Described as a "triple advantage" for real-world adoption.
+
+**"Internet of Money"**: Core narrative — just as the internet standardized information exchange globally, Telcoin aims to standardize value exchange across mobile networks worldwide. Digital Cash stablecoins are described as the "backbone of the Internet of Money."
+
+**Carrier-secured blockchain**: Wiki's preferred shorthand for the GSMA MNO validator model.
+
+### TEL Token Issuance Mechanics (net-new detail)
+- TEL Treasury issues at a rate of approximately **10% annually** of its inventory, redistributed via programmable flows across the platform.
+- A portion of all TEL gas fees paid each block are **destroyed and regenerated equally to the TEL Treasury** — tying Telcoin Network blockspace demand to the sustained yield of TEL for future generations of miners. (This is the gas fee burn/regeneration loop.)
+- Miner rewards are approximately **200M TEL per year** distributed to miners across all groups.
+- Weekly staker pool: **3.2 million TEL per week** — confirmed correct via TANIP findings report (forum, Dec 8, 2025). Earlier research file entry of "3.2 billion" was a unit error; corrected.
+
+### TEL Staker Mechanics (TANIP-1 details)
+- Stakers earn up to **42% of referred users' trading fees**.
+- Maximum Weekly TEL Issuance Rule: Stakers may mine accrued weekly issuance only if `total staked TEL > (TEL issuance income/lifetime + TEL issuance income/current week)`. Any excess TEL not mined due to insufficient stake is returned to TAN Council safe for reallocation.
+- 194.44M TEL held in TAN Council Safe (consistent with research file).
+
+### TAN Council & Developer Incentives
+- Developer Incentives (a future TANIP beyond TANIP-1) are in development — will incentivize GSMA member application development on TAN.
+- TAN is described as a network of mobile applications integrated with the underlying platform layers, acting as the user interface connecting consumers to digital wallets, asset exchange, remittances, and staking.
+
+### Historical Platform Architecture Context
+- **Rivendell**: Earlier name for what is now Telcoin Network — described as an "Ethereum sidechain" in V3 architecture docs. Telcoin used Polygon SDK to build Rivendell. This predecessor became what is now referred to as Telcoin Network (the standalone L1 with Narwhal/Bullshark consensus, no longer a sidechain framing).
+- The platform evolved: Telcoin App (application layer) + TELx (liquidity engine) + Rivendell/Telcoin Network (settlement layer). Now described as three-layer: Telcoin Wallet + TELx + Telcoin Network.
+
+### TELx Historical Pool Data (wiki pools.html)
+- 2020–2021: 2 markets on Balancer V1 and Uniswap V2 (Ethereum)
+- 2021–Pre-TGIP1: 32 markets across three DeFi protocols (Quickswap, DFX, Balancer V2 on Polygon PoS)
+- Post-TGIP1: Down to 6 markets on Balancer protocol on Polygon
+- Future: Primary location will be Telcoin Network post-mainnet
+- Live pool data redirected to telx.network/pools (wiki pools page: data currently unavailable)
+
+### TELx Portfolio Page Notes (wiki portfolio.html)
+- Illustrative/design-time view of TEL claimable rewards and LPT stakes
+- Key warning: Rewards from deprecated pools stop compounding after sunset date — users advised to restake to active pairs
+- Shows "Claim all" interface design for TELx positions
+
+### Governance Detail (from wiki)
+- Elinor Ostrom's 8 Design Principles embedded at constitutional level of Telcoin Association governance — explicitly including the 8th principle of "nested enterprise" (nested tiers from lowest level up = bottom-up ecosystem)
+- Four Miner Groups share equal authority: Validators (Telcoin Network), Liquidity Miners (TELx), Developers (TAN), Stakers (TAN)
+- Improvement proposal naming conventions: TELIPs (platform-wide), TANIPs (TAN application layer), TELxIPs (TELx layer)
+- Compliance Council: approves GSMA MNOs before they can become validators (gatekeeping function)
+- Validators during alpha-mainnet: no slashing enabled; governance may manually slash or revoke NFT access to participate
+
+### Validator NFT Access
+- New detail from wiki: Validator participation access is controlled via **NFTs** that governance can revoke — this is the permissioning mechanism during the alpha-mainnet phase before full decentralization.
+
+### MNO Reach & Adoption Stats (from community sources via wiki)
+- Telcoin has counted **over 200 million users** across partner MNO platforms (mobile money account holders through partner MNOs)
+- Target: **50+ MNO validators** onboarded (2025 roadmap target)
+- Named MNO partners mentioned: Digicel, MTN, Airtel, GCash, Orange, Vodafone, Viettel
+
+### GSMA Membership Note
+- Wiki notes Telcoin joined GSMA as an **associate member** (not operator member) — becoming the first telecom-focused crypto to partner with GSMA network operators for distribution
+- Validators must be GSMA **Operator Member** MNOs (a more specific, higher-tier GSMA membership than Telcoin Association's own associate membership)
+- Year of GSMA membership: 2018
+
+### Remittance Volume Stat (from community sources via wiki)
+- Transaction volumes: **$50 million in Q2 2025**, up from $20 million in 2024
+
+### External Validator Infrastructure Detail (via wiki)
+- Outbound bridging transactions from Telcoin Network: **7-day wait period**, then second transaction to complete bridging off TN
+- TEL exists as ERC-20 on Ethereum; initial block reward balance bridged before genesis via **Axelar** (note: Axelar was the initial bridge; LayerZero is the future bridge partner)
+
+### Links Curated on telcoinwiki.com/links.html
+Categories include: official documentation, liquidity tools, regulatory filings, community hubs, staking and yield farming guide, wallet setup, understanding liquidity pools, Nebraska DADI charter news, exchange listings (CoinMarketCap, Coinbase, Gate.com)
+
+---
+
+## 9. EDITORIAL POLICY (Standing Directives — Mar 16, 2026)
+
+| Topic | Directive |
+|---|---|
+| Token price / price-fundamentals disconnect | **Do not address.** Focus on what we are building, not token price or market conditions. No commentary on price action, market cap, or price vs. fundamentals disconnect. |
+| MNO validator names | **Do not publish.** The Association will not announce names. MNOs will announce independently on their own timeline. MNOs will need to publicly apply on the forum for mainnet validator status. |
+| Lifetime issuance history reset | **Not happening.** Current cap levels are being retained in the Trading Fee Rebate Program redeployment. Do not reference a reset in any public-facing content. |
+| Hype language | Never: "moon", "soon™", "massive", "100x", "game-changer", "imminent", "revolutionary" |
+| Mainnet timing | Always milestone-based, never calendar-based. Link to roadmap.telcoin.network. |
+
+---
+
+## 10. THINGS TO VERIFY BEFORE PUBLISHING
+
+- [x] Mainnet timeline/phases — confirmed from roadmap.telcoin.network (March 10, 2026)
+- [x] 2026 DC Blockchain Summit sponsorship tier — Bronze (confirmed Mar 11, 2026)
+- [ ] Wallet V5 exact launch date
+- [ ] Which specific MNOs have committed as mainnet validators — **NOTE (Mar 16, 2026): Telcoin Association will NOT announce MNO validator names publicly. MNOs will make their own announcements on their own timelines. MNOs will need to apply publicly on the forum to become validators at mainnet. Do not speculate or prompt for named validators in content.**
+- [ ] Current TVL in TELx (check telx.network/pools)
+- [ ] Current follower count on @telcoinTAO
+- [ ] Any new corridor/partnership announcements since Jan 2026
+- [ ] Personal/business bank account launch status
+- [x] Bridge partner — **LayerZero** confirmed (initial scoping doc delivered; Axelar no longer active)
+- [x] Verify weekly TEL staker distribution: **3.2 million TEL/week** — confirmed via TANIP findings report (forum.telcoin.org, Dec 8, 2025). Research file previously had "3.2 billion" — corrected.
+- [ ] Confirm current active remittance corridor count: research file shows 16 countries/23+ platforms; wiki/community sources cite 20+ countries/40+ e-wallets — may reflect different product versions or time periods; verify against current telco.in
+
+---
+
+## 11. DEEP GOVERNANCE ARCHITECTURE (Source: governance docs uploaded March 16, 2026)
+
+> These files are authoritative primary source documents from Telcoin Association's governance system. All details below are verified from assets/.
+
+### Constitutional Values (23 Core Principles)
+The Telcoin Association Constitution explicitly enshrines:
+- **Sustained Yield**: Platform resources managed on sustained yield principle
+- **Self-Governance**: Miners possess full authority over the governance system
+- **User-Ownership**: Right to access system, harvest benefits, participate in rule-crafting
+- **Credible Neutrality**: All miner groups maintain property rights; interests cannot be revoked without consent
+- **Incentives Compatibility**: Rules enable stakeholders to realize own interests while benefiting the whole
+- **Informed Consent**: Every miner group has representation on every council
+- **Separation of Powers**: Councils across levels with specific jurisdictional domains
+- **Local Autonomy**: Each miner group has local council representation
+- **Balanced Representation**: Global councils have balanced representation
+- **Functional Representation**: Based on miner groups' functionally differentiated roles
+- **Inclusive Decision-Making**: 75%+ super-majority approval for platform improvements
+- **Equal Voting Power**: Equal votes in constitutional-choice processes
+- **Privacy**: Consent-based information sharing
+- **Long-Term Thinking**: Consider long-term ecosystem implications
+- **Subtraction**: Maintain checks and balances to prevent power concentration
+- **Freedom**: Promote participant freedom; foster creativity and growth
+- **Reject Panaceas**: No one-size-fits-all approach; encourage experimentation
+- **Rules Changes as Experiments**: Policy changes treated as experiments
+- **Stewardship of Values**: Commitment to decentralization and equal access
+
+### Ostrom's 8 Design Principles (Explicitly Integrated)
+Telcoin Association's constitution explicitly adopts all 8 of Elinor Ostrom's design principles for governing common-pool resources:
+1. Clearly defined boundaries (who can harvest TEL)
+2. Proportional equivalence between costs and benefits
+3. Collective-choice arrangements (all affected miners modify operational rules)
+4. Monitoring (active auditing; monitors accountable to miners)
+5. Graduated sanctions (escalating penalties by severity)
+6. Conflict-resolution mechanisms (rapid, low-cost local dispute resolution)
+7. Minimal recognition of rights to organize (external governments don't challenge)
+8. Nested enterprises (harvesting, provision, enforcement organized in multiple layers)
+
+### Property Regime: Communal Proprietorship
+TEL is classified as a **common pool resource** (high exclusion costs + high subtractability of use).
+
+**5-Class Property Rights Model:**
+- **Consumers** (Authorized Entrants): Access only - no withdrawal, management, or exclusion rights
+- **Miners** (Proprietors): Individual + Collective-Choice rights
+  - Access: Use platform and consume services
+  - Withdrawal: Harvest TEL issuance and fees based on efforts
+  - Management: Participate in improving platform; regulate TEL flows
+  - Exclusion: Determine who participates in harvesting and management
+  - NO Alienation Rights: Cannot sell, lease, bequeath, or transfer governance rights
+
+### Governance Organizations
+**Telcoin Association (TA)**: Swiss Verein - holds final constitutional authority
+
+**Telcoin Autonomous Ops, Ltd. (TAO)**: Operations subsidiary registered as UAB (Lithuanian entity). Administers day-to-day governance. Runs KYM (Know Your Member) verification. Acts as proxy voter if Miner Groups fail to reach quorum.
+
+### Complete Council Breakdown
+
+| Council | Seats | Authority | Voting Threshold | Quorum |
+|---|---|---|---|---|
+| Platform Council | 8 (2 per miner group) | Platform-wide policies, maintenance, construction | 75%+ | 20% per group |
+| Treasury Council | 4 (1 per miner group) | TEL Treasury allocation, issuance rules | 100% unanimous | 100% |
+| TAN Council | 6 | TAN operational/harvesting rules | 75%+ | 20% per group |
+| TELx Council | 6 | TELx rules, liquidity, fee schedules | 75%+ | 20% per group |
+| Compliance Council | 4 (requires JD degree) | Legal compliance, KYC/AML, dispute resolution | 75%+ | 20% per group |
+
+**TAN Council Seat Breakdown by Role:**
+- Staker Rep 1: Marketing (campaign design, initiatives)
+- Staker Rep 2: Education (learning programs)
+- Developer Rep 1: Incentives (adoption mechanics)
+- Developer Rep 2: Data (analytics systems)
+- Liquidity Miner Rep: Communication (documentation, social channels, forum, Discord)
+- Validator Rep: Production Coordination (TAO coordination, implementation)
+
+**Treasury Council Special Roles:**
+- Staker Rep: Data analytics coordination
+- Developer Rep: Distribution mechanism design
+- Liquidity Miner Rep: Financing collective goods (grants)
+- Validator Rep: Storage facility design/security
+
+### Improvement Proposal Types (All 7)
+| Type | Abbreviation | Authority |
+|---|---|---|
+| Telcoin Improvement Proposal | TIP | Platform Council |
+| TEL Improvement Proposal | TELIP | Platform + Treasury Councils (bi-cameral) |
+| TAN Improvement Proposal | TANIP | TAN Council |
+| TELx Improvement Proposal | TELxIP | TELx Council |
+| Compliance Council Improvement Proposal | CCIP | Compliance Council |
+| Telcoin Governance System IP | TGIP | Miner Assembly (super-majority from all groups) |
+| Telcoin Representative IP | TRIP | Miner Assembly |
+
+### Election Rules (Quantified)
+| Metric | Value |
+|---|---|
+| Frequency | Annual (every 12 months) |
+| Voting duration | 7 days per vote |
+| Nomination window | 1 month prior (min 24 hours before election) |
+| Quorum requirement | 20% of Miner Group voting stake |
+| Approval method | Plurality (most votes wins) |
+| Outcome | Governance NFT + TEL issuance stream |
+| Fallback | TAO votes on behalf of Miner Group if quorum not met |
+| KYM deadline | 30 days post-election to complete Know Your Member verification |
+| Compliance Council eligibility | Requires Juris Doctorate (JD) degree |
+
+---
+
+## 12. TEL TOKENOMICS DEEP DIVE (Source: governance docs uploaded March 16, 2026)
+
+### Total Supply & Treasury
+- **TEL Treasury (starting)**: 10 billion TEL
+- **Annual issuance rate**: 10% of current Treasury balance
+- **Year 1 total issuance**: 2 billion TEL (initial airdrops + streams)
+- **Regeneration**: TEL burned on Telcoin Network replenishes Treasury proportionately
+- **Treasury governance**: Platform & Treasury Councils via TELIP process
+
+### Year 1 Annual Issuance Breakdown (2 Billion TEL)
+
+| Recipient | Annual TEL | % of Y1 Issuance | Distribution |
+|---|---|---|---|
+| Validators | 400M | 20% | ~1,095,890 TEL/day per block production |
+| Liquidity Miners (TELx) | 400M | 20% | 100M TEL/quarter |
+| TAN Developers | 166.66M | 8.33% | 3.2M TEL/week |
+| TAN Merchant Stakers | 166.66M | 8.33% | 3.2M TEL/week |
+| TAN Retail Stakers | 166.66M | 8.33% | 3.2M TEL/week |
+| Council Members | 60M | 3% | 2.375 TEL/block per NFT holder |
+| TAO Operations | 50M | 2.5% | Streamed per block |
+| TAO Legal & Org (one-time) | 40M | 2% | One-time airdrop |
+
+**Key architecture**: Equal 20% allocations to validators AND liquidity miners; equal 33% combined to application-layer actors (developers + stakers). This rewards adoption and ecosystem density, not only infrastructure.
+
+### Staker Referral Fee Schedule (by staked TEL amount)
+| Staked TEL | Referral Fee % |
+|---|---|
+| 10 - 9,999 | 15% |
+| 10,000 | 22.5% |
+| 100,000 | 30% |
+| 1,000,000 | 34% |
+| 100,000,000 | 42% |
+
+### Staker/Developer Harvesting Rule (Maximum Weekly)
+```
+Can harvest weekly issuance IF:
+Total staked TEL > (Lifetime TEL earned + Current week TEL earned)
+```
+This prevents farming while incentivizing genuine participation. Excess TEL due to insufficient stake carries over to next week.
+
+### TELx Liquidity Miner Harvesting
+- Pro-rata share of staked liquidity in individual markets over time
+- Individual market incentives determined by TELx Council governance
+
+### Validator Block Rewards
+- 15.84 TEL per block
+- Pro-rata based on stake weight relative to total validator stake
+- Requires authorization by Compliance Council and GSMA Operator Member status
+
+### Treasury Drawdown Projection (Deflationary Mechanism)
+| Year | Treasury Start | Annual Issuance (10%) | Treasury End |
+|---|---|---|---|
+| 1 | 10B TEL | 1B (plus 1B initial airdrops) | ~8B |
+| 2 | ~9B | ~900M | ~8.1B |
+| 3 | ~8.1B | ~810M | ~7.3B |
+
+Note: TEL burned in network transactions replenishes the Treasury - this is the regeneration loop that ties long-term issuance to real usage.
+
+### Council Member Compensation
+- Treasury Council: 2,272,727 TEL/year per member (streamed per block while holding NFT)
+- Other councils: Pro-rated from 60M annual council allocation
+- 33 total council members across all 5 councils
+
+---
+
+## 14. GITHUB TECHNICAL DEEP DIVE (Source: github.com/Telcoin-Association — crawled July 24, 2026)
+
+> All details below sourced directly from public GitHub repositories and documentation.
+
+### Repository Index (21 total repos)
+
+| Repository | Description | Language |
+|---|---|---|
+| telcoin-network | Core L1 node — Narwhal + Bullshark + EVM | Rust |
+| tn-contracts | Telcoin Network smart contracts | Solidity |
+| telcoin-application-network-issuance | Calculates and distributes TAN & TELx incentives | TypeScript |
+| tel-v3 | Token upgrade for EVM chains (2 → 18 decimals) | Solidity |
+| telcoin-explorer | Telcoin Network Explorer v1 (TelScan) | Rust |
+| tn-node-deployment | Node deployment tools and scripts for MNO operators | Shell |
+| tn-roadmap | Static site for Telcoin Network roadmap | TypeScript |
+| tn-uptime-kuma | Uptime monitoring for Adiri Testnet validator infrastructure | Python |
+| forge-deploy-utils | Shared Foundry deployment utilities (Safe-based, deterministic multi-chain via CreateX) | Solidity |
+| safe-utils | Interact with Safe API from Foundry scripts | Solidity |
+
+### Core Tech Stack
+
+- **Language**: Rust (minimum version 1.94)
+- **Networking**: libp2p with QUIC-v1 over UDP
+- **Consensus lineage**: Derived from Mysten Labs / Sui codebase (Bullshark, Apache 2.0)
+- **Execution lineage**: Inspired by Reth (Ethereum protocol implementation)
+- **Smart contracts**: Foundry + Solidity, using CreateX for deterministic multi-chain deploys
+- **Block explorer**: Rust + Dioxus (compiles to WebAssembly) — retro CRT aesthetic, JetBrains Mono + Syne fonts, zero external UI dependencies
+- **Monitoring**: Uptime Kuma + Loki centralized logging
+
+### Internal Crates Architecture (telcoin-network)
+
+The node is organized as a Rust workspace with clearly separated concerns:
+
+| Crate | Role |
+|---|---|
+| consensus | Narwhal + Bullshark DAG consensus |
+| batch-builder | Constructs transaction batches for DAG propagation |
+| batch-validator | Validates batch integrity before DAG inclusion |
+| engine | Core execution engine (EVM block production) |
+| node | Main node orchestration and lifecycle |
+| network-libp2p | libp2p-based P2P networking |
+| network-types | Network protocol type definitions |
+| state-sync | State synchronization across nodes |
+| exex | Execution Extension plugin framework |
+| execution/tn-rpc | Standard Ethereum JSON-RPC interface |
+| tn-reth | Reth integration layer |
+| storage | Persistent database layer |
+| config | Configuration management |
+| tn-metrics | Prometheus-compatible metrics collection |
+| types | Shared protocol type definitions |
+| telcoin-network-cli | Command-line interface |
+| e2e-tests | End-to-end test suite |
+| test-utils | Testing helpers |
+| test-utils-committee | Committee-specific test utilities |
+
+### ExEx (Execution Extension) — Technical Specification
+
+ExEx is Telcoin Network's plugin system for external software to react to on-chain state changes in real time. Unlike Reth's original ExEx (which fires only at block execution), Telcoin's version tracks the full transaction lifecycle across three stages:
+
+1. **Certificate accepted** — A peer's transaction batch header has been certified and added to the local DAG
+2. **Consensus committed** — Bullshark has committed the sub-DAG; ordering is final
+3. **Chain executed** — EVM blocks have been executed and are canonical
+
+**Key design properties:**
+- **Non-critical isolation**: ExEx plugins run as independent tasks. A slow or panicking plugin cannot stall consensus, delay execution, or crash the node — it falls behind and must resync via replay
+- **Immediate finality**: Bullshark provides BFT finality with no reorganizations. ExEx consumers never need reorg-handling logic
+- **Live vs. replay asymmetry**: During live operation, `ChainExecuted` events include full BundleState (account/storage diffs). During replay catch-up, BundleState is empty — plugins must query `reth_env` directly to reconstruct state changes
+- **Read-only by convention**: ExEx handles expose two databases — `reth_env` (EVM state: blocks, headers, receipts, accounts, storage) and `consensus_chain` (consensus headers, epochs, committed sub-DAGs). The read-only contract is not type-enforced; plugin developers must not call mutation methods
+
+### ConsensusRegistry Smart Contract
+
+The `ConsensusRegistry` is the single on-chain source of truth for consensus-related state.
+
+**Address**: `0x07E17e17E17e17E17e17E17E17e17E17e17E17e1` (system contract)
+
+**Four functions:**
+1. **ConsensusNFT Whitelist** — Governance issues non-transferable NFTs to approve validators
+2. **TEL Staking** — Manages validator stakes, reward distribution, and slashing penalties
+3. **Validator Set Management** — Processes activation and exit queues
+4. **Epoch Records** — Stores historical epoch data and voting committee snapshots
+
+**Validator lifecycle (7 stages):**
+1. Governance approval (Compliance Council + GSMA Operator Member status)
+2. ConsensusNFT minted to validator address
+3. Stake TEL (BLS public key + proof-of-possession submitted)
+4. Enter activation queue
+5. Become active (at epoch boundary, via `activate()` call)
+6. Exit request (when validator wishes to leave)
+7. Protocol-managed finalization → unstake + ConsensusNFT burned
+
+### Validator vs. Observer Node Model
+
+Critical distinction from deployment tooling: **every node is installed validator-capable from day one.** The node binary and configuration are identical for validators and observers. What determines validator participation is on-chain state — staking TEL + receiving ConsensusNFT + calling `activate()`. Before those steps, the node behaves as a full node / observer.
+
+This means:
+- A future MNO validator can install, sync, and run as an observer for months before formal activation
+- Hardware is provisioned to validator spec from the start; there is no "upgrade" process between observer and validator roles at the software level
+
+### Hardware Requirements (Official Specs)
+
+| Role | CPU | RAM | Storage | Network |
+|---|---|---|---|---|
+| Observer / Full Node | 8 cores / 16 threads | 16GB DDR4 ECC | 500GB TLC NVMe SSD | 24Mbps+ stable |
+| Validator | 16+ cores / 32 threads | 128GB DDR4/DDR5 ECC RDIMM | 4TB TLC NVMe SSD | 1Gbps sustained, 1GbE+ |
+
+**Storage note**: TLC NVMe required (1,000–3,000 P/E cycles). QLC explicitly prohibited (100–1,000 P/E cycles insufficient for continuous blockchain writes).
+
+**Supported OS**: Ubuntu 22.04+ LTS, Debian 12+, RHEL 8+, macOS Sequoia 15+ (observer only)
+
+### Network Ports
+
+| Port | Protocol | Purpose |
+|---|---|---|
+| 8545 | HTTP/TCP | Ethereum JSON-RPC |
+| 8546 | WebSocket/TCP | Ethereum WebSocket RPC |
+| 49590 | UDP/QUIC | P2P consensus (primary) |
+| 49594 | UDP/QUIC | P2P consensus (worker) |
+| 9101 | TCP | Prometheus metrics (loopback restricted) |
+| 43174 | TCP | TAO health monitor endpoint (restricted to 104.155.184.201/32) |
+
+### Validator Onboarding Requirements
+
+1. **GSMA approval first** — Contact grant@telcoin.org before purchasing hardware
+2. **Hardware approval** — Telcoin Association verifies specified equipment before deployment
+3. **Governance approval** — Compliance Council authorization required
+4. **Registered Ethereum address** — For receiving TEL staking rewards
+
+One-liner deployment after approval:
+```bash
+curl -fsSL https://install.telcoin.network | bash
+```
+
+**Security hardening built in**: Dedicated unprivileged service user (`telcoin/telcoin`), systemd `LoadCredential` for BLS passphrase (never embedded in service file), optional TPM/vTPM sealing for cloud environments, `NoNewPrivileges`/`PrivateTmp`/`ProtectSystem=strict` systemd restrictions.
+
+**CVE-2026-31431**: Setup scripts enforce mitigation of a HIGH severity local privilege escalation vulnerability affecting all Linux kernels since 2017 (via `algif_aead` kernel module). Setup will not proceed without operator remediation.
+
+### TEL V3 Token Upgrade — Technical Mechanics
+
+**Old**: OldToken (TEL v2) — 2 decimal places
+**New**: TelcoinV3 — 18 decimal places, hard cap 100 billion TEL (10^29 base units)
+
+**Conversion rate**: 1:1 by token count, automatic decimal conversion (multiply base units by 10^16). Example: 1,000 OldToken (100,000 base units) → 1,000 TelcoinV3 (10^21 base units).
+
+**Two-phase migration:**
+
+Phase 1 — TokenMigration (1–2 years):
+- User approves migration contract, calls `migrate()` to exchange entire OldToken balance
+- Contract mints TelcoinV3 on-demand (no pre-funded reserve required)
+- Legacy tokens held in escrow (not burned) — allows legacy LP positions to unwind after migration concludes
+- Bounded by `migrationExpiry`; owner can extend via `setMigrationExpiry()`
+- After expiry + withdrawal delay, owner reclaims escrowed tokens
+
+Phase 2 — MigrationVault (after Phase 1 closes):
+- Remaining unminted TEL v3 deposited into reserve-based vault
+- Late migrants swap v2 for v3 at 1:1 value until reserves deplete
+- One-way only — reverse swaps prohibited
+- UUPS upgradeable with pausable operations
+
+**Cross-chain architecture**: All satellite chains (Ethereum, Base, Polygon) run `TelcoinBridge` contracts; Telcoin Network runs `NativeBridge`. All bridges communicate exclusively through **LayerZero V2** — no direct chain-to-chain connections. TEL implemented as a LayerZero V2 OFT (Omnichain Fungible Token) mesh with `sharedDecimals = 6`.
+
+**Security architecture:**
+- `MintBurnWrapper` holds MINTER_ROLE and BURNER_ROLE; bridge contracts hold no direct token roles — prevents compromised bridge from directly minting
+- `burn()` requires prior approval; `rescueBurn()` bypasses for governance emergencies
+- EIP-2612 (permit), EIP-3009 (transferWithAuthorization), EIP-1271 (smart wallet) support
+- Roles cannot be voluntarily renounced (prevents self-lockout)
+- EIP-712 domain separation prevents cross-chain signature replay
+
+**Deployment**: Uses CREATE3 for deterministic addresses across all supported chains. Same address on every chain.
+
+### TelScan Block Explorer
+
+Built entirely in Rust, compiled to WebAssembly via Dioxus framework. Distinctive characteristics:
+- Zero external UI dependencies — pure CSS implementation
+- Retro CRT aesthetic: amber and green on near-black background, scanline overlays
+- Fonts: JetBrains Mono, Syne
+- Live status polling every 12 seconds
+- Smart search routing (auto-detects block hash / tx hash / address from input)
+- ERC-20 event decoding via `eth_getLogs` for token transfer history
+- Direct JSON-RPC to `https://rpc.telcoin.network` — no middleware layer
+- Deployed at scan.telcoin.network (testnet)
+
+### TAN Issuance Distribution System
+
+Technical pipeline for TANIP and TELxIP reward distribution:
+- TypeScript backend calculators process historical blockchain data for specified periods
+- Output: JSON files containing address-to-reward mappings
+- Execution: Packaged for multisig execution via Safe governance UI
+- TANIP-1 staker incentives paused as of Period 26
+- TELx liquidity rewards remain active through Uniswap v4 hook implementation
+
+### Additional Technical Details (from deep repo analysis)
+
+**Dependency versions (July 2026):**
+- Reth v1.11.3 (execution layer)
+- Alloy 1.6.3 (EVM types)
+- libp2p 0.56.0 (Gossipsub pub/sub + Kademlia DHT for peer discovery)
+- blst 0.3.14 (BLS signatures)
+- tonic 0.13 (gRPC), Axum 0.8.6 (HTTP server), rayon (parallel CPU tasks)
+- tokio 1.44 (async runtime)
+- OpenTelemetry 0.31.0 (distributed tracing)
+
+**BFT Quorum**: 2/3+1 of the validator committee must certify each batch before it enters the DAG.
+
+**Custom EVM Precompiles (net-new details):**
+- BLS proof-of-verification implemented as an EVM precompile (not a deployed contract) — enables efficient on-chain BLS key validation without contract execution gas overhead
+- Telcoin token operations precompile (specific to Telcoin Network)
+- WorkerConfigs read via EVM staticcall during block building — on-chain config doesn't incur state write cost
+
+**Trustless Sync Architecture (dual mini-chains):**
+Two parallel metadata chains enable any node to sync trustlessly from genesis knowing only the genesis committee:
+- **Epoch Chain**: `EpochHeader` records — epoch ID, current and next committee public keys, execution state hash, consensus output hash; signed by outgoing committee at each epoch transition
+- **Consensus Chain**: `ConsensusHeader` records — parent hash, incrementing numbers, committed sub-DAG references
+
+Three-stage trustless sync: verify epoch records sequentially → verify consensus headers in parallel → execute consensus outputs sequentially to rebuild state. No trust in peers required.
+
+**Worker-Gateway Binary**: A dedicated stateless reverse proxy (`bin/worker-gateway`) — a separate binary in the workspace (not embedded in the main node). Forwards full JSON-RPC surface (`eth_*`, `net_*`, `web3_*`, `tn_*`) to workers. Exposes liveness/readiness endpoints for container orchestration, includes rate limiting and health-gated traffic.
+
+**ExEx named types**: `TnExExContext`, `TnExExNotification` (enum: `ChainExecuted` | `Lagged`), `TnExExEvent`, `TnExExManager`, `TnExExManagerHandle`, `ReplayStream`, `ExExInstallFn`
+
+**Engine backpressure**: Execution engine maintains a bounded queue of max 8 `ConsensusOutput` items — prevents execution from falling too far behind consensus under burst load.
+
+**TELxIncentivesHook**: TELx liquidity incentives on the application layer are implemented as a custom Uniswap v4 hook (`TELxIncentivesHook`), not a standalone staking contract — incentives integrated directly into swap routing.
+
+**Bridge delay eliminated**: The original TEL Interchange contract had a 7-day recoverable delay. Removed. LayerZero V2 OFT enables near-instant cross-chain TEL transfers.
+
+**CREATE3 factory**: `0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed` — Safe address prepended to salts so only the authorized Safe can deploy at any given deterministic address.
+
+**Development progress**: 93.8% complete as of July 3, 2026 (from roadmap site)
+
+**Audit posture (July 2026)**: 0 public findings across all severity categories (critical, high, medium, low, informational). 30+ issues resolved in a two-week sprint.
+
+**Contact emails**: security@telcoin.org (vulnerability disclosure, 48h ACK / 5-day assessment SLA) · devs@telcoin.org (developer inquiries) · grant@telcoin.org (MNO validator inquiries)
+
+**Roadmap site tech**: Vite + React + TypeScript + TailwindCSS, deployed to GitHub Pages via `tn-roadmap` repo.
+
+**ExEx developer examples**: `examples/exex-indexer`, `examples/exex-lifecycle` (shipped in the main repo)
+
+---
+
+## 13. MARKETING ANGLES UNLOCKED BY GOVERNANCE DOCS
+
+### Differentiators vs. Other Protocols
+1. **Ostrom-anchored governance** - 30+ years of peer-reviewed commons research as foundation. Not governance theater.
+2. **Communal proprietorship** - Miners own and control; no founder veto; no alienation of governance rights
+3. **Polycentric nested councils** - Not one central DAO; specialized councils at different scales prevent gridlock
+4. **GSMA MNO validators embedded in governance** - Institutional credibility + telecom regulatory relationships
+5. **Activity-based issuance** - Distribution tied to measurable work (fees, liquidity, blocks, adoption), not passive stake
+6. **Four-group equity** - Mobile app users and institutional operators hold equal council weight
+7. **Sustained yield principle** - Treasury managed for long-term sustainability; 10-year+ designed runway
+8. **JD-credentialed Compliance Council** - Professional compliance in governance structure
+9. **Annual elections with KYM** - Accountability + background verification for all elected council members
+10. **Self-renewing treasury** - TEL burned in usage replenishes issuance; aligns incentives across time
+
+### Content Angles for Educational Threads (Not Yet Published)
+- "How Telcoin uses Ostrom's Nobel Prize-winning framework" (institutional credibility story)
+- "Why miners own the platform but can't sell governance" (communal proprietorship)
+- "5 councils, 6 miner groups, 33 elected members: how Telcoin governance works" (governance architecture)
+- "Why TEL issuance is tied to what you actually do" (activity-based vs passive stake)
+- "From mobile app user to platform governor: the path to council" (participation story)
+- "How the TEL Treasury manages 10B TEL over time" (tokenomics education)
+- "What it means to be a GSMA MNO validator" (institutional validator story)

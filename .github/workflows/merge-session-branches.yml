@@ -1,0 +1,44 @@
+name: Merge Claude session branches into campaign branch
+
+on:
+  push:
+    branches:
+      - 'claude/**'
+
+jobs:
+  merge-to-campaign:
+    # Only run for session branches — not the persistent campaign branch itself
+    if: github.ref_name != 'claude/campaign-iLgt5'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout campaign branch
+        uses: actions/checkout@v4
+        with:
+          ref: claude/campaign-iLgt5
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge session branch into campaign branch
+        run: |
+          SESSION_BRANCH="${{ github.ref_name }}"
+          echo "Merging $SESSION_BRANCH → claude/campaign-iLgt5"
+
+          git fetch origin "$SESSION_BRANCH"
+          git merge "origin/$SESSION_BRANCH" \
+            --no-edit \
+            --strategy-option=theirs \
+            -m "Auto-merge $SESSION_BRANCH → claude/campaign-iLgt5
+
+          Session branch merged automatically by merge-session-branches workflow.
+          Source: $SESSION_BRANCH
+          https://claude.ai/code/session_01Fpcoo2uktkZj9o2BmubZ3h"
+
+      - name: Push to campaign branch
+        run: git push origin claude/campaign-iLgt5

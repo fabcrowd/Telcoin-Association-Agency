@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>TELx Council #19</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1200px;
+    height: 675px;
+    overflow: hidden;
+    font-family: 'Inter', 'Montserrat', 'Helvetica Neue', sans-serif;
+    background: #090920;
+  }
+
+  .card {
+    position: relative;
+    width: 1200px;
+    height: 675px;
+    overflow: hidden;
+  }
+
+  /* Base layer - governance diagram at 55% opacity, right side */
+  .base-layer {
+    position: absolute;
+    top: 0;
+    right: -40px;
+    width: 800px;
+    height: 675px;
+    opacity: 0.55;
+    z-index: 1;
+  }
+
+  .base-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Glass panel - left 58% */
+  .glass-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 696px;
+    height: 675px;
+    background: rgba(9, 9, 32, 0.75);
+    z-index: 2;
+  }
+
+  /* Content zone inside glass panel */
+  .content {
+    position: relative;
+    z-index: 3;
+    padding: 0;
+    width: 696px;
+    height: 675px;
+  }
+
+  /* Logo */
+  .logo {
+    position: absolute;
+    top: 36px;
+    left: 54px;
+    z-index: 4;
+  }
+
+  .logo svg {
+    height: 28px;
+    width: auto;
+  }
+
+  /* Label */
+  .label {
+    position: absolute;
+    top: 100px;
+    left: 54px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #14C8FF;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 4;
+  }
+
+  /* Headline */
+  .headline {
+    position: absolute;
+    top: 128px;
+    left: 54px;
+    font-size: 44px;
+    font-weight: 700;
+    color: #F1F4FF;
+    z-index: 4;
+  }
+
+  /* Date */
+  .date {
+    position: absolute;
+    top: 210px;
+    left: 54px;
+    font-size: 22px;
+    font-weight: 400;
+    color: #C9CFED;
+    z-index: 4;
+  }
+
+  /* Time */
+  .time {
+    position: absolute;
+    top: 246px;
+    left: 54px;
+    font-size: 22px;
+    font-weight: 400;
+    color: #C9CFED;
+    z-index: 4;
+  }
+
+  /* Agenda header */
+  .agenda-header {
+    position: absolute;
+    top: 310px;
+    left: 54px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #14C8FF;
+    z-index: 4;
+  }
+
+  /* Agenda list */
+  .agenda-list {
+    position: absolute;
+    top: 346px;
+    left: 54px;
+    z-index: 4;
+    list-style: none;
+  }
+
+  .agenda-list li {
+    font-size: 18px;
+    font-weight: 400;
+    color: #C9CFED;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .agenda-list li::before {
+    content: "- ";
+  }
+
+  /* Accent line at bottom */
+  .accent-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 1200px;
+    height: 2px;
+    background: #14C8FF;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Base layer: governance diagram -->
+  <div class="base-layer">
+    <img src="../assets/12_-_TAN-_TEL_Harvesting_Activities_and_Benefits.png" alt="">
+  </div>
+
+  <!-- Glass panel -->
+  <div class="glass-panel"></div>
+
+  <!-- Logo (Telcoin Association horizontal white version) -->
+  <div class="logo">
+    <svg viewBox="0 0 280 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Hexagon mark -->
+      <path d="M14 0L24.5 5.5V16.5L14 22L3.5 16.5V5.5L14 0Z" fill="#14C8FF"/>
+      <path d="M14 4L11 8V14L14 18L17 14V8L14 4Z" fill="#090920"/>
+      <!-- Wordmark approximation -->
+      <text x="32" y="18" fill="#F1F4FF" font-family="Inter, sans-serif" font-size="15" font-weight="700" letter-spacing="0.02em">TELCOIN ASSOCIATION</text>
+    </svg>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="label">TELX COUNCIL</div>
+    <div class="headline">#19</div>
+    <div class="date">Wednesday, March 18, 2026</div>
+    <div class="time">3:00 PM EST &nbsp;/&nbsp; 7:00 PM UTC</div>
+    <div class="agenda-header">Agenda</div>
+    <ul class="agenda-list">
+      <li>Opening &amp; Council Overview</li>
+      <li>Recap of Last Meeting</li>
+      <li>Uniswap V4 Pools / Merkl</li>
+      <li>Miscellaneous</li>
+      <li>Q&amp;A / Next Meeting</li>
+    </ul>
+  </div>
+
+  <!-- Accent line -->
+  <div class="accent-line"></div>
+
+</div>
+</body>
+</html>
