@@ -1,0 +1,831 @@
+{
+  "schema_version": 2,
+  "date": "2026-08-11",
+  "scraped_at": "2026-08-11T18:27:08.544573Z",
+  "data_status": "measured",
+  "collection": {
+    "method": "websearch+fxtwitter_contextual_view",
+    "queries_run": [
+      "$TEL crypto site:twitter.com OR site:x.com",
+      "Telcoin site:twitter.com OR site:x.com",
+      "\"Telcoin Network\" site:twitter.com OR site:x.com",
+      "@telcoinTAO",
+      "$TEL Telcoin twitter OR x.com 2026",
+      "Telcoin $TEL mainnet OR governance OR TELx",
+      "TGIP2 Telcoin OR TelcoinTAO vote",
+      "Telcoin site:reddit.com",
+      "\"$TEL\" site:reddit.com",
+      "Telcoin",
+      "XRP remittance",
+      "Stellar XLM remittance",
+      "Celo mobile payments"
+    ],
+    "results_seen": 20,
+    "coverage": "sample",
+    "notes": "X scrape for 2026-08-11: site:twitter.com/x.com WebSearch returned zero hits (index gap). Live x.com search is login-walled (confirmed via browser). Contextually viewed each kept status URL via api.fxtwitter.com (full text + observed likes/reposts/replies). Official @TelcoinTAO / @telcoin recent activity also observed via tweetlook + jina profile mirrors: TGIP2 vote live through 2026-08-13 22:30 UTC with Stakers+Liquidity Miners quorum reached; Private Payroll developer spotlight on Adiri; TELx/TAN council ICYMI Aug 5\u20136; @telcoin Flyover Fintech / provisional patent / eUSD bank narrative. Newest official TGIP2 status IDs were not resolvable without login, so those mirror-only posts are documented here rather than fabricated into posts[]. Reddit site-search returned zero reddit.com hits. News 'Telcoin' search returned evergreen/home/press pages outside the 7-day dated-news window \u2192 news.article_count=0. No post exposed a trustworthy sample-hour for today's trailing-24h window (fxtwitter created_at values are the original publish times of still-indexed posts, many historical), so hour_distribution is entirely unknown."
+  },
+  "platforms": {
+    "twitter": {
+      "mention_count": 20,
+      "sentiment": {
+        "positive": 15,
+        "neutral": 4,
+        "negative": 1
+      },
+      "top_topics": [
+        "price",
+        "network_tech",
+        "mainnet",
+        "banking"
+      ],
+      "notable_posts": [
+        "https://x.com/L1bertyLad/status/2081796444839649474",
+        "https://x.com/telcoin/status/2069454194877292568",
+        "https://x.com/krakenfx/status/2014337890495418632"
+      ]
+    },
+    "reddit": {
+      "mention_count": 0,
+      "sentiment": {
+        "positive": 0,
+        "neutral": 0,
+        "negative": 0
+      },
+      "subreddits": [],
+      "notable_posts": []
+    },
+    "news": {
+      "article_count": 0,
+      "sentiment": {
+        "positive": 0,
+        "neutral": 0,
+        "negative": 0
+      },
+      "articles": []
+    }
+  },
+  "posts": [
+    {
+      "id": "twitter:1865189593387274675",
+      "platform": "twitter",
+      "url": "https://x.com/POWtotheMoon/status/1865189593387274675",
+      "author_handle": "POWtotheMoon",
+      "author_followers": null,
+      "text_excerpt": "**The Telcoin Trajectory: Poised for Tier 1 Exchange Listings?**\n\nAs the blockchain and cryptocurrency landscape continues to evolve, projects that offer real-world utility alongside their digital ass",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 91,
+        "reposts": 21,
+        "replies": 3,
+        "score": null,
+        "comments": null,
+        "impressions": 2598
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "medium",
+      "narratives": [
+        "price"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:2014337890495418632",
+      "platform": "twitter",
+      "url": "https://x.com/krakenfx/status/2014337890495418632",
+      "author_handle": "krakenfx",
+      "author_followers": null,
+      "text_excerpt": "$TEL is now live on Kraken!\n\nAs the native token of Telcoin Network, $TEL powers the blockchain standard for GSMA telecoms and their 7 billion global users.\n\nMainnet launching this year.\n\nTrade $TEL \u2192",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 928,
+        "reposts": 291,
+        "replies": 72,
+        "score": null,
+        "comments": null,
+        "impressions": 117622
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "price",
+        "network_tech"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:1950028648758816928",
+      "platform": "twitter",
+      "url": "https://x.com/CryptoMitchX/status/1950028648758816928",
+      "author_handle": "CryptoMitchX",
+      "author_followers": null,
+      "text_excerpt": "My Thoughts on $TEL and the Push for a T1 Exchange Listing\n\nI know many in the Telcoin community are eager for a Tier 1 exchange listing for $TEL, and the wait can feel frustrating.\n\nHere\u2019s my perspec",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 255,
+        "reposts": 58,
+        "replies": 40,
+        "score": null,
+        "comments": null,
+        "impressions": 14000
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "price"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:2020189123538219083",
+      "platform": "twitter",
+      "url": "https://x.com/BSCNews/status/2020189123538219083",
+      "author_handle": "BSCNews",
+      "author_followers": null,
+      "text_excerpt": "\ud83d\udea8MARKETS: TELCOIN'S $TEL TOKEN DOWN -94% FROM ALL-TIME HIGHS\n\n@Telcoin's $TEL token is feeling the pain just like nearly all other major altcoins.\n\nAt time of writing, its price sits more than -94% do",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 33,
+        "reposts": 4,
+        "replies": 7,
+        "score": null,
+        "comments": null,
+        "impressions": 13226
+      },
+      "metrics_tier": "observed",
+      "sentiment": "negative",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "price",
+        "mainnet"
+      ],
+      "is_question": true,
+      "question_text": "Will 2026 mainnet reverse TEL's -94% from ATH price trend?",
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:2006384682267516956",
+      "platform": "twitter",
+      "url": "https://x.com/L1bertyLad/status/2006384682267516956",
+      "author_handle": "L1bertyLad",
+      "author_followers": null,
+      "text_excerpt": "$TEL is hitting a real inflection point. The Telcoin Network is nearing mainnet, with actual Mobile Network Operators coming online as validators... not anonymous nodes, but regulated, real-world infr",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 124,
+        "reposts": 19,
+        "replies": 4,
+        "score": null,
+        "comments": null,
+        "impressions": 3433
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "mainnet",
+        "banking",
+        "validators"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:1894312823288729646",
+      "platform": "twitter",
+      "url": "https://x.com/TelcoinTAO/status/1894312823288729646",
+      "author_handle": "TelcoinTAO",
+      "author_followers": null,
+      "text_excerpt": "$TEL is now officially supported on @Base! \ud83c\udf89\n\nWhat's the Contract Address? 0x09bE1692ca16e06f536F0038fF11D1dA8524aDB1\n\nExcited to be expanding #Telcoin's reach!\nhttps://basescan.org/token/0x09bE1692ca",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 775,
+        "reposts": 223,
+        "replies": 33,
+        "score": null,
+        "comments": null,
+        "impressions": 156256
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "network_tech",
+        "price"
+      ],
+      "is_question": true,
+      "question_text": "What is the $TEL contract address on Base?",
+      "is_own_post": true
+    },
+    {
+      "id": "twitter:1887588410321494150",
+      "platform": "twitter",
+      "url": "https://x.com/telcoin/status/1887588410321494150",
+      "author_handle": "telcoin",
+      "author_followers": null,
+      "text_excerpt": null,
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 1079,
+        "reposts": 391,
+        "replies": 83,
+        "score": null,
+        "comments": null,
+        "impressions": 137837
+      },
+      "metrics_tier": "observed",
+      "sentiment": "neutral",
+      "sentiment_confidence": "low",
+      "narratives": [
+        "tan"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:2004647883312955778",
+      "platform": "twitter",
+      "url": "https://x.com/telcoin/status/2004647883312955778",
+      "author_handle": "telcoin",
+      "author_followers": null,
+      "text_excerpt": "Happy holidays!\n\neUSD from Telcoin Digital Asset Bank is now live on Ethereum and Polygon.\nhttps://www.businesswire.com/news/home/20251226357792/en/Telcoin-Begins-Digital-Asset-Banking-Operations-with",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 1258,
+        "reposts": 476,
+        "replies": 103,
+        "score": null,
+        "comments": null,
+        "impressions": 300233
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "banking"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:2038451104346771741",
+      "platform": "twitter",
+      "url": "https://x.com/TelcoinKOL/status/2038451104346771741",
+      "author_handle": "TelcoinKOL",
+      "author_followers": null,
+      "text_excerpt": "Telcoin Network is build to handle 7,000,000,000+ unique users, talk about history being written in plane sight.",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 46,
+        "reposts": 17,
+        "replies": 2,
+        "score": null,
+        "comments": null,
+        "impressions": 4379
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "medium",
+      "narratives": [
+        "network_tech",
+        "validators"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:2024839881088803090",
+      "platform": "twitter",
+      "url": "https://x.com/AngelofYHVH/status/2024839881088803090",
+      "author_handle": "AngelofYHVH",
+      "author_followers": null,
+      "text_excerpt": "Telcoin Network Roadmap Updated on Feb 19, 2026\n\nThe Telcoin Network development roadmap has just been updated with key progress across infrastructure, validator tooling, and scalability.\n\nHighlights ",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 89,
+        "reposts": 18,
+        "replies": 4,
+        "score": null,
+        "comments": null,
+        "impressions": 4489
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "medium",
+      "narratives": [
+        "mainnet",
+        "network_tech"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:1988657374681571807",
+      "platform": "twitter",
+      "url": "https://x.com/TelcoinTAO/status/1988657374681571807",
+      "author_handle": "TelcoinTAO",
+      "author_followers": null,
+      "text_excerpt": "\ud83d\ude80 A new era for the Internet of Money.\n\n$TEL is now LIVE on @UpholdInc, with exclusive early access for Uphold Rewards members over the next 24 hours.\n\nGlobal access. Instant liquidity. Real impact.\n\n",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 433,
+        "reposts": 106,
+        "replies": 9,
+        "score": null,
+        "comments": null,
+        "impressions": 16840
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "price"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": true
+    },
+    {
+      "id": "twitter:1990153902214328657",
+      "platform": "twitter",
+      "url": "https://x.com/TelcoinTAO/status/1990153902214328657",
+      "author_handle": "TelcoinTAO",
+      "author_followers": null,
+      "text_excerpt": "A new exchange, a global step forward. \n\n\ud83c\udf10$TEL joins @UpholdInc, strengthening liquidity and expanding access to the Internet of Money.\n\nThe Telcoin ecosystem keeps growing, powered by community, inno",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 541,
+        "reposts": 113,
+        "replies": 14,
+        "score": null,
+        "comments": null,
+        "impressions": 13244
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "price"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": true
+    },
+    {
+      "id": "twitter:2039416339119645069",
+      "platform": "twitter",
+      "url": "https://x.com/TelcoinTAO/status/2039416339119645069",
+      "author_handle": "TelcoinTAO",
+      "author_followers": null,
+      "text_excerpt": "Telcoin Association TELx Council Meeting https://x.com/i/broadcasts/1RJjpzMrNdoKw",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 56,
+        "reposts": 15,
+        "replies": 1,
+        "score": null,
+        "comments": null,
+        "impressions": 3516
+      },
+      "metrics_tier": "observed",
+      "sentiment": "neutral",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "telx",
+        "governance"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": true
+    },
+    {
+      "id": "twitter:2039349486930047412",
+      "platform": "twitter",
+      "url": "https://x.com/TelcoinTAO/status/2039349486930047412",
+      "author_handle": "TelcoinTAO",
+      "author_followers": null,
+      "text_excerpt": "Meeting Reminder: TAN Council\n\nApril 2nd, 2026 - 5PM EST / 10PM UTC\n\nAgenda:\n\u2219Introduction & Welcome\n\u2219Recap of Last Meeting\n\u2219TANIP-1 Fee Rebate Launch\n\u2219Remitmap Demo\n\u2219TEL Pets Demo\n\u2219Open Q&A\n\nListen i",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 47,
+        "reposts": 16,
+        "replies": 5,
+        "score": null,
+        "comments": null,
+        "impressions": 11681
+      },
+      "metrics_tier": "observed",
+      "sentiment": "neutral",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "tan",
+        "governance"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": true
+    },
+    {
+      "id": "twitter:2041962363205906831",
+      "platform": "twitter",
+      "url": "https://x.com/TelcoinTAO/status/2041962363205906831",
+      "author_handle": "TelcoinTAO",
+      "author_followers": null,
+      "text_excerpt": "Meeting Reminder: Platform & Treasury Council  \nApril 9th, 2026 - 4PM EST / 9PM UTC  \n\nAgenda: \n- Introduction and Council Overview\n- Recap of Last Meeting\n- Network Update\n- TELpets\n- Introduction (C",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 55,
+        "reposts": 12,
+        "replies": 1,
+        "score": null,
+        "comments": null,
+        "impressions": 6607
+      },
+      "metrics_tier": "observed",
+      "sentiment": "neutral",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "governance"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": true
+    },
+    {
+      "id": "twitter:1948054405325983879",
+      "platform": "twitter",
+      "url": "https://x.com/TelcoinTAO/status/1948054405325983879",
+      "author_handle": "TelcoinTAO",
+      "author_followers": null,
+      "text_excerpt": "\ud83d\udd25 Don\u2019t make plans for tonight!\nAt 3\u202fpm\u202fEST / 7\u202fpm\u202fUTC, join our 18th\u202fTELx Council Meeting on X Spaces + YouTube!\n\n- Liquidity incentives incoming: Get ready for the upcoming $eMXN / $USDC pool on Pol",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 166,
+        "reposts": 48,
+        "replies": 5,
+        "score": null,
+        "comments": null,
+        "impressions": 7481
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "medium",
+      "narratives": [
+        "telx",
+        "governance"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": true
+    },
+    {
+      "id": "twitter:1881787368795193436",
+      "platform": "twitter",
+      "url": "https://x.com/mwilliammyers/status/1881787368795193436",
+      "author_handle": "mwilliammyers",
+      "author_followers": null,
+      "text_excerpt": "Come help build the #telcoin network! \n \nhttps://github.com/Telcoin-Association/telcoin-network",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 186,
+        "reposts": 68,
+        "replies": 7,
+        "score": null,
+        "comments": null,
+        "impressions": 6871
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "medium",
+      "narratives": [
+        "network_tech"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:2081796444839649474",
+      "platform": "twitter",
+      "url": "https://x.com/L1bertyLad/status/2081796444839649474",
+      "author_handle": "L1bertyLad",
+      "author_followers": null,
+      "text_excerpt": "@Telcoin filed a provisional patent for a stablecoin smart contract with embedded depository functionality.\n\nIn plain English:\n\nOne on-chain dollar that works as both a payment stablecoin and a bank d",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 84,
+        "reposts": 33,
+        "replies": 3,
+        "score": null,
+        "comments": null,
+        "impressions": 3136
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "banking"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:2069454194877292568",
+      "platform": "twitter",
+      "url": "https://x.com/telcoin/status/2069454194877292568",
+      "author_handle": "telcoin",
+      "author_followers": null,
+      "text_excerpt": "The new Telcoin Wallet is here.\n\nUS residents can now open a bank account directly connected to on-chain digital dollars.",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 912,
+        "reposts": 335,
+        "replies": 90,
+        "score": null,
+        "comments": null,
+        "impressions": 79120
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "high",
+      "narratives": [
+        "banking",
+        "tan"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": false
+    },
+    {
+      "id": "twitter:1826298337596674212",
+      "platform": "twitter",
+      "url": "https://x.com/TelcoinTAO/status/1826298337596674212",
+      "author_handle": "TelcoinTAO",
+      "author_followers": null,
+      "text_excerpt": "5/ \ud83d\udcc5 Telcoin Network Roadmap:\n\u00b0 Secure bridging with @AxelarNetwork\n\u00b0 TEL as native token for enhanced speed & efficiency\n\u00b0 Comprehensive documentation at https://docs.telcoin.network\n\u00b0 Data Warehouse",
+      "posted_at": null,
+      "posted_hour_known": false,
+      "metrics": {
+        "likes": 40,
+        "reposts": 8,
+        "replies": 3,
+        "score": null,
+        "comments": null,
+        "impressions": 3396
+      },
+      "metrics_tier": "observed",
+      "sentiment": "positive",
+      "sentiment_confidence": "medium",
+      "narratives": [
+        "network_tech",
+        "mainnet"
+      ],
+      "is_question": false,
+      "question_text": null,
+      "is_own_post": true
+    }
+  ],
+  "questions": [
+    {
+      "id": "74748f00f8b9",
+      "text_canonical": "Will 2026 mainnet reverse TEL's -94% from ATH price trend?",
+      "first_seen": "2026-08-11",
+      "last_seen": "2026-08-11",
+      "times_observed": 1,
+      "narratives": [
+        "price",
+        "mainnet"
+      ],
+      "status": "open",
+      "answered_by_post_url": null,
+      "answered_at": null
+    },
+    {
+      "id": "66b47bf9fd45",
+      "text_canonical": "What is the $TEL contract address on Base?",
+      "first_seen": "2026-08-11",
+      "last_seen": "2026-08-11",
+      "times_observed": 1,
+      "narratives": [
+        "network_tech",
+        "price"
+      ],
+      "status": "open",
+      "answered_by_post_url": null,
+      "answered_at": null
+    }
+  ],
+  "narratives": {
+    "price": {
+      "community_mentions": 7,
+      "sentiment": {
+        "positive": 6,
+        "neutral": 0,
+        "negative": 1
+      },
+      "unique_authors": 5,
+      "by_platform": {
+        "twitter": 7,
+        "reddit": 0,
+        "news": 0
+      },
+      "tier": "observed"
+    },
+    "network_tech": {
+      "community_mentions": 6,
+      "sentiment": {
+        "positive": 6,
+        "neutral": 0,
+        "negative": 0
+      },
+      "unique_authors": 5,
+      "by_platform": {
+        "twitter": 6,
+        "reddit": 0,
+        "news": 0
+      },
+      "tier": "observed"
+    },
+    "mainnet": {
+      "community_mentions": 4,
+      "sentiment": {
+        "positive": 3,
+        "neutral": 0,
+        "negative": 1
+      },
+      "unique_authors": 4,
+      "by_platform": {
+        "twitter": 4,
+        "reddit": 0,
+        "news": 0
+      },
+      "tier": "observed"
+    },
+    "banking": {
+      "community_mentions": 4,
+      "sentiment": {
+        "positive": 4,
+        "neutral": 0,
+        "negative": 0
+      },
+      "unique_authors": 2,
+      "by_platform": {
+        "twitter": 4,
+        "reddit": 0,
+        "news": 0
+      },
+      "tier": "observed"
+    },
+    "validators": {
+      "community_mentions": 2,
+      "sentiment": {
+        "positive": 2,
+        "neutral": 0,
+        "negative": 0
+      },
+      "unique_authors": 2,
+      "by_platform": {
+        "twitter": 2,
+        "reddit": 0,
+        "news": 0
+      },
+      "tier": "observed"
+    },
+    "tan": {
+      "community_mentions": 3,
+      "sentiment": {
+        "positive": 1,
+        "neutral": 2,
+        "negative": 0
+      },
+      "unique_authors": 2,
+      "by_platform": {
+        "twitter": 3,
+        "reddit": 0,
+        "news": 0
+      },
+      "tier": "observed"
+    },
+    "telx": {
+      "community_mentions": 2,
+      "sentiment": {
+        "positive": 1,
+        "neutral": 1,
+        "negative": 0
+      },
+      "unique_authors": 1,
+      "by_platform": {
+        "twitter": 2,
+        "reddit": 0,
+        "news": 0
+      },
+      "tier": "observed"
+    },
+    "governance": {
+      "community_mentions": 4,
+      "sentiment": {
+        "positive": 1,
+        "neutral": 3,
+        "negative": 0
+      },
+      "unique_authors": 1,
+      "by_platform": {
+        "twitter": 4,
+        "reddit": 0,
+        "news": 0
+      },
+      "tier": "observed"
+    }
+  },
+  "own_account": {
+    "followers": 5687,
+    "as_of": "2026-08-11T18:27:08.544573Z",
+    "source": "fxtwitter_profile+account_overview_csv",
+    "tier": "measured",
+    "daily": null,
+    "posts": []
+  },
+  "share_of_voice": {
+    "tier": "derived",
+    "method": "search result volume proxy (distinct relevant links returned), indexed to 100 at Telcoin's 2026-08-11 count",
+    "raw_counts": {
+      "telcoin": 8,
+      "xrp": 5,
+      "stellar": 5,
+      "celo": 5
+    },
+    "indexed": {
+      "telcoin": 100.0,
+      "xrp": 62.5,
+      "stellar": 62.5,
+      "celo": 62.5
+    }
+  },
+  "composite": {
+    "total_mentions": 20,
+    "n_classified": 20,
+    "sentiment_score": 0.75,
+    "unique_authors": 10,
+    "top_narrative": null,
+    "hour_distribution": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "unknown": 20
+    }
+  }
+}
