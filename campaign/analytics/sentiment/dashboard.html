@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>TEL Social Intelligence</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -29,11 +34,13 @@ header{display:flex;justify-content:space-between;align-items:flex-start;flex-wr
 .brand{display:flex;flex-direction:column;gap:6px}
 h1{font-size:1.5rem;font-weight:700;letter-spacing:-.01em;color:#fff;text-wrap:balance}
 .sub{font-size:.82rem;color:var(--muted);font-family:var(--mono)}
-.status-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(224,163,58,.1);
-  border:1px solid rgba(224,163,58,.4);color:var(--amber);
+.status-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(20,200,255,.1);
+  border:1px solid rgba(20,200,255,.4);color:var(--tel);
   padding:7px 14px;border-radius:999px;font-size:.75rem;font-weight:600;
   letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex:none}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--tel);flex:none}
+.status-chip.warn{background:rgba(224,163,58,.1);border-color:rgba(224,163,58,.4);color:var(--amber)}
+.status-chip.warn .dot{background:var(--amber)}
 @media(prefers-reduced-motion:no-preference){
   .dot{animation:pulse 2.4s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
@@ -57,6 +64,26 @@ h1{font-size:1.5rem;font-weight:700;letter-spacing:-.01em;color:#fff;text-wrap:b
 
 h3.sec{font-size:.72rem;font-weight:650;color:var(--muted);text-transform:uppercase;
   letter-spacing:.12em;padding-bottom:10px;border-bottom:1px solid var(--border-soft)}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.kpi{background:var(--panel);border:1px solid var(--border-soft);border-radius:6px;padding:16px 18px;
+  display:flex;flex-direction:column;gap:4px}
+.kpi .label{font-size:.65rem;font-family:var(--mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.kpi .value{font-size:1.35rem;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi .hint{font-size:.72rem;color:var(--ink-dim)}
+
+.chart-card{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:22px 24px;
+  display:flex;flex-direction:column;gap:16px}
+.chart-card .card-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+.chart-card h4{font-size:.95rem;font-weight:650;color:#fff}
+.chart-card .card-meta{font-size:.72rem;font-family:var(--mono);color:var(--muted)}
+.chart-note{font-size:.8rem;color:var(--ink-dim);max-width:70ch}
+#imp-chart,#eng-chart{width:100%;height:160px;display:block}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.72rem;font-family:var(--mono);color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.legend .imp{background:var(--tel)}
+.legend .eng{background:var(--pos)}
 
 .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:1px;
   background:var(--border-soft);border:1px solid var(--border-soft);border-radius:6px;overflow:hidden}
@@ -95,58 +122,68 @@ footer{font-size:.74rem;color:var(--muted);font-family:var(--mono);line-height:1
   padding-top:20px;border-top:1px solid var(--border-soft)}
 @media(max-width:620px){.wrap{padding:28px 16px 48px}h1{font-size:1.3rem}}
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <header>
     <div class="brand">
       <h1>TEL Social Intelligence</h1>
-      <p class="sub">Telcoin Association &middot; community listening</p>
+      <p class="sub">Telcoin Association &middot; community listening + @telcoinTAO measured performance</p>
     </div>
-    <span class="status-chip"><span class="dot"></span>Collecting &middot; day 2</span>
+    <span class="status-chip"><span class="dot"></span>Account live &middot; 28 days</span>
   </header>
 
+  <section>
+    <h3 class="sec">@telcoinTAO measured account performance</h3>
+    <p class="chart-note" style="margin-bottom:14px">
+      Source: analytics.x.com <strong>Account Overview</strong> export (2026-07-14 → 2026-08-10).
+      Tier: <strong>MEASURED</strong>. Day totals only — per-post permalinks still need a Tweet-activity (Export by Tweet) CSV.
+      Aug 10 (100 impressions) looks like a truncated export edge; treat as incomplete, not a collapse.
+    </p>
+    <div class="kpis">
+      <div class="kpi"><span class="label">Impressions</span><span class="value">218,675</span><span class="hint">28 days</span></div>
+      <div class="kpi"><span class="label">Engagements</span><span class="value">9,630</span><span class="hint">4.4% rate</span></div>
+      <div class="kpi"><span class="label">New follows</span><span class="value">99</span><span class="hint">575 profile visits</span></div>
+      <div class="kpi"><span class="label">Posts published</span><span class="value">38</span><span class="hint">2,667 likes · 92 replies</span></div>
+      <div class="kpi"><span class="label">Peak day</span><span class="value">22,238</span><span class="hint">2026-07-29 · 1,421 eng</span></div>
+    </div>
+  </section>
+
+  <section class="chart-card">
+    <div class="card-head">
+      <h4>Daily impressions</h4>
+      <span class="card-meta">measured · account overview</span>
+    </div>
+    <svg id="imp-chart" viewBox="0 0 960 160" preserveAspectRatio="none" role="img" aria-label="Daily impressions bar chart"></svg>
+    <div class="legend"><span><i class="imp"></i>Impressions</span></div>
+  </section>
+
+  <section class="chart-card">
+    <div class="card-head">
+      <h4>Daily engagements</h4>
+      <span class="card-meta">measured · account overview</span>
+    </div>
+    <svg id="eng-chart" viewBox="0 0 960 160" preserveAspectRatio="none" role="img" aria-label="Daily engagements bar chart"></svg>
+    <div class="legend"><span><i class="eng"></i>Engagements</span></div>
+  </section>
+
   <section class="notice">
-    <h2>Collection restarted on verified data</h2>
+    <h2>Community listening still collecting</h2>
     <p>
-      This dashboard previously displayed fourteen days of readings that were <strong>generated
-      during development, not collected</strong>. They have been withdrawn and quarantined with a
-      full forensic record.
-    </p>
-    <p>
-      Three signatures confirmed it. Each file's hourly breakdown exceeded its own post count by
-      24&ndash;51%, so no file could be a true census of when posts appeared. Sentiment tracked
-      conversation volume at <strong>r&nbsp;=&nbsp;0.97</strong>, a coupling real communities do not
-      show &mdash; a busy day is not reliably a positive one. And all fourteen files carried an
-      identical collection timestamp. The cause was a single instruction in the collection script
-      telling it to spread posts evenly across the day whenever a timestamp was missing. That rule
-      is gone, replaced by an explicit <em>unknown</em> bucket.
-    </p>
-    <p>
-      Nothing is plotted until it is measured. The trend panels below stay empty until fourteen real
-      days accumulate, and the loader now refuses any file not marked as measured.
+      Community sentiment panels remain locked until fourteen <strong>measured</strong> community
+      days accumulate. Synthetic seed data stays quarantined. Account Overview data above is
+      independent measured-tier signal for @telcoinTAO and is safe to act on now.
     </p>
     <div class="progress-block">
-      <div class="progress-head"><span>Verified days collected</span><b>2 / 14</b></div>
+      <div class="progress-head"><span>Verified community days collected</span><b>2 / 14</b></div>
       <div class="track">
         <i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i>
         <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
       </div>
     </div>
     <p class="chart-note" style="margin-top:14px">
-      2026-08-01: 19 community mentions (X only &mdash; Reddit and news both returned zero,
-      honestly, not padded), sentiment 0.53 (n=19).<br>
-      2026-08-02: 19 community mentions (X only, Reddit and news both zero again), sentiment 0.53
-      (n=19), top narrative price (5 mentions) &mdash; not reported as a leader since it's one
-      mention ahead of network_tech, governance, and other, within sampling noise for n=19.<br>
-      A one-time historical backfill was attempted this run (Step 1/2 searches re-run looking for
-      posts with a real, visible timestamp). It recovered <strong>zero</strong> qualifying
-      historical days &mdash; no X or Reddit result in the sample exposed a verifiable date, so no
-      backfilled points exist to plot. That is the honest result, not a defect: when a
-      <code>measured_backfill</code> day does land, it will render hollow/lower-opacity with no
-      trend line to its neighbors, marked <span style="opacity:.7">&#9675; backfilled &mdash;
-      sparse sample, not a full-day census</span> in the legend.<br>
-      Two points are readings, not a trend &mdash; the panels below stay locked until enough days
-      exist to show one.
+      2026-08-01: 19 community mentions, sentiment 0.53 (n=19), own-account day rollup 8,606 impressions.<br>
+      2026-08-02: 19 community mentions, sentiment 0.53 (n=19), own-account day rollup 9,753 impressions.
     </p>
   </section>
 
@@ -173,7 +210,7 @@ footer{font-size:.74rem;color:var(--muted);font-family:var(--mono);line-height:1
   </section>
 
   <section>
-    <h3 class="sec">Panels, once data exists</h3>
+    <h3 class="sec">Community panels, once data exists</h3>
     <div class="panels">
       <div class="slot lead">
         <div class="slot-top"><h4>Narrative ledger</h4><span class="pend">day 1</span></div>
@@ -219,7 +256,8 @@ footer{font-size:.74rem;color:var(--muted);font-family:var(--mono);line-height:1
     <div class="method-row">
       <dt>Sources</dt>
       <dd>X/Twitter, Reddit, and crypto news outlets for community signal. Our own post performance
-        comes from X native analytics for @telcoinTAO.</dd>
+        comes from X native analytics for @telcoinTAO (Account Overview day totals; Tweet-activity
+        for per-post rows when exported).</dd>
     </div>
     <div class="method-row">
       <dt>Classification</dt>
@@ -236,54 +274,571 @@ footer{font-size:.74rem;color:var(--muted);font-family:var(--mono);line-height:1
 
   <footer>
     Telcoin Association &middot; Autonomous Ops<br>
-    Refreshed daily 09:07 UTC &middot; source records in <code>campaign/analytics/sentiment/</code><br>
-    Withdrawn data retained under <code>_seed-synthetic/</code> with full provenance.
+    Refreshed 2026-08-11 &middot; account series in <code>campaign/analytics/account-overview/daily.json</code><br>
+    Community source records in <code>campaign/analytics/sentiment/</code> · withdrawn data under <code>_seed-synthetic/</code>
   </footer>
 </div>
 
 <script>
 /*
-  RAW holds the compiled per-day series extracted from campaign/analytics/sentiment/*.json,
-  per scripts/sentiment-scraper.md Step 5. It is compiled every run so it stays audit-ready, but
-  intentionally NOT rendered into a trend chart yet: fewer than 14 measured/measured_backfill days
-  exist, so this page stays in its "Collecting" state per spec rather than plotting a trend line
-  through a handful of points. When day 14 is reached, this constant is what the chart renders from.
-
-  data_status: "measured" -> solid point, connected by trend line to adjacent measured days.
-  data_status: "measured_backfill" -> hollow/lower-opacity point, NO trend line to neighbors
-  (a line would imply continuity of measurement method that doesn't exist between a sparse
-  backfilled day and a real live-day scrape). Legend note: "○ backfilled — sparse sample, not a
-  full-day census". No measured_backfill days exist yet (2026-08-02 backfill pass recovered zero
-  qualifying historical dates - no real, visible timestamp resolved on any Step 1/2 result).
+  ACCOUNT_RAW: measured @telcoinTAO day totals from analytics.x.com Account Overview CSV.
+  RAW: community sentiment series (Step 5). Still <14 measured community days, so community
+  trend panels stay in Collecting state. Account charts render now because n_days >= 14.
 */
-const RAW = [
+const ACCOUNT_RAW = [
   {
-    date: "2026-08-01",
-    data_status: "measured",
-    sentiment_score: 0.53,
-    n_classified: 19,
-    total_mentions: 19,
-    unique_authors: 11,
-    top_narrative: null,
-    hour_distribution: {"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0,"unknown":19},
-    narratives: {"mainnet":2,"governance":4,"validators":1,"telx":3,"tan":2,"network_tech":4,"price":6,"banking":2,"other":2},
-    questions: [],
-    share_of_voice: {"telcoin":100.0,"xrp":36.8,"stellar":52.6,"celo":42.1}
+    "date": "2026-07-14",
+    "impressions": 2153,
+    "engagements": 59,
+    "engagement_rate": 0.027404,
+    "likes": 16,
+    "replies": 0,
+    "reposts": 5,
+    "profile_visits": 10,
+    "new_follows": 0,
+    "posts_published": 0,
+    "tier": "measured"
   },
   {
-    date: "2026-08-02",
-    data_status: "measured",
-    sentiment_score: 0.53,
-    n_classified: 19,
-    total_mentions: 19,
-    unique_authors: 10,
-    top_narrative: null,
-    hour_distribution: {"0":0,"1":0,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0,"10":0,"11":0,"12":0,"13":0,"14":0,"15":0,"16":0,"17":0,"18":0,"19":0,"20":0,"21":0,"22":0,"23":0,"unknown":19},
-    narratives: {"mainnet":2,"governance":4,"validators":1,"telx":3,"tan":1,"network_tech":4,"price":5,"banking":2,"other":4},
-    questions: [],
-    share_of_voice: {"telcoin":100.0,"xrp":47.4,"stellar":52.6,"celo":42.1}
+    "date": "2026-07-15",
+    "impressions": 4116,
+    "engagements": 205,
+    "engagement_rate": 0.049806,
+    "likes": 20,
+    "replies": 0,
+    "reposts": 4,
+    "profile_visits": 10,
+    "new_follows": 1,
+    "posts_published": 1,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-16",
+    "impressions": 7844,
+    "engagements": 228,
+    "engagement_rate": 0.029067,
+    "likes": 78,
+    "replies": 6,
+    "reposts": 25,
+    "profile_visits": 11,
+    "new_follows": 3,
+    "posts_published": 1,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-17",
+    "impressions": 4620,
+    "engagements": 137,
+    "engagement_rate": 0.029654,
+    "likes": 44,
+    "replies": 1,
+    "reposts": 8,
+    "profile_visits": 9,
+    "new_follows": 6,
+    "posts_published": 0,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-18",
+    "impressions": 1336,
+    "engagements": 72,
+    "engagement_rate": 0.053892,
+    "likes": 19,
+    "replies": 1,
+    "reposts": 5,
+    "profile_visits": 7,
+    "new_follows": 9,
+    "posts_published": 0,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-19",
+    "impressions": 679,
+    "engagements": 37,
+    "engagement_rate": 0.054492,
+    "likes": 6,
+    "replies": 0,
+    "reposts": 0,
+    "profile_visits": 1,
+    "new_follows": 3,
+    "posts_published": 0,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-20",
+    "impressions": 521,
+    "engagements": 13,
+    "engagement_rate": 0.024952,
+    "likes": 1,
+    "replies": 0,
+    "reposts": 0,
+    "profile_visits": 1,
+    "new_follows": 1,
+    "posts_published": 0,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-21",
+    "impressions": 2204,
+    "engagements": 196,
+    "engagement_rate": 0.088929,
+    "likes": 35,
+    "replies": 1,
+    "reposts": 14,
+    "profile_visits": 7,
+    "new_follows": 4,
+    "posts_published": 1,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-22",
+    "impressions": 4960,
+    "engagements": 245,
+    "engagement_rate": 0.049395,
+    "likes": 73,
+    "replies": 3,
+    "reposts": 23,
+    "profile_visits": 20,
+    "new_follows": 2,
+    "posts_published": 2,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-23",
+    "impressions": 4755,
+    "engagements": 162,
+    "engagement_rate": 0.034069,
+    "likes": 57,
+    "replies": 4,
+    "reposts": 18,
+    "profile_visits": 12,
+    "new_follows": 5,
+    "posts_published": 1,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-24",
+    "impressions": 2996,
+    "engagements": 92,
+    "engagement_rate": 0.030708,
+    "likes": 34,
+    "replies": 0,
+    "reposts": 9,
+    "profile_visits": 8,
+    "new_follows": 4,
+    "posts_published": 0,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-25",
+    "impressions": 1044,
+    "engagements": 32,
+    "engagement_rate": 0.030651,
+    "likes": 9,
+    "replies": 0,
+    "reposts": 4,
+    "profile_visits": 1,
+    "new_follows": 3,
+    "posts_published": 0,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-26",
+    "impressions": 4173,
+    "engagements": 267,
+    "engagement_rate": 0.063983,
+    "likes": 123,
+    "replies": 3,
+    "reposts": 39,
+    "profile_visits": 18,
+    "new_follows": 5,
+    "posts_published": 1,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-27",
+    "impressions": 5484,
+    "engagements": 223,
+    "engagement_rate": 0.040664,
+    "likes": 92,
+    "replies": 1,
+    "reposts": 21,
+    "profile_visits": 13,
+    "new_follows": 5,
+    "posts_published": 1,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-28",
+    "impressions": 2114,
+    "engagements": 39,
+    "engagement_rate": 0.018448,
+    "likes": 22,
+    "replies": 0,
+    "reposts": 4,
+    "profile_visits": 3,
+    "new_follows": 1,
+    "posts_published": 0,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-29",
+    "impressions": 22238,
+    "engagements": 1421,
+    "engagement_rate": 0.0639,
+    "likes": 384,
+    "replies": 19,
+    "reposts": 85,
+    "profile_visits": 64,
+    "new_follows": 15,
+    "posts_published": 4,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-30",
+    "impressions": 18303,
+    "engagements": 666,
+    "engagement_rate": 0.036387,
+    "likes": 202,
+    "replies": 10,
+    "reposts": 57,
+    "profile_visits": 40,
+    "new_follows": 3,
+    "posts_published": 3,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-07-31",
+    "impressions": 13763,
+    "engagements": 537,
+    "engagement_rate": 0.039018,
+    "likes": 220,
+    "replies": 2,
+    "reposts": 44,
+    "profile_visits": 42,
+    "new_follows": 3,
+    "posts_published": 2,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-01",
+    "impressions": 8606,
+    "engagements": 239,
+    "engagement_rate": 0.027771,
+    "likes": 86,
+    "replies": 0,
+    "reposts": 16,
+    "profile_visits": 22,
+    "new_follows": 3,
+    "posts_published": 1,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-02",
+    "impressions": 9753,
+    "engagements": 269,
+    "engagement_rate": 0.027581,
+    "likes": 111,
+    "replies": 2,
+    "reposts": 24,
+    "profile_visits": 22,
+    "new_follows": 2,
+    "posts_published": 2,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-03",
+    "impressions": 11292,
+    "engagements": 526,
+    "engagement_rate": 0.046582,
+    "likes": 187,
+    "replies": 7,
+    "reposts": 48,
+    "profile_visits": 34,
+    "new_follows": 5,
+    "posts_published": 5,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-04",
+    "impressions": 15915,
+    "engagements": 831,
+    "engagement_rate": 0.052215,
+    "likes": 220,
+    "replies": 10,
+    "reposts": 50,
+    "profile_visits": 36,
+    "new_follows": 4,
+    "posts_published": 6,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-05",
+    "impressions": 20035,
+    "engagements": 931,
+    "engagement_rate": 0.046469,
+    "likes": 214,
+    "replies": 4,
+    "reposts": 73,
+    "profile_visits": 54,
+    "new_follows": 4,
+    "posts_published": 4,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-06",
+    "impressions": 17073,
+    "engagements": 1131,
+    "engagement_rate": 0.066245,
+    "likes": 145,
+    "replies": 7,
+    "reposts": 36,
+    "profile_visits": 48,
+    "new_follows": 2,
+    "posts_published": 1,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-07",
+    "impressions": 19484,
+    "engagements": 788,
+    "engagement_rate": 0.040443,
+    "likes": 176,
+    "replies": 11,
+    "reposts": 46,
+    "profile_visits": 51,
+    "new_follows": 4,
+    "posts_published": 2,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-08",
+    "impressions": 10876,
+    "engagements": 218,
+    "engagement_rate": 0.020044,
+    "likes": 69,
+    "replies": 0,
+    "reposts": 15,
+    "profile_visits": 27,
+    "new_follows": 2,
+    "posts_published": 0,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-09",
+    "impressions": 2238,
+    "engagements": 65,
+    "engagement_rate": 0.029044,
+    "likes": 24,
+    "replies": 0,
+    "reposts": 11,
+    "profile_visits": 4,
+    "new_follows": 0,
+    "posts_published": 0,
+    "tier": "measured"
+  },
+  {
+    "date": "2026-08-10",
+    "impressions": 100,
+    "engagements": 1,
+    "engagement_rate": 0.01,
+    "likes": 0,
+    "replies": 0,
+    "reposts": 0,
+    "profile_visits": 0,
+    "new_follows": 0,
+    "posts_published": 0,
+    "tier": "measured"
   }
 ];
-window.__TEL_SENTIMENT_RAW__ = RAW; // exposed for the next run to fetch-and-extend, per Step 5
-</script>
 
+const RAW = [
+  {
+    "date": "2026-08-01",
+    "data_status": "measured",
+    "sentiment_score": 0.53,
+    "n_classified": 19,
+    "total_mentions": 19,
+    "unique_authors": 11,
+    "top_narrative": null,
+    "hour_distribution": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "unknown": 19
+    },
+    "narratives": {
+      "mainnet": 2,
+      "governance": 4,
+      "validators": 1,
+      "telx": 3,
+      "tan": 2,
+      "network_tech": 4,
+      "price": 6,
+      "banking": 2,
+      "other": 2
+    },
+    "questions": [],
+    "share_of_voice": {
+      "telcoin": 100.0,
+      "xrp": 36.8,
+      "stellar": 52.6,
+      "celo": 42.1
+    },
+    "own_account": {
+      "tier": "measured",
+      "source": "x_native_analytics_account_overview_csv",
+      "daily": {
+        "impressions": 8606,
+        "likes": 86,
+        "engagements": 239,
+        "engagement_rate": 0.027771,
+        "bookmarks": 0,
+        "shares": 1,
+        "new_follows": 3,
+        "replies": 0,
+        "reposts": 16,
+        "profile_visits": 22,
+        "posts_published": 1,
+        "video_views": 5,
+        "media_views": 6,
+        "tier": "measured",
+        "source": "x_native_analytics_account_overview_csv"
+      },
+      "posts": []
+    }
+  },
+  {
+    "date": "2026-08-02",
+    "data_status": "measured",
+    "sentiment_score": 0.53,
+    "n_classified": 19,
+    "total_mentions": 19,
+    "unique_authors": 10,
+    "top_narrative": null,
+    "hour_distribution": {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "unknown": 19
+    },
+    "narratives": {
+      "mainnet": 2,
+      "governance": 4,
+      "validators": 1,
+      "telx": 3,
+      "tan": 1,
+      "network_tech": 4,
+      "price": 5,
+      "banking": 2,
+      "other": 4
+    },
+    "questions": [],
+    "share_of_voice": {
+      "telcoin": 100.0,
+      "xrp": 47.4,
+      "stellar": 52.6,
+      "celo": 42.1
+    },
+    "own_account": {
+      "tier": "measured",
+      "source": "x_native_analytics_account_overview_csv",
+      "daily": {
+        "impressions": 9753,
+        "likes": 111,
+        "engagements": 269,
+        "engagement_rate": 0.027581,
+        "bookmarks": 1,
+        "shares": 4,
+        "new_follows": 2,
+        "replies": 2,
+        "reposts": 24,
+        "profile_visits": 22,
+        "posts_published": 2,
+        "video_views": 4,
+        "media_views": 20,
+        "tier": "measured",
+        "source": "x_native_analytics_account_overview_csv"
+      },
+      "posts": []
+    }
+  }
+];
+window.__TEL_ACCOUNT_RAW__ = ACCOUNT_RAW;
+window.__TEL_SENTIMENT_RAW__ = RAW;
+
+(function renderAccountCharts(){
+  function bars(svgId, key, color){
+    const svg = document.getElementById(svgId);
+    if (!svg || !ACCOUNT_RAW.length) return;
+    const W = 960, H = 160, padT = 12, padB = 28, padL = 8, padR = 8;
+    const innerW = W - padL - padR, innerH = H - padT - padB;
+    const vals = ACCOUNT_RAW.map(d => Number(d[key] || 0));
+    const max = Math.max(...vals, 1);
+    const n = vals.length;
+    const gap = 2;
+    const bw = Math.max(2, (innerW - gap * (n - 1)) / n);
+    let html = '';
+    vals.forEach((v, i) => {
+      const h = (v / max) * innerH;
+      const x = padL + i * (bw + gap);
+      const y = padT + (innerH - h);
+      const truncated = ACCOUNT_RAW[i].date === '2026-08-10';
+      html += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${bw.toFixed(2)}" height="${h.toFixed(2)}" fill="${color}" opacity="${truncated ? 0.35 : 0.9}"><title>${ACCOUNT_RAW[i].date}: ${v.toLocaleString()}</title></rect>`;
+    });
+    // x labels: first, mid, last
+    const labelIdx = [0, Math.floor((n-1)/2), n-1];
+    labelIdx.forEach(i => {
+      const x = padL + i * (bw + gap) + bw/2;
+      html += `<text x="${x.toFixed(1)}" y="${H-8}" text-anchor="middle" fill="#6a719f" font-size="10" font-family="ui-monospace,monospace">${ACCOUNT_RAW[i].date.slice(5)}</text>`;
+    });
+    svg.innerHTML = html;
+  }
+  bars('imp-chart', 'impressions', '#14c8ff');
+  bars('eng-chart', 'engagements', '#199e70');
+})();
+</script>
+</body>
+</html>

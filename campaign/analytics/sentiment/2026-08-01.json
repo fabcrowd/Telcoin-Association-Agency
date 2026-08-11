@@ -767,5 +767,29 @@
     }
   },
   "_ingested_at": "2026-08-01T19:59:06Z",
-  "_source_system": "websearch_sentiment_scraper"
+  "_source_system": "websearch_sentiment_scraper",
+  "own_account": {
+    "followers": null,
+    "as_of": "2026-08-11T17:58:44.557544+00:00",
+    "source": "x_native_analytics_account_overview_csv",
+    "tier": "measured",
+    "daily": {
+      "impressions": 8606,
+      "likes": 86,
+      "engagements": 239,
+      "engagement_rate": 0.027771,
+      "bookmarks": 0,
+      "shares": 1,
+      "new_follows": 3,
+      "replies": 0,
+      "reposts": 16,
+      "profile_visits": 22,
+      "posts_published": 1,
+      "video_views": 5,
+      "media_views": 6,
+      "tier": "measured",
+      "source": "x_native_analytics_account_overview_csv"
+    },
+    "posts": []
+  }
 }
