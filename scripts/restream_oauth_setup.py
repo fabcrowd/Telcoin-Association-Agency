@@ -5,6 +5,14 @@ ONE-TIME step to connect the Restream account for the analytics puller
 developers.restream.io/guide/getting-started - no PKCE documented, so none is used
 here (unlike scripts/x_oauth_setup.py, which does need it for X's API).
 
+Confirmed against developers.restream.io's actual authentication docs (2026-08-23):
+authorize URL, token endpoint, and the refresh behavior below are all real, not
+guesses. Access tokens last 1 hour; refresh tokens last 1 year and ROTATE ON
+EVERY USE (each refresh invalidates the previous refresh token and issues a new
+one) - anything that automates this (scripts/restream_analytics_pull.py, or a
+GitHub Actions workflow) must persist the newly-issued refresh token every run,
+not just the original one from this one-time setup.
+
 Requires a Restream App (developers.restream.io/apps) with a registered
 Callback/Redirect URI. Set as env vars first:
   RESTREAM_CLIENT_ID, RESTREAM_CLIENT_SECRET   - from the app's credentials page
@@ -22,24 +30,23 @@ Usage:
 
   Step 2: python3 scripts/restream_oauth_setup.py exchange "<code or full redirect url>"
           -> exchanges the code for tokens and prints the refresh token to store
-             as RESTREAM_REFRESH_TOKEN. Last manual step, ever - the puller
-             refreshes automatically from here on (if Restream's tokens don't
-             rotate/expire the way X's do; verify this on first live run - see
-             the note in restream_analytics_pull.py).
+             as RESTREAM_REFRESH_TOKEN (or as the same-named GitHub Actions
+             secret, if running via .github/workflows/restream-analytics.yml).
+             Last manual step, ever - the workflow/puller refreshes and
+             re-persists the rotating refresh token automatically from here on.
 """
 import os
 import re
 import sys
 import json
+import secrets
 import urllib.parse
 import urllib.request
 import urllib.error
 
-AUTH_URL = "https://api.restream.io/login"
-TOKEN_URL = "https://api.restream.io/oauth/token"
-SCOPES = ""  # Restream's docs page didn't enumerate discrete scope strings in
-             # what this research could render (JS-rendered docs site) - leave
-             # blank (app-level default scopes) unless a live test shows otherwise.
+AUTH_URL = "https://api.restream.io/login"  # confirmed via developers.restream.io/authentication/authorize-dialog
+TOKEN_URL = "https://api.restream.io/oauth/token"  # confirmed via developers.restream.io/authentication/code-exchange
+# No scope parameter in Restream's documented authorize URL - omitted, matching the docs.
 
 
 def env(name):
@@ -53,25 +60,23 @@ def env(name):
 def cmd_authorize():
     client_id = env("RESTREAM_CLIENT_ID")
     redirect_uri = env("RESTREAM_REDIRECT_URI")
+    state = secrets.token_urlsafe(16)
     params = {
         "response_type": "code",
         "client_id": client_id,
         "redirect_uri": redirect_uri,
+        "state": state,
     }
-    if SCOPES:
-        params["scope"] = SCOPES
     url = f"{AUTH_URL}?{urllib.parse.urlencode(params)}"
     print("\nOpen this URL, log in, and click Authorize:\n")
     print(url)
+    print(f"\n(state={state} - Restream returns this unchanged in the redirect; "
+          f"not machine-checked here since this is a one-time manual step, but "
+          f"worth a glance that it matches.)")
     print("\nThe browser will then redirect to a URL that fails to load - that's "
           "expected, nothing is listening at RESTREAM_REDIRECT_URI. Copy the FULL "
           "resulting URL from the address bar (or just the code=... value) and run:\n")
     print(f'  python3 {sys.argv[0]} exchange "<paste here>"\n')
-    print("NOTE: AUTH_URL (api.restream.io/login) is a best-effort guess from "
-          "general OAuth2 docs, not confirmed against Restream's exact endpoint - "
-          "this research could not fully render developers.restream.io's JS-based "
-          "docs. If this 404s, check developers.restream.io/guide/getting-started "
-          "directly in a browser for the exact authorize URL.", file=sys.stderr)
 
 
 def cmd_exchange(raw):

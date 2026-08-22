@@ -1,0 +1,85 @@
+name: Restream analytics pull
+
+# Durable alternative to a Claude-session cron (which is session-scoped and
+# expires after 7 days) and to the n8n workflow (which needs a self-hosted
+# server). Runs on GitHub's own infrastructure, indefinitely, at effectively
+# zero cost - scripts/restream_analytics_pull.py runs in seconds.
+#
+# Pulls only the REST-confirmed analytics (viewer stats, aggregate chat
+# stats, destinations, event inventory) - see scripts/restream_analytics_pull.py
+# and infrastructure/n8n/README.md for why individual chat-message text isn't
+# part of this (Restream's Chat API is WebSocket-only, a separate unresolved
+# question from this pipeline).
+
+on:
+  schedule:
+    - cron: '23 9 * * *'  # 09:23 UTC daily - offset from this repo's other
+                          # scheduled pulls (sentiment 09:07, YouTube 09:13,
+                          # the Restream n8n workflow 09:19) to avoid clustering
+  workflow_dispatch: {}   # manual trigger, for testing before trusting the schedule
+
+permissions:
+  contents: write
+
+jobs:
+  pull-and-rotate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout campaign branch
+        uses: actions/checkout@v4
+        with:
+          ref: claude/campaign-iLgt5
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pynacl
+
+      - name: Pull analytics and extract rotated refresh token
+        id: pull
+        env:
+          RESTREAM_CLIENT_ID: ${{ secrets.RESTREAM_CLIENT_ID }}
+          RESTREAM_CLIENT_SECRET: ${{ secrets.RESTREAM_CLIENT_SECRET }}
+          RESTREAM_REFRESH_TOKEN: ${{ secrets.RESTREAM_REFRESH_TOKEN }}
+        run: |
+          set -e
+          # Capture into a variable rather than letting it stream to the log -
+          # the new refresh token line must never be printed in the clear,
+          # even before masking.
+          OUTPUT=$(python3 scripts/restream_analytics_pull.py --lookback-days 7)
+          NEW_TOKEN=$(printf '%s\n' "$OUTPUT" | grep '^RESTREAM_NEW_REFRESH_TOKEN=' | cut -d= -f2-)
+          if [ -z "$NEW_TOKEN" ]; then
+            echo "FATAL: no rotated refresh token found in script output - the pull itself"
+            echo "must have failed before reaching the refresh call. Aborting before any commit."
+            printf '%s\n' "$OUTPUT" | grep -v '^RESTREAM_NEW_REFRESH_TOKEN='
+            exit 1
+          fi
+          echo "::add-mask::$NEW_TOKEN"
+          printf '%s\n' "$OUTPUT" | grep -v '^RESTREAM_NEW_REFRESH_TOKEN='
+          echo "$NEW_TOKEN" > "$RUNNER_TEMP/restream_new_refresh_token.txt"
+
+      - name: Persist rotated refresh token to GitHub Secrets
+        env:
+          GH_SECRETS_PAT: ${{ secrets.GH_SECRETS_PAT }}
+          GH_REPO_OWNER: ${{ github.repository_owner }}
+          GH_REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          NEW_TOKEN=$(cat "$RUNNER_TEMP/restream_new_refresh_token.txt")
+          python3 scripts/gh-update-secret.py RESTREAM_REFRESH_TOKEN "$NEW_TOKEN"
+          rm -f "$RUNNER_TEMP/restream_new_refresh_token.txt"
+
+      - name: Commit new analytics files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add campaign/analytics/restream/
+          if git diff --cached --quiet; then
+            echo "No new analytics data - nothing to commit."
+            exit 0
+          fi
+          git commit -m "Restream analytics pull: $(date -u +%Y-%m-%d)"
+          git push origin claude/campaign-iLgt5

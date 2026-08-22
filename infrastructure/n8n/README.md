@@ -10,11 +10,30 @@ store, never in the repo.
 | YouTube stats | `workflow-youtube-to-github.json` | Daily channel statistics → `campaign/analytics/youtube/` |
 | Restream council streams | `workflow-restream-to-github.json` | Per-event chat + viewership → `campaign/analytics/streams/` |
 
-**Manual fallback for Restream:** `python3 scripts/restream_analytics_pull.py` — a standalone
-script covering the full account-level tracking Restream's REST API actually exposes (viewer
-analytics, aggregate chat analytics, destinations, event inventory), same design discipline as
-`youtube-pull.py`. One-time setup via `scripts/restream_oauth_setup.py`. Does **not** pull
-individual chat message text — see the caveat below.
+**Automated fallback for Restream (added 2026-08-23):** `.github/workflows/restream-analytics.yml`
+runs `scripts/restream_analytics_pull.py` daily on GitHub's own infrastructure — durable (unlike a
+Claude-session cron, which expires after 7 days) and needs no server to maintain (unlike this
+n8n setup, which needs Docker running somewhere). Handles Restream's token rotation automatically:
+Restream reissues the refresh token on every use (confirmed 2026-08-23 — access tokens last 1
+hour, refresh tokens last 1 year, and using one invalidates it), so the workflow persists the new
+one back to the `RESTREAM_REFRESH_TOKEN` GitHub secret after every run via
+`scripts/gh-update-secret.py`, which needs its own bootstrap credential — see setup below.
+Pulls only what's confirmed to exist over REST (viewer analytics, aggregate chat analytics,
+destinations, event inventory) — **not** individual chat message text, same caveat as this n8n
+workflow. Manual/local run: `python3 scripts/restream_analytics_pull.py`.
+
+**Setup for the GitHub Actions path:**
+1. One-time account connection: `python3 scripts/restream_oauth_setup.py authorize`, then `exchange`
+   (needs a Restream App at developers.restream.io/apps with a registered redirect URI).
+2. Add repo secrets: `RESTREAM_CLIENT_ID`, `RESTREAM_CLIENT_SECRET`, `RESTREAM_REFRESH_TOKEN` (the
+   value from step 1).
+3. Add `GH_SECRETS_PAT` — a GitHub PAT the workflow uses to update `RESTREAM_REFRESH_TOKEN` after
+   each run (the default `GITHUB_TOKEN` a workflow gets cannot manage secrets). Create a
+   fine-grained PAT (github.com/settings/personal-access-tokens) scoped to **this repository only**,
+   with **Secrets: read and write** permission — least-privilege, since a classic PAT would need
+   the broader `repo` scope across everything the account can touch.
+4. Test with `workflow_dispatch` (Actions tab → Restream analytics pull → Run workflow) before
+   trusting the schedule.
 
 ---
 
