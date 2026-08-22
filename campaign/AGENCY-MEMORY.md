@@ -75,6 +75,8 @@ Never assume. Ask every time unless context makes it unambiguous (e.g. user says
 - **Stablecoin liquidity roadmap** (e.g. TELx Council agenda items referencing eXYZ liquidity): OK to mention as council/governance context — no confirmation needed.
 - **Block explorer URL**: Do NOT reference telscan.io or any specific block explorer URL in published content. Use generic language ("the network's block explorer", "on-chain", "block times on the network") until a canonical explorer URL is officially confirmed for mainnet.
 - **Fact verification ownership**: Agents must attempt web search verification of any technical claim before flagging it as [CONFIRM] for the user. [CONFIRM] is reserved for information that cannot be found publicly (internal decisions, unannounced partnerships, unreleased roadmap items). Published benchmarks, public audit results, public partnership announcements — all require agent-side web search verification, not user follow-up.
+- **$0 budget for tooling/APIs (confirmed 2026-08-22)**: No paid API or service should be proposed or wired in without the user explicitly reopening this. Rules out, specifically: the X API's own-post analytics fetcher (`scripts/x_api_fetch.py`/`x_oauth_setup.py` — built, works, ~$0.15-0.45/month, left unconnected by choice) and the xAI/Grok API's live X-search tool ($5/1,000 calls — flagged as a promising fix for the community-mentions pipeline's stale/no-timestamp problem, not pursued). The standing collection methods (WebSearch for community mentions, manual analytics.x.com CSV export via `scripts/x-analytics-import.py` for own-account performance) are $0 and stay the default. Manually asking Grok inside X Premium+ is free but interactive-only — useful as an ad hoc spot-check, not something to build automation around.
+- **Parallel-tooling note (2026-08-22)**: the user runs both this session and a separate Cursor-based agent against the same repo/branch concurrently. Check `git fetch` + `git log origin/<branch>..HEAD` before assuming local state is current, especially after any gap — another tool may have already merged overlapping work.
 
 ---
 
@@ -83,10 +85,11 @@ Never assume. Ask every time unless context makes it unambiguous (e.g. user says
 The full automated system — COLLECT → CLASSIFY → DIGEST → DREAM → CAMPAIGN → feedback — is
 documented as one picture in `campaign/WORKFLOW.md` ("The Automated Intelligence & Campaign
 Loop"). Read that for the map and the trigger schedule. Cadence summary: YouTube + Restream daily
-via n8n (zero Claude tokens); **$TEL sentiment classification twice weekly, Monday + Thursday**
-(the one token-heavy step — was daily, halved 2026-08-01); weekly intel digest Monday; dreaming
-nightly; tweet approval Wednesday. Price/market context comes from the `coingecko` MCP, not
-WebSearch.
+via n8n (zero Claude tokens); **$TEL sentiment classification daily** (the one token-heavy step —
+briefly halved to twice-weekly 2026-08-01, reverted to daily 2026-08-02 by explicit user request
+for a continuous historical backlog; see `scripts/sentiment-scraper.md`); weekly intel digest
+Monday; dreaming nightly; tweet approval Wednesday. Price/market context comes from the
+`coingecko` MCP, not WebSearch.
 
 ## Standing Intelligence Sources (weekly sweep, organized by day)
 
