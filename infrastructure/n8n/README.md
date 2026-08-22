@@ -10,6 +10,12 @@ store, never in the repo.
 | YouTube stats | `workflow-youtube-to-github.json` | Daily channel statistics → `campaign/analytics/youtube/` |
 | Restream council streams | `workflow-restream-to-github.json` | Per-event chat + viewership → `campaign/analytics/streams/` |
 
+**Manual fallback for Restream:** `python3 scripts/restream_analytics_pull.py` — a standalone
+script covering the full account-level tracking Restream's REST API actually exposes (viewer
+analytics, aggregate chat analytics, destinations, event inventory), same design discipline as
+`youtube-pull.py`. One-time setup via `scripts/restream_oauth_setup.py`. Does **not** pull
+individual chat message text — see the caveat below.
+
 ---
 
 ## Restream Council Streams (`PROD-RESTREAM-CouncilStream-Pull-v1.0`)
@@ -25,14 +31,40 @@ destination is X community engagement captured without paying for the X API.
 add it in n8n as an **OAuth2** credential named `Restream OAuth2`, reuse the existing GitHub
 credential, import, reconnect both, save.
 
-**⚠️ Run once with the Commit node disabled before activating.** Three things are unconfirmed and
-must be checked against a real payload:
+**⚠️ Researched 2026-08-22/23 — one assumption is very likely wrong, not just unconfirmed:**
 
-1. **API base URL** — the docs list endpoint *paths*; `https://api.restream.io/v2` is assumed.
-2. **Response field names** — `items`/`messages`/`timestamp` mappings are defensive guesses.
-3. **Whether API access needs a paid tier**, and the **chat-history retention window** — that
-   window decides whether backfill is possible at all. If a council stream ages out before ingest,
-   that chat is gone permanently.
+1. **API base URL** — `https://api.restream.io/v2` is confirmed correct.
+2. **The "Fetch Chat History" node is calling an endpoint that probably doesn't exist.**
+   Restream's Chat API is **WebSocket-only** (`wss://chat.api.restream.io`) — a live connection
+   held open *during* the stream to receive individual messages (author/text/timestamp) as they
+   arrive. No REST endpoint for retrieving past chat message *text* after the fact was found
+   anywhere: not in the official docs navigation, not in a community-built MCP server's actual API
+   calls, not in the API-cataloger's machine-readable spec. The only REST-accessible chat data is
+   the confirmed `analytics/event-analytics-messages` endpoint — **aggregate counts only**
+   (total messages, unique chatters), no message content. `scripts/restream_analytics_pull.py`
+   pulls that aggregate data correctly; this workflow's per-message chat capture needs a different
+   fix (see below) before it can work as designed.
+3. **Confirmed**: `analytics/event-analytics-viewers` is real. **Confirmed**: a paid Restream plan
+   is required — "Free users will see a restricted view of their data," per Restream's own docs.
+   **Still unconfirmed**: the exact paths for listing destinations/channels and event history
+   (conflicting names across sources — see the `EP_*` constants and comments in
+   `scripts/restream_analytics_pull.py`).
+4. **Chat-history retention/backfill**: not resolved by this research either way — moot until the
+   REST-vs-WebSocket question above is settled, since backfill assumes a REST replay endpoint
+   exists at all.
+
+**Path forward for real per-message chat content (needed for actual sentiment classification on
+individual messages, not just aggregate counts)** — two options, a real decision not yet made:
+- A persistent WebSocket listener during each live stream (genuine automation, different
+  architecture than this cron-triggered workflow, a real build).
+- Restream's own manual dashboard export (Past Streams page → chat export/replay) — same $0,
+  manual-step pattern already accepted for X's own-account CSV export, but chatter handles come
+  back **anonymized**, so per-author question-recurrence tracking wouldn't carry over the way it
+  does for X.
+
+Until one of those is chosen and built, **`scripts/stream-sentiment-classifier.md` has nothing to
+classify** — this workflow's `messages[]` array will stay empty unless the chat-capture path is
+fixed.
 
 **Guarantees.** Deterministic per-event paths make re-runs idempotent. A quiet week with no events
 short-circuits cleanly rather than erroring. Every message is either normalized or counted in
