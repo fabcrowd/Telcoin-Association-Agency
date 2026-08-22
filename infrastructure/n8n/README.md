@@ -72,14 +72,16 @@ credential, import, reconnect both, save.
    REST-vs-WebSocket question above is settled, since backfill assumes a REST replay endpoint
    exists at all.
 
-**Path forward for real per-message chat content (needed for actual sentiment classification on
-individual messages, not just aggregate counts)** — two options, a real decision not yet made:
-- A persistent WebSocket listener during each live stream (genuine automation, different
-  architecture than this cron-triggered workflow, a real build).
-- Restream's own manual dashboard export (Past Streams page → chat export/replay) — same $0,
-  manual-step pattern already accepted for X's own-account CSV export, but chatter handles come
-  back **anonymized**, so per-author question-recurrence tracking wouldn't carry over the way it
-  does for X.
+**Decided 2026-08-23: past-stream data only, not live stats.** This closes the fork above — a
+persistent WebSocket listener during each live stream would be the only way to get real per-message
+chat *live*, but the user confirmed that's out of scope entirely. **A WebSocket listener will not
+be built.** For real per-message chat content (needed for actual sentiment classification on
+individual messages, not just the aggregate counts `scripts/restream_analytics_pull.py` already
+gets), the only remaining path is Restream's own manual dashboard export (Past Streams page → chat
+export/replay) — same $0, manual-step pattern already accepted for X's own-account CSV export, but
+chatter handles come back **anonymized**, so per-author question-recurrence tracking wouldn't carry
+over the way it does for X. Not yet built — a CSV importer for this export format, mirroring
+`scripts/x-analytics-import.py`'s pattern, would be the next step if this is wanted.
 
 Until one of those is chosen and built, **`scripts/stream-sentiment-classifier.md` has nothing to
 classify** — this workflow's `messages[]` array will stay empty unless the chat-capture path is

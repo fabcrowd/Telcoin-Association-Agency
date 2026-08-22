@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 """
-Pull Restream's full account-level tracking for recent stream events: destinations
-(channels), event inventory, per-event viewer analytics, and per-event chat
-analytics (aggregate message/chatter counts - NOT individual message text, see
-note below). Requires a paid Restream plan - confirmed via research 2026-08-23
-that Restream's own docs state "A paid plan is required to access full Analytics.
-Free users will see a restricted view."
+Pull Restream's full account-level tracking for PAST/COMPLETED stream events:
+destinations (channels), event inventory, per-event viewer analytics, and
+per-event chat analytics (aggregate message/chatter counts - NOT individual
+message text, see note below). Requires a paid Restream plan - confirmed via
+research 2026-08-23 that Restream's own docs state "A paid plan is required to
+access full Analytics. Free users will see a restricted view."
+
+Scope, confirmed by the user 2026-08-23: past-stream data only, not live stats.
+Still-live/in-progress events are detected where the API response makes it
+possible and skipped outright (see LIVE_STATUSES in fetch()) - this never
+pulls or commits partial analytics for a stream that's still running. A live
+listener (WebSocket or otherwise) is explicitly out of scope and will not be
+built; see infrastructure/n8n/README.md for the full history of that decision.
 
 Writes campaign/analytics/restream/YYYY-MM-DD.json (schema v1, data_status
 "measured"). Design rules, matching scripts/youtube-pull.py:
@@ -196,6 +203,14 @@ def fetch(client, lookback_days):
         raise PullError(f"{EP_EVENTS_HISTORY} did not return a list - "
                          f"check the response shape and adjust parsing.")
 
+    # Scope, confirmed by the user 2026-08-23: past/completed stream data only -
+    # never live, in-progress stats. A live listener (WebSocket, or repeatedly
+    # polling a still-streaming event) is explicitly out of scope and will not
+    # be built. Skip anything that looks still-live so its analytics (which
+    # would be partial and would change on a later re-pull) never get committed
+    # as if final.
+    LIVE_STATUSES = {"live", "in_progress", "streaming", "active", "started"}
+
     cutoff = datetime.now(timezone.utc) - timedelta(days=lookback_days)
     events = []
     for e in events_list:
@@ -209,10 +224,28 @@ def fetch(client, lookback_days):
             started = None
         if started and started < cutoff:
             continue
+
+        status_raw = str(e.get("status") or "").lower()
+        is_live_flag = e.get("isLive") or e.get("live")
+        ended_raw = e.get("endedAt") or e.get("finishedAt") or e.get("stoppedAt")
+        if is_live_flag or status_raw in LIVE_STATUSES:
+            print(f"Skipping {eid} - still live, not a past stream yet.",
+                  file=sys.stderr)
+            continue
+        if ended_raw:
+            ended_status = "confirmed_ended"
+        else:
+            # This endpoint's exact response shape is unconfirmed (see module
+            # docstring) - no explicit end-time/status field was found on this
+            # event. Not excluded, since it's outside LIVE_STATUSES and past the
+            # cutoff, but flagged rather than silently assumed ended.
+            ended_status = "unknown_no_end_field_in_response"
+
         events.append({
             "event_id": eid,
             "title": e.get("title") or e.get("name"),
             "started_at": started.isoformat() if started else None,
+            "ended_status": ended_status,
         })
 
     for ev in events:
