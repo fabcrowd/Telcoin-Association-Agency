@@ -43,6 +43,12 @@ short-circuits cleanly rather than erroring. Every message is either normalized 
 Data API stays authoritative for lifetime per-video statistics. **Never sum the two** — they
 measure different things.
 
+**Sentiment (added 2026-08-22).** Chat messages land with `sentiment`/`sentiment_confidence`/
+`narratives` as `null`/`[]` placeholders — this workflow has no LLM call and none should be added
+(would need a paid API key, against the standing $0 budget). `scripts/stream-sentiment-classifier.md`
+is a Claude-session routine that classifies them on the next session after a file lands, same
+ingest-raw-then-enrich pattern as the Fellow transcript pipeline below.
+
 ---
 
 ## YouTube Channel Stats (`PROD-YOUTUBE-ChannelStats-Pull-v1.0`)
