@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "tier": "derived",
+  "method_note": "WebSearch result-volume proxy, weak instrument - see scripts/web-mentions-scraper.md for why this is not a raw scraper and not a true index-size measurement.",
+  "queries": ["Telcoin", "$TEL", "\"Telcoin Network\""],
+  "weeks": [
+    {
+      "week_start": "2026-08-16",
+      "week_end": "2026-08-22",
+      "per_query": {
+        "Telcoin": { "results_returned": 10, "distinct_domains": 10, "raw_results_returned": 10, "filtered_out": 0 },
+        "$TEL": { "results_returned": 4, "distinct_domains": 3, "raw_results_returned": 9, "filtered_out": 5, "filter_note": "Excluded 5 of 9 raw results - CNN, Yahoo Finance, CNBC, TradingView (NYSE:TEL), Nasdaq - all TE Connectivity plc stock pages, the known bare-\"$TEL\" ticker collision already documented in scripts/sentiment-scraper.md Step 3." },
+        "Telcoin Network": { "results_returned": 10, "distinct_domains": 4, "raw_results_returned": 10, "filtered_out": 0 }
+      },
+      "total_results_returned": 24,
+      "indexed_to_first_week": 100.0,
+      "notable_new_urls": []
+    }
+  ]
+}
