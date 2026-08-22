@@ -5,17 +5,19 @@ name: Restream analytics pull
 # server). Runs on GitHub's own infrastructure, indefinitely, at effectively
 # zero cost - scripts/restream_analytics_pull.py runs in seconds.
 #
-# Pulls only the REST-confirmed analytics (viewer stats, aggregate chat
-# stats, destinations, event inventory) - see scripts/restream_analytics_pull.py
-# and infrastructure/n8n/README.md for why individual chat-message text isn't
-# part of this (Restream's Chat API is WebSocket-only, a separate unresolved
-# question from this pipeline).
+# Weekly, not daily (user confirmed 2026-08-23) - past-stream data only, no
+# need for tighter cadence. Pulls only the REST-confirmed analytics (viewer
+# stats, aggregate chat stats, destinations, event inventory) - see
+# scripts/restream_analytics_pull.py and infrastructure/n8n/README.md for why
+# individual chat-message text isn't part of this (Restream's Chat API is
+# WebSocket-only, and a live listener was explicitly ruled out).
 
 on:
   schedule:
-    - cron: '23 9 * * *'  # 09:23 UTC daily - offset from this repo's other
-                          # scheduled pulls (sentiment 09:07, YouTube 09:13,
-                          # the Restream n8n workflow 09:19) to avoid clustering
+    - cron: '23 9 * * 1'  # Mondays 09:23 UTC - weekly, per user request 2026-08-23.
+                          # Matches this repo's existing weekly-intel-digest cadence
+                          # (also Monday). --lookback-days below stays at 7 to line
+                          # up exactly with a 7-day gap between runs.
   workflow_dispatch: {}   # manual trigger, for testing before trusting the schedule
 
 permissions:

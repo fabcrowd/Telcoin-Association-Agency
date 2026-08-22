@@ -11,7 +11,8 @@ store, never in the repo.
 | Restream council streams | `workflow-restream-to-github.json` | Per-event chat + viewership → `campaign/analytics/streams/` |
 
 **Automated fallback for Restream (added 2026-08-23):** `.github/workflows/restream-analytics.yml`
-runs `scripts/restream_analytics_pull.py` daily on GitHub's own infrastructure — durable (unlike a
+runs `scripts/restream_analytics_pull.py` weekly (Mondays, matching this repo's existing
+weekly-intel-digest cadence) on GitHub's own infrastructure — durable (unlike a
 Claude-session cron, which expires after 7 days) and needs no server to maintain (unlike this
 n8n setup, which needs Docker running somewhere). Handles Restream's token rotation automatically:
 Restream reissues the refresh token on every use (confirmed 2026-08-23 — access tokens last 1
