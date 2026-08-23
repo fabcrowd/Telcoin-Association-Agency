@@ -328,52 +328,53 @@ specifically what would have caught the fabricated data now quarantined in `_see
 
 ---
 
-## Step 5 — Regenerate Heat Map Artifact
+## Step 5 — Regenerate the Dashboard
 
-Read all JSON files:
+**Canonical tool: `python3 scripts/build-dashboard.py`.** This reads every source file under
+`campaign/analytics/` fresh (community sentiment, account-overview, price history, the Grok
+spot-check, web-mentions, YouTube, Restream if live) and writes the complete
+`campaign/analytics/sentiment/dashboard.html`. Run it whenever any source file changes — it is
+the single place that compiles all of them, added 2026-08-23 when the dashboard grew from one
+series to seven. **Never hand-edit dashboard.html's data blocks or generated sections** — re-run
+the script instead, so the file always matches its sources exactly. Extend `gather()`/`build_html()`
+in that script when a new source is added, rather than writing a one-off regeneration by hand.
+
+The script already encodes the rules that used to live only here:
+- Skips any sentiment file whose `data_status` is `"seed_synthetic"` or `"partial"` (fabricated
+  or incomplete — never plotted). Only `"measured"` community days feed the narrative ledger,
+  open questions, and the day-count gates.
+- Community trend panels (sentiment over time, narrative momentum) stay gated until 14 measured
+  days exist; narrative ledger and open questions unlock at day 1 and render live below that.
+  Gates read `community_days` directly off however many measured sentiment files actually exist —
+  no manual counting.
+- `account-overview/daily.json` (own-account X performance) plots independently of the community
+  gate, whenever it exists.
+- Price/market context is explicitly `publishable: false` — the dashboard marks it "listen-only"
+  and pairs it against sentiment, never presents it as something to post about.
+- The Grok spot-check's own `bullish_score` is shown next to this pipeline's `sentiment_score`
+  formula, never blended into one number — see `campaign/analytics/community-grok/README.md`.
+- Restream renders as a "not connected" pending panel until real files exist under
+  `campaign/analytics/restream/` or `streams/`.
+
+After running the script, validate the output before publishing (a headless-browser render check
+catches embedded-JSON and layout errors a text diff won't):
 ```bash
-ls campaign/analytics/sentiment/*.json | sort
+python3 -c "
+import re, json
+html = open('campaign/analytics/sentiment/dashboard.html').read()
+for name in ['ACCOUNT_RAW', 'RAW', 'PRICE_RECENT']:
+    m = re.search(rf'const {name} = (\[.*?\]);\n', html, re.DOTALL)
+    assert m, f'{name} not found'
+    json.loads(m.group(1))  # raises if malformed
+print('embedded JSON blocks valid')
+"
 ```
 
-Compile into a single JavaScript constant, **skipping any file whose `data_status` is
-`"seed_synthetic"` or `"partial"`** (fabricated or incomplete — never plotted). Files with
-`data_status: "measured"` and `data_status: "measured_backfill"` are both included, but must be
-visually distinguishable: render `measured_backfill` points hollow/lower-opacity with no
-interpolated trend line connecting them to neighboring points (a line implies continuity of
-measurement method that doesn't exist between a sparse backfilled day and a real live-day scrape),
-plus a legend entry ("○ backfilled — sparse sample, not a full-day census"). Per file, extract:
-- `date`
-- `composite.sentiment_score` and `composite.n_classified` (never one without the other)
-- `composite.total_mentions`, `composite.unique_authors`
-- `composite.hour_distribution` (including the `unknown` bucket)
-- `narratives{}`
-- `own_account{}` if present
-- `questions[]`
-- `share_of_voice{}`
-
-Separately, if `campaign/analytics/account-overview/daily.json` exists, embed it as
-`ACCOUNT_RAW` and render the measured @telcoinTAO impression/engagement charts. That series is
-independent of the community 14-day collecting gate — plot it whenever ≥1 measured account day
-exists.
-
-While fewer than 14 days (counting both `measured` and `measured_backfill`) exist, keep the
-dashboard in its "Collecting — day N" state and update the counter rather than plotting a trend
-line through a handful of points.
-
-Build the complete artifact HTML with all historical data embedded.
-
-**Do not author the artifact from scratch.** Fetch the current published artifact with WebFetch
-against ARTIFACT_URL, replace only the `RAW` data constant with the recompiled series, and
-republish. The chart code, styling, and panel structure carry forward unchanged. If the fetch
-fails, the artifact source of record is the last version committed under
-`campaign/analytics/sentiment/dashboard.html`.
-
-**Never plot a file marked `seed_synthetic` or `partial`.** Those are excluded from the series
-entirely and counted only in the "days collected" tally. `measured` and `measured_backfill` files
-are both plotted, per the distinct rendering rule above.
-
-Call the Artifact tool to update the artifact at ARTIFACT_URL (see top of this file).
-The artifact title is "TEL Social Intelligence" and favicon is "📊".
+Then call the Artifact tool to update the artifact at ARTIFACT_URL (see top of this file), passing
+the generated `dashboard.html` as `file_path` and the URL as `url` so it updates in place rather
+than minting a new one. Title "TEL Social Intelligence", favicon "📊". If the tool reports the live
+version wasn't yet viewed, read it first (its content will be an older snapshot — this pipeline's
+sources are strictly additive, so there is nothing to lose by superseding it) and then republish.
 
 If ARTIFACT_URL is not set or returns an error, create a new artifact and update the
 ARTIFACT_URL line in this file.
